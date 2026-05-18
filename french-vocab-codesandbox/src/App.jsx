@@ -1689,95 +1689,1318 @@ function GrammarOrder({ exercises }) {
 const EDITO_GRAMMAR = [
   {
     id:"g0", num:"0", title:"Bienvenue !", points:[
-      { topic:"Động từ être — je suis, tu es, il/elle est, nous sommes, vous êtes, ils sont", rule:"Être là tên không thể thiếu: Je suis étudiant. Tu es français?", examples:["Je suis vietnamien.","Elle est médecin.","Nous sommes amis."] },
-      { topic:"Động từ avoir — j'ai, tu as, il/elle a, nous avons, vous avez, ils ont", rule:"Avoir dùng để nói tuổi: J'ai 20 ans. Il a une sœur.", examples:["J'ai 25 ans.","Tu as un stylo?","Ils ont deux enfants."] },
-      { topic:"Đại từ nhân xưng — je, tu, il, elle, nous, vous, ils, elles", rule:"Je/tu: 1 người. Il/elle: anh ấy/cô ấy. Nous: chúng tôi. Vous: các bạn / lịch sự. Ils/elles: họ.", examples:["Je parle français.","Vous êtes professeur?","Ils aiment la musique."] },
-      { topic:"Les nombres 0–31 và jours/mois", rule:"Số từ 1–31 + ngày trong tuần (lundi→dimanche) + tháng trong năm (janvier→décembre). Ngày: le 3 mars.", examples:["Aujourd'hui c'est le 15 mai.","Je suis né le 7 juillet.","C'est lundi."] },
+      {
+        topic:"Động từ ÊTRE — Chia ở thì hiện tại",
+        rule:`ÊTRE = "là / là / thì / ở" — động từ quan trọng nhất tiếng Pháp!
+
+Bảng chia:
+• Je suis       → Tôi là / tôi ở
+• Tu es         → Bạn là / bạn ở (thân mật)
+• Il/Elle est   → Anh ấy / Cô ấy là
+• Nous sommes   → Chúng tôi là
+• Vous êtes     → Các bạn là / Bạn là (lịch sự)
+• Ils/Elles sont → Họ là
+
+⚠️ Être là động từ BẤT QUY TẮC — phải học thuộc lòng!
+
+Dùng être để:
+✅ Nói quốc tịch: Je suis vietnamien.
+✅ Nói nghề nghiệp: Elle est médecin.
+✅ Miêu tả tính cách: Il est sympa.
+✅ Nói nơi ở: Nous sommes à Paris.`,
+        examples:[
+          "Je suis étudiant(e). — Tôi là sinh viên.",
+          "Tu es français? — Bạn là người Pháp à?",
+          "Il est très sympa. — Anh ấy rất dễ mến.",
+          "Nous sommes à Hanoi. — Chúng tôi ở Hà Nội.",
+          "Vous êtes professeur? — Thầy/Cô là giáo viên ạ?",
+          "Elles sont belles. — Chúng thật đẹp.",
+        ]
+      },
+      {
+        topic:"Động từ AVOIR — Chia ở thì hiện tại",
+        rule:`AVOIR = "có" — cũng là động từ bất quy tắc, rất hay dùng!
+
+Bảng chia:
+• J'ai         → Tôi có  (j' vì bắt đầu bằng nguyên âm)
+• Tu as        → Bạn có
+• Il/Elle a    → Anh ấy / Cô ấy có
+• Nous avons   → Chúng tôi có
+• Vous avez    → Các bạn có / Bạn có (lịch sự)
+• Ils/Elles ont → Họ có
+
+Dùng avoir để:
+✅ Nói tuổi (quan trọng!): J'ai 20 ans. (KHÔNG nói "Je suis 20 ans")
+✅ Nói có/sở hữu: Tu as une voiture?
+✅ Diễn đạt cảm giác thể chất: Il a faim (đói), il a soif (khát), il a froid (lạnh)
+
+⚠️ Lỗi thường gặp: Nói tuổi dùng AVOIR, không dùng être!
+❌ Je suis 25 ans.   ✅ J'ai 25 ans.`,
+        examples:[
+          "J'ai 22 ans. — Tôi 22 tuổi.",
+          "Tu as un stylo? — Bạn có cây bút không?",
+          "Elle a une sœur. — Cô ấy có một người chị.",
+          "Nous avons un cours à 9h. — Chúng tôi có lớp lúc 9 giờ.",
+          "Vous avez faim? — Bạn đói không?",
+          "Ils ont deux enfants. — Họ có hai đứa con.",
+        ]
+      },
+      {
+        topic:"Đại từ nhân xưng — Je, Tu, Il, Elle, Nous, Vous, Ils, Elles",
+        rule:`Trong tiếng Pháp, ĐẠI TỪ NHÂN XƯNG luôn phải có trước động từ!
+
+• Je (Tôi) → J' trước nguyên âm: j'aime, j'ai
+• Tu (Bạn) → dùng với người thân, bạn bè, trẻ em
+• Il (Anh ấy / Nó - nam)
+• Elle (Cô ấy / Nó - nữ)
+• On (Người ta / Chúng ta - thân mật) → chia như il/elle
+• Nous (Chúng tôi / Chúng ta - trang trọng hơn on)
+• Vous (Các bạn / Bạn lịch sự với 1 người)
+• Ils (Họ - nhóm có ít nhất 1 nam)
+• Elles (Họ - nhóm toàn nữ)
+
+💡 Mẹo: Vous dùng với 1 người khi lịch sự (thầy cô, người lạ) — gọi là "vouvoyer"
+💡 On thay cho nous trong khẩu ngữ: On va au café? = Nous allons au café?
+
+Dạng nhấn mạnh (pronoms toniques):
+Je→Moi, Tu→Toi, Il→Lui, Elle→Elle, Nous→Nous, Vous→Vous, Ils→Eux, Elles→Elles`,
+        examples:[
+          "Je m'appelle Linh. — Tôi tên là Linh.",
+          "Tu habites où? — Bạn sống ở đâu?",
+          "On mange ensemble? — Chúng mình ăn cùng nhau nhé?",
+          "Vous avez quel âge, madame? — Bà bao nhiêu tuổi ạ?",
+          "Ils sont étudiants. — Họ là sinh viên.",
+          "Moi, j'adore le café! — Còn tôi, tôi rất thích cà phê!",
+        ]
+      },
+      {
+        topic:"Số đếm 0–31 và Ngày tháng",
+        rule:`SỐ ĐẾM CƠ BẢN (0–20):
+0 zéro, 1 un/une, 2 deux, 3 trois, 4 quatre, 5 cinq,
+6 six, 7 sept, 8 huit, 9 neuf, 10 dix,
+11 onze, 12 douze, 13 treize, 14 quatorze, 15 quinze,
+16 seize, 17 dix-sept, 18 dix-huit, 19 dix-neuf, 20 vingt
+
+SỐ 21–31:
+21 vingt et un, 22 vingt-deux, ... 31 trente et un
+(Chú ý: 21, 31, 41... dùng "et un"; 22, 32... dùng gạch ngang)
+
+NGÀY TRONG TUẦN: lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche
+💡 Thứ Hai trong tiếng Pháp là lundi (không phải Chủ Nhật!)
+
+THÁNG TRONG NĂM: janvier, février, mars, avril, mai, juin,
+juillet, août, septembre, octobre, novembre, décembre
+
+NÓI NGÀY THÁNG: le + số + tháng
+⚠️ Ngày 1 nói "le premier" (không phải "le un")`,
+        examples:[
+          "Aujourd'hui c'est le premier mai. — Hôm nay là mùng 1 tháng 5.",
+          "Je suis né(e) le 15 août. — Tôi sinh ngày 15 tháng 8.",
+          "Le cours est le lundi et le mercredi. — Lớp học vào thứ Hai và thứ Tư.",
+          "Mon numéro c'est le 06 12 34 56 78. — Số của tôi là...",
+          "On est le combien aujourd'hui? — Hôm nay là ngày mấy?",
+        ]
+      },
     ]
   },
   {
     id:"g1", num:"1", title:"Je suis…", points:[
-      { topic:"Tính từ quốc tịch — accord masculin/féminin", rule:"Thêm -e cho giống cái: français→française. Thêm -ne cho -ien/-éen: italien→italienne. Tính từ kết thúc bằng -e không đổi: belge, russe.", examples:["Il est japonais. Elle est japonaise.","Il est brésilien. Elle est brésilienne.","Il est belge. Elle est belge."] },
-      { topic:"Mạo từ xác định — le, la, l', les", rule:"Le + danh từ nam số ít. La + danh từ nữ số ít. L' + danh từ bắt đầu bằng nguyên âm/h câm. Les + danh từ số nhiều. Dùng để nói chung chung.", examples:["J'aime le cinéma.","Elle adore la musique.","Nous aimons les langues."] },
-      { topic:"Giới từ trước tên thành phố và quốc gia (1)", rule:"à + thành phố. au + nước nam (le). en + nước nữ hoặc bắt đầu bằng nguyên âm. aux + nước số nhiều (les).", examples:["J'habite à Paris.","Il est né au Canada.","Elle vit en France.","Ils habitent aux États-Unis."] },
-      { topic:"Tính từ nghi vấn — quel/quelle/quels/quelles", rule:"Quel s'accorde avec le nom. Quel (m.sg) / quelle (f.sg) / quels (m.pl) / quelles (f.pl). Dùng để hỏi thông tin.", examples:["Quel est ton prénom?","Quelle est ta nationalité?","Quels sont tes loisirs?"] },
-      { topic:"Les nombres 32–100", rule:"32=trente-deux, 60=soixante, 70=soixante-dix, 71=soixante et onze, 80=quatre-vingts, 90=quatre-vingt-dix, 100=cent.", examples:["J'ai soixante-dix ans.","Ça coûte quatre-vingts euros.","Elle a quatre-vingt-dix ans."] },
+      {
+        topic:"Tính từ quốc tịch — Accord masculin/féminin",
+        rule:`Tính từ quốc tịch phải ĐỒI GIỚI với người được nói đến.
+
+QUY TẮC THÀNH LẬP GIỐNG CÁI:
+1. Thêm -e: français→française, américain→américaine, anglais→anglaise
+   ⚠️ Phát âm khác nhau! [frɑ̃sɛ] → [frɑ̃sɛz]
+
+2. Thêm -ne (với -ien, -éen): italien→italienne, coréen→coréenne, brésilien→brésilienne
+
+3. Thêm -que (ngoại lệ): grec→grecque, turc→turque
+
+4. Không đổi (đã có -e): belge, russe, suisse, tchèque, mexicaine...
+
+5. Đặc biệt: espagnol→espagnole
+
+💡 Tính từ quốc tịch KHÔNG viết hoa khi dùng như tính từ!
+✅ Il est français.  ❌ Il est Français.
+✅ C'est un Français. (danh từ → viết hoa)`,
+        examples:[
+          "Il est japonais. Elle est japonaise. — Anh ấy / Cô ấy là người Nhật.",
+          "Il est brésilien. Elle est brésilienne. — Anh ấy / Cô ấy là người Brazil.",
+          "Il est belge. Elle est belge aussi. — Anh ấy người Bỉ. Cô ấy cũng vậy.",
+          "Tu es vietnamien(ne)? — Bạn là người Việt Nam à?",
+          "Nous sommes américains. — Chúng tôi là người Mỹ. (nhóm nam hoặc hỗn hợp)",
+          "Elles sont italiennes. — Họ là những người phụ nữ Ý.",
+        ]
+      },
+      {
+        topic:"Mạo từ xác định — Le, La, L', Les",
+        rule:`Mạo từ xác định dùng khi nói về thứ gì đó CỤ THỂ, đã biết, hoặc CHUNG CHUNG theo loại.
+
+• LE + danh từ nam số ít: le cinéma, le sport, le café
+• LA + danh từ nữ số ít: la musique, la France, la rue
+• L' + danh từ bắt đầu bằng nguyên âm (a,e,i,o,u) hoặc h câm: l'art, l'ami, l'histoire
+• LES + tất cả danh từ số nhiều: les langues, les films, les amis
+
+Dùng le/la/les để:
+✅ Nói về sở thích (chung chung): J'aime LA musique. (âm nhạc nói chung)
+✅ Chỉ thứ cụ thể: C'est le livre de Marie.
+✅ Tên nước, vùng: la France, le Vietnam, les États-Unis
+
+⚠️ Tên nước có mạo từ! la France, le Japon, les Pays-Bas
+⚠️ Tên thành phố KHÔNG có mạo từ! à Paris (không phải à la Paris)
+
+💡 Phân biệt:
+"J'aime LE cinéma." = Tôi thích điện ảnh (nói chung)
+"J'aime CE film." = Tôi thích bộ phim này (cụ thể)`,
+        examples:[
+          "J'aime le sport et la musique. — Tôi thích thể thao và âm nhạc.",
+          "Il parle l'anglais et le français. — Anh ấy nói tiếng Anh và tiếng Pháp.",
+          "Les Français aiment le fromage. — Người Pháp thích phô mai.",
+          "La France est un beau pays. — Pháp là một đất nước đẹp.",
+          "L'art et l'histoire m'intéressent. — Nghệ thuật và lịch sử thu hút tôi.",
+          "J'adore les films français! — Tôi rất thích phim Pháp!",
+        ]
+      },
+      {
+        topic:"Giới từ trước tên thành phố và quốc gia (1) — À, Au, En, Aux",
+        rule:`Giới từ chỉ ĐỊA ĐIỂM (ở đâu) hay XUẤT PHÁT (từ đâu):
+
+ĐỐI VỚI THÀNH PHỐ → À (luôn luôn)
+• à Paris, à Tokyo, à Hanoï, à New York
+
+ĐỐI VỚI QUỐC GIA:
+• EN + nước nữ (kết thúc bằng -e): en France, en Chine, en Espagne, en Italie
+• EN + nước bắt đầu bằng nguyên âm (dù nam): en Iran, en Irak, en Angola
+• AU = à + le → nước nam: au Japon, au Canada, au Vietnam, au Brésil
+• AUX = à + les → nước số nhiều: aux États-Unis, aux Pays-Bas
+
+BẢNG TÓM TẮT:
+Ville       → à Paris, à Genève
+Pays féminin → en France, en Suisse, en Chine
+Pays masculin → au Japon, au Canada
+Pays pluriel  → aux États-Unis, aux Pays-Bas
+Pays/voyelle  → en Iran, en Angola
+
+💡 Hầu hết nước kết thúc bằng -e là nữ: France, Chine, Espagne...
+⚠️ Ngoại lệ nam dù có -e: le Mexique, le Mozambique, le Cambodge`,
+        examples:[
+          "J'habite à Paris. — Tôi sống ở Paris.",
+          "Elle est née en France. — Cô ấy sinh ở Pháp.",
+          "Il habite au Canada. — Anh ấy sống ở Canada.",
+          "Nous habitons aux États-Unis. — Chúng tôi sống ở Mỹ.",
+          "Tu vas en Espagne cet été? — Bạn đi Tây Ban Nha mùa hè này à?",
+          "Il est né au Vietnam et il habite en France. — Anh ấy sinh ở Việt Nam và sống ở Pháp.",
+        ]
+      },
+      {
+        topic:"Tính từ nghi vấn — Quel, Quelle, Quels, Quelles",
+        rule:`QUEL = "nào / gì / bao nhiêu" — dùng để hỏi thông tin cụ thể.
+
+Quel PHẢI ĐỒI GIỚI VÀ SỐ với danh từ mà nó đi kèm:
+• QUEL   + danh từ nam số ít:  Quel âge? Quel est ton prénom?
+• QUELLE + danh từ nữ số ít:  Quelle heure? Quelle est ta nationalité?
+• QUELS  + danh từ nam số nhiều: Quels films tu aimes?
+• QUELLES+ danh từ nữ số nhiều: Quelles langues tu parles?
+
+Hai cách dùng:
+1. Quel/Quelle + nom directement: Quel jour? Quelle ville?
+2. Quel/Quelle + être + nom: Quel est ton numéro? Quelle est ton adresse?
+
+💡 Phát âm: quel/quelle/quels/quelles đều đọc là [kɛl] — phát âm như nhau!
+💡 Khác với QUI (ai?) và QU'EST-CE QUE (cái gì?) — quel đi với danh từ.`,
+        examples:[
+          "Quel est ton prénom? — Tên của bạn là gì?",
+          "Quelle est ta nationalité? — Quốc tịch của bạn là gì?",
+          "Tu as quel âge? — Bạn bao nhiêu tuổi?",
+          "Quelle heure est-il? — Bây giờ là mấy giờ?",
+          "Quels sports tu pratiques? — Bạn chơi những môn thể thao nào?",
+          "Quelles langues vous parlez? — Bạn nói những ngôn ngữ nào?",
+        ]
+      },
+      {
+        topic:"Les nombres 32–100 — Số đếm từ 32 đến 100",
+        rule:`SỐ 32–69 → Quy tắc bình thường:
+32=trente-deux, 40=quarante, 41=quarante et un,
+50=cinquante, 60=soixante, 61=soixante et un
+
+SỐ 70–79 → Bắt đầu rắc rối!
+70 = soixante-DIX (60+10), 71 = soixante et onze (60+11)
+72 = soixante-douze, 73 = soixante-treize...
+79 = soixante-dix-neuf
+
+SỐ 80–89 → Còn rắc rối hơn!
+80 = quatre-vingts (4×20, có -s!)
+81 = quatre-vingt-un (không có "et", không có -s!)
+82 = quatre-vingt-deux... 89 = quatre-vingt-neuf
+
+SỐ 90–99:
+90 = quatre-vingt-DIX (80+10)
+91 = quatre-vingt-onze... 99 = quatre-vingt-dix-neuf
+
+100 = cent
+
+⚠️ Ngoại lệ Bỉ và Thụy Sĩ:
+70 = septante (dễ hơn!), 80 = huitante (Thụy Sĩ), 90 = nonante
+
+💡 Mẹo nhớ: 80 = 4×20, 70 = 60+10, 90 = 80+10`,
+        examples:[
+          "J'ai trente-cinq ans. — Tôi 35 tuổi.",
+          "Il y a soixante élèves. — Có 60 học sinh.",
+          "Ça coûte soixante-dix euros. — Cái đó giá 70 euro.",
+          "Elle a quatre-vingts ans! — Bà ấy 80 tuổi!",
+          "C'est au numéro quatre-vingt-dix-neuf. — Đó là số 99.",
+          "Le billet coûte cent euros. — Vé giá 100 euro.",
+        ]
+      },
     ]
   },
   {
     id:"g2", num:"2", title:"Près de moi", points:[
-      { topic:"Mạo từ xác định và bất định — le/la/les vs un/une/des", rule:"Un/une/des: chưa xác định, lần đầu đề cập. Le/la/l'/les: đã xác định, cụ thể. Chú ý: le/la + nguyên âm → l'.", examples:["J'ai un appartement. L'appartement est grand.","C'est une guitare. La guitare est belle.","Il y a des parcs. Les parcs sont jolis."] },
-      { topic:"Động từ đuôi -er ở thì hiện tại", rule:"Bỏ -er, thêm: -e/-es/-e/-ons/-ez/-ent. Chú ý: j' trước nguyên âm (j'aime, j'habite). Phủ định: ne + verbe + pas.", examples:["J'aime le sport. Tu aimes la musique?","Nous habitons à Lyon.","Il n'aime pas le ski."] },
-      { topic:"Tính từ sở hữu — mon/ma/mes, ton/ta/tes, son/sa/ses…", rule:"Mon/ton/son + nam sg. Ma/ta/sa + nữ sg. Mes/tes/ses + số nhiều. Notre/votre/leur (số ít), nos/vos/leurs (số nhiều). Chú ý: mon/ton/son + nguyên âm dù nữ (mon amie).", examples:["C'est mon frère et ma sœur.","Votre famille est grande?","Ses parents habitent à Hanoi."] },
-      { topic:"Giống đực/cái của danh từ nghề nghiệp", rule:"-eur → -euse (coiffeur→coiffeuse). -teur → -trice (acteur→actrice). -er → -ère (boulanger→boulangère). -e → -e (fleuriste, artiste).", examples:["Il est acteur. Elle est actrice.","Mon père est boulanger. Ma mère est boulangère.","Elle est journaliste."] },
+      {
+        topic:"Mạo từ xác định và bất định — Le/La/Les vs Un/Une/Des",
+        rule:`HAI LOẠI MẠO TỪ — phân biệt rất quan trọng!
+
+MẠO TỪ BẤT ĐỊNH (indéfini) → nói về thứ CHƯA XÁC ĐỊNH:
+• UN  + danh từ nam số ít: un appartement, un ami, un film
+• UNE + danh từ nữ số ít: une maison, une amie, une rue
+• DES + số nhiều (nam và nữ): des amis, des maisons
+
+MẠO TỪ XÁC ĐỊNH (défini) → nói về thứ ĐÃ BIẾT hoặc CỤ THỂ:
+• LE / LA / L' / LES (đã học ở Unité 1)
+
+⚠️ Sau phủ định → thay un/une/des bằng DE (d'):
+J'ai un frère. → Je n'ai PAS DE frère.
+Il a des amis. → Il n'a PAS D'amis.
+(Le/la/les giữ nguyên sau phủ định: Je n'aime pas LE sport.)
+
+💡 Nhớ quy tắc "lần đầu gặp → bất định, lần sau → xác định":
+"J'ai UN chat. LE chat s'appelle Mimi."`,
+        examples:[
+          "J'habite dans un appartement. — Tôi sống trong một căn hộ.",
+          "C'est le quartier du centre-ville. — Đó là khu trung tâm (cụ thể).",
+          "Il y a des parcs sympas ici. — Ở đây có những công viên dễ thương.",
+          "Je n'ai pas d'amis ici. — Tôi không có bạn bè ở đây.",
+          "Je cherche une collocataire. LE logement est grand. — Tôi tìm người ở cùng. Chỗ ở khá rộng.",
+        ]
+      },
+      {
+        topic:"Động từ đuôi -ER ở thì hiện tại — Présent de l'indicatif",
+        rule:`NHÓM 1: Động từ đuôi -ER (nhiều nhất, dễ nhất!)
+Bỏ -er, thêm: -e / -es / -e / -ons / -ez / -ent
+
+Ví dụ AIMER (yêu thích):
+• J'aime     (j' vì nguyên âm!)
+• Tu aimes
+• Il/Elle aime
+• Nous aimons
+• Vous aimez
+• Ils/Elles aiment
+
+Một số động từ đặc biệt trong nhóm:
+• ACHETER: j'achète (thêm accent grave ở tu, il)
+• APPELER: j'appelle (đôi phụ âm: tu appelles, il appelle)
+• PRÉFÉRER: je préfère (accent grave: tu préfères, il préfère)
+
+PHỦ ĐỊNH: Ne + verbe + pas
+J'aime → Je N'aime PAS
+Il habite → Il N'habite PAS
+
+DẠNG HỎIVỀ: Est-ce que tu aimes? hoặc Tu aimes?
+DẠNG HỎI LỊCH SỰ: Aimez-vous le sport? (đảo ngữ)`,
+        examples:[
+          "J'aime la musique mais je déteste le sport. — Tôi thích âm nhạc nhưng ghét thể thao.",
+          "Tu habites où? — Bạn sống ở đâu?",
+          "Elle n'aime pas skier. — Cô ấy không thích trượt tuyết.",
+          "Nous adorons voyager ensemble. — Chúng tôi rất thích du lịch cùng nhau.",
+          "Ils dansent très bien. — Họ nhảy rất đẹp.",
+          "Est-ce que vous parlez anglais? — Bạn có nói tiếng Anh không?",
+        ]
+      },
+      {
+        topic:"Tính từ sở hữu — Mon/Ma/Mes, Ton/Ta/Tes, Son/Sa/Ses…",
+        rule:`Tính từ sở hữu chỉ ra VẬT THUỘC VỀ AI. Nó đồng ý với ĐỐI TƯỢNG SỞ HỮU (không phải chủ sở hữu)!
+
+       Nam sg  | Nữ sg | Số nhiều
+1 người: mon   |  ma   |  mes   (của tôi)
+         ton   |  ta   |  tes   (của bạn)
+         son   |  sa   |  ses   (của anh/cô ấy)
+Nhiều:  notre  | notre |  nos   (của chúng tôi)
+        votre  | votre |  vos   (của các bạn)
+        leur   | leur  | leurs  (của họ)
+
+⚠️ Quan trọng: SON/SA/SES có thể là "của anh ấy" HOẶC "của cô ấy"!
+Paul et SA sœur = em gái của Paul
+Marie et SA sœur = em gái của Marie
+
+⚠️ Ngoại lệ phát âm: Mon/Ton/Son + danh từ nữ bắt đầu nguyên âm!
+mon amie (không phải ma amie — khó đọc)
+ton école, son histoire
+
+💡 Mẹo: "mon livre" → quyển sách của tôi (livre=nam → mon)
+"ma voiture" → xe của tôi (voiture=nữ → ma)`,
+        examples:[
+          "Mon père est médecin et ma mère est professeure. — Bố tôi là bác sĩ, mẹ tôi là giáo viên.",
+          "Tes amis sont sympas. — Bạn bè của bạn thật dễ mến.",
+          "Son chien s'appelle Rex. — Con chó của anh/cô ấy tên Rex.",
+          "Notre appartement est grand. — Căn hộ của chúng tôi rộng.",
+          "Leurs enfants adorent le sport. — Những đứa con của họ rất thích thể thao.",
+          "C'est mon amie. (pas ma amie!) — Đây là bạn gái của tôi.",
+        ]
+      },
+      {
+        topic:"Giống đực/cái của danh từ nghề nghiệp — Masculin/Féminin",
+        rule:`Danh từ nghề nghiệp cũng phải đổi giống! Các quy tắc chính:
+
+1. KHÔNG ĐỔI (đuôi -e): artiste, journaliste, libraire, secrétaire, comptable, architecte
+   → Il est artiste. Elle est artiste.
+
+2. THÊM -E: étudiant→étudiante, client→cliente, assistant→assistante
+
+3. ĐUÔI -EUR → -EUSE: coiffeur→coiffeuse, vendeur→vendeuse, danseur→danseuse
+
+4. ĐUÔI -TEUR → -TRICE: acteur→actrice, directeur→directrice, professeur⚠️
+
+5. ĐUÔI -ER → -ÈRE: boulanger→boulangère, boucher→bouchère, infirmier→infirmière
+
+6. HOÀN TOÀN KHÁC: homme→femme de ménage
+
+⚠️ Professeur: truyền thống là nam, nhưng ngày nay dùng "professeure" cho nữ
+⚠️ Médecin: theo truyền thống không đổi, nhưng "médecine" đang được dùng
+
+💡 Tên nghề không có mạo từ sau être:
+"Je suis étudiant(e)." (không phải "Je suis UN étudiant" — trừ khi có tính từ đi kèm)`,
+        examples:[
+          "Il est acteur. Elle est actrice. — Anh ấy là diễn viên. Cô ấy là diễn viên.",
+          "Mon père est boulanger. Ma mère est boulangère. — Bố tôi là thợ làm bánh. Mẹ tôi cũng vậy.",
+          "Elle est infirmière à l'hôpital. — Cô ấy là y tá ở bệnh viện.",
+          "C'est un bon vendeur. Elle est vendeuse aussi. — Anh ấy là nhân viên bán hàng giỏi.",
+          "Je suis étudiant(e) en français. — Tôi là sinh viên học tiếng Pháp.",
+        ]
+      },
     ]
   },
   {
     id:"g3", num:"3", title:"Qu'est-ce qu'on mange?", points:[
-      { topic:"Số ít và số nhiều của danh từ", rule:"Thêm -s vào số nhiều (un pain→des pains). Số nhiều không phát âm -s. Chú ý: un œuf [oef]→des œufs [ø], un monsieur→des messieurs.", examples:["J'achète un croissant. Il achète trois croissants.","Une bouteille → des bouteilles.","Un œuf → des œufs."] },
-      { topic:"Giới từ chỉ nơi chốn — à la, au, à l', aux, chez", rule:"à+la/au/à l'/aux + lieu (endroit). chez + personne. Exemples: à la boulangerie, au marché, à l'épicerie, aux caisses, chez le boucher.", examples:["Je vais à la boulangerie.","Il est au marché.","On achète chez le fromager."] },
-      { topic:"Mạo từ phân lượng — du, de la, de l', des", rule:"Dùng khi không đếm được (số lượng không xác định). du = de+le (masculine). de la (féminine). de l' (nguyên âm). Un peu de, beaucoup de, pas de + nom (không dùng du/de la sau từ phủ định).", examples:["Je mange du pain et de la confiture.","Il boit de l'eau.","Je n'ai pas de sucre.","Un peu de sel, beaucoup de poivre."] },
-      { topic:"Động từ đuôi -ir nhóm 2 — choisir, finir", rule:"Je choisis / tu choisis / il choisit / nous choisissons / vous choisissez / ils choisissent. Tương tự: finir, réussir, grossir.", examples:["Je choisis le menu à 15€.","Tu finis ton dessert?","Nous choisissons un bon restaurant."] },
+      {
+        topic:"Số ít và số nhiều của danh từ — Singulier et pluriel",
+        rule:`QUY TẮC THÀNH LẬP SỐ NHIỀU:
+
+1. THÊM -S (phổ biến nhất): un pain→des pains, une pomme→des pommes
+   ⚠️ Số -s KHÔNG đọc trong tiếng Pháp! pains [pɛ̃] = pain [pɛ̃]
+
+2. ĐÃ KẾT THÚC -S, -X, -Z → không đổi: une voix→des voix, un bras→des bras
+
+3. -EAU, -EU → thêm -X: un gâteau→des gâteaux, un jeu→des jeux, un tableau→des tableaux
+
+4. -AL → -AUX: un journal→des journaux, un animal→des animaux
+   Ngoại lệ: un bal→des bals, un festival→des festivals, un carnaval→des carnavals
+
+5. Bất quy tắc phải học thuộc:
+   un œuf [oef]→des œufs [ø] (câm!)
+   un monsieur→des messieurs
+   madame→mesdames
+
+⚠️ Mạo từ số nhiều: UN/UNE → DES; LE/LA/L' → LES
+⚠️ Sau phủ định: DES → DE: J'ai des amis → Je n'ai PAS D'amis`,
+        examples:[
+          "Je voudrais un croissant. → Mme Martin achète trois croissants. — Ba cái bánh sừng bò.",
+          "Il y a un beau gâteau. → Il y a de beaux gâteaux. — Có những cái bánh đẹp.",
+          "Un journal → des journaux. — Một tờ báo → nhiều tờ báo.",
+          "Un œuf [oef] → des œufs [ø]. — Phát âm thay đổi hoàn toàn!",
+          "Ce sont des fruits et des légumes de saison. — Đây là trái cây và rau củ theo mùa.",
+        ]
+      },
+      {
+        topic:"Giới từ chỉ nơi chốn (1) — À la, Au, À l', Aux, Chez",
+        rule:`ĐI ĐÂU hoặc Ở ĐÂU — hai loại giới từ:
+
+VỚI NƠI CHỐN (lieux) — dùng À + mạo từ:
+• À + LA → à la boulangerie, à la poste, à la pharmacie
+• À + LE → AU marché, au café, au supermarché, au restaurant
+• À + L' → à l'épicerie, à l'hôpital, à l'école
+• À + LES → AUX caisses, aux Champs-Élysées, aux urgences
+
+VỚI NGƯỜI (personnes) — dùng CHEZ:
+• chez le médecin (ở chỗ bác sĩ)
+• chez le boulanger (ở tiệm người làm bánh)
+• chez moi/toi/lui/elle (ở nhà tôi/bạn/anh ấy...)
+• chez mes parents (ở nhà bố mẹ tôi)
+
+💡 CHEZ vs À:
+"Je vais à la boulangerie." = Tôi đến tiệm bánh (địa điểm)
+"Je vais chez le boulanger." = Tôi đến chỗ người làm bánh (người)
+
+⚠️ Chez McDonald's, chez IKEA → dùng chez với thương hiệu (như tên người)`,
+        examples:[
+          "Je vais à la boulangerie acheter du pain. — Tôi đến tiệm bánh mua bánh mì.",
+          "Il est au marché ce matin. — Anh ấy đang ở chợ sáng nay.",
+          "On va à l'épicerie? — Mình đến tạp hóa nhé?",
+          "Elle achète le fromage chez le fromager. — Cô ấy mua phô mai ở tiệm phô mai.",
+          "Ce soir, on dîne chez mes parents. — Tối nay chúng tôi ăn tối ở nhà bố mẹ.",
+          "Je paye aux caisses automatiques. — Tôi thanh toán ở máy tự động.",
+        ]
+      },
+      {
+        topic:"Mạo từ phân lượng — Du, De la, De l', Des",
+        rule:`Mạo từ phân lượng dùng khi nói về SỐ LƯỢNG KHÔNG ĐẾM ĐƯỢC.
+
+• DU  = DE + LE → nom masculin: du pain, du beurre, du fromage, du lait
+• DE LA → nom féminin: de la farine, de la crème, de la viande
+• DE L' → nom bắt đầu bằng nguyên âm: de l'eau, de l'huile, de l'ail
+• DES → nom pluriel: des pâtes, des légumes, des fruits
+
+Dùng khi:
+✅ Nói về lượng không xác định: "Je mange du pain." (một lượng nào đó)
+✅ Các chất liệu: du coton, du bois, de la soie
+✅ Khái niệm trừu tượng: du courage, de la patience
+
+BIẾN ĐỔI SAU PHỦ ĐỊNH:
+Mọi mạo từ phân lượng → DE/D' sau phủ định!
+"Je bois du café." → "Je ne bois PAS DE café."
+"Il y a de la neige." → "Il n'y a PAS DE neige."
+
+SỐ LƯỢNG CỤ THỂ thay thế mạo từ phân lượng:
+un peu de, beaucoup de, assez de, trop de, un kilo de, une bouteille de...
+→ "un peu de sel" (không phải "un peu du sel")`,
+        examples:[
+          "Le matin, je mange du pain avec de la confiture. — Sáng tôi ăn bánh mì với mứt.",
+          "Tu veux de l'eau ou du jus? — Bạn muốn nước hay nước ép?",
+          "Je ne mange pas de viande. — Tôi không ăn thịt.",
+          "Il faut de la farine pour faire un gâteau. — Cần bột mì để làm bánh.",
+          "Un peu de sel, beaucoup de poivre! — Một chút muối, nhiều tiêu!",
+          "Il n'y a plus de lait. — Hết sữa rồi.",
+        ]
+      },
+      {
+        topic:"Động từ đuôi -IR nhóm 2 — Choisir, Finir",
+        rule:`NHÓM 2: Động từ đuôi -IR (nhóm quy tắc)
+Nhận biết: thêm -ISS- vào phần nous/vous/ils!
+
+Chia CHOISIR (chọn):
+• Je choisis     • Nous choisissons
+• Tu choisis     • Vous choisissez
+• Il/Elle choisit  • Ils/Elles choisissent
+
+Chia FINIR (kết thúc / ăn hết):
+• Je finis       • Nous finissons
+• Tu finis       • Vous finissez
+• Il/Elle finit    • Ils/Elles finissent
+
+Các động từ tương tự: réussir (thành công), grossir (tăng cân), maigrir (giảm cân), rougir (đỏ mặt), vieillir (già đi), grandir (lớn lên)
+
+⚠️ Đừng nhầm với -IR nhóm 3 (bất quy tắc) như partir, sortir, dormir → chia khác!
+"Je pars" (không phải "je partis" ở thì hiện tại)`,
+        examples:[
+          "Je choisis le menu à 15 euros. — Tôi chọn thực đơn 15 euro.",
+          "Tu finis ton dessert? — Bạn ăn hết món tráng miệng chưa?",
+          "Nous choisissons un bon restaurant pour ce soir. — Chúng tôi chọn nhà hàng ngon cho tối nay.",
+          "Les étudiants réussissent à l'examen. — Các sinh viên thi đỗ.",
+          "Elle rougit quand elle parle en public. — Cô ấy đỏ mặt khi nói trước đám đông.",
+        ]
+      },
     ]
   },
   {
     id:"g4", num:"4", title:"C'est où?", points:[
-      { topic:"C'est / Il est — phân biệt", rule:"C'est + un/le + nom (để nhận dạng). Il/Elle est + adjectif (để miêu tả). Ce sont + des/les + nom (số nhiều).", examples:["C'est un musée. Il est magnifique.","C'est la place du Capitole.","Ce sont des artistes. Ils sont talentueux."] },
-      { topic:"Trạng từ chỉ tần suất — jamais, souvent, toujours", rule:"Đặt sau động từ ở thì hiện tại. Jamais chỉ dùng với phủ định: ne...jamais. Souvent=thường. Toujours=luôn luôn.", examples:["Je vais souvent au musée.","Il ne va jamais au théâtre.","Elle est toujours en retard."] },
-      { topic:"Mệnh lệnh thức — impératif", rule:"3 ngôi: tu, nous, vous. Xây dựng từ thì hiện tại. Verbes en -er: bỏ -s ở tu (parle! không phải parles!). Être: sois/soyons/soyez. Avoir: aie/ayons/ayez.", examples:["Tourne à droite!","Prenons le bus!","Allez tout droit!"] },
-      { topic:"Liên từ — pour, parce que, mais, avec, sans", rule:"Pour + infinitif (mục đích). Parce que + phrase (lý do). Mais (đối lập). Avec + nom (có). Sans + nom (không có).", examples:["Je prends le métro pour aller au travail.","Je n'y vais pas parce que c'est loin.","J'aime Paris mais c'est cher."] },
-      { topic:"Les nombres 100–1 milliard", rule:"100=cent, 200=deux cents (prend s si pas suivi), 1000=mille (pas de s), 1000000=un million, 1000000000=un milliard.", examples:["Il y a trois cent cinquante habitants.","La ville a deux millions d'habitants.","Ça coûte mille euros."] },
+      {
+        topic:"C'est / Il est — Phân biệt cách dùng",
+        rule:`Đây là một trong những điểm khó nhất cho người học tiếng Pháp!
+
+C'EST → để NHẬN DẠNG, GIỚI THIỆU (dùng với danh từ)
+• C'est + un/une + nom: C'est un musée. C'est une artiste.
+• C'est + le/la/les + nom: C'est le Louvre. C'est la Tour Eiffel.
+• C'est + nom propre: C'est Paris. C'est Marie.
+• Ce sont + pluriel: Ce sont des étudiants.
+
+IL/ELLE EST → để MÔ TẢ (dùng với tính từ)
+• Il/Elle est + adjectif: Il est grand. Elle est belle.
+• Il/Elle est + profession (sans article!): Elle est médecin.
+• Il/Elle est + nationalité: Il est français.
+
+CẢ HAI ĐỀU ĐÚNG nhưng khác nghĩa:
+"C'est un Français." = Anh ta là người Pháp (nhận dạng danh từ → có mạo từ!)
+"Il est français." = Anh ta người Pháp (tính từ → không mạo từ!)
+
+"C'est une actrice célèbre." = Cô ấy là diễn viên nổi tiếng (giới thiệu)
+"Elle est célèbre." = Cô ấy nổi tiếng (miêu tả)`,
+        examples:[
+          "C'est le Musée d'Orsay. Il est magnifique! — Đó là Bảo tàng Orsay. Nó thật đẹp!",
+          "C'est une étudiante. Elle est intelligente. — Đây là một sinh viên. Cô ấy thông minh.",
+          "Ce sont des artistes. Ils sont très talentueux. — Họ là các nghệ sĩ. Họ rất tài năng.",
+          "C'est mon quartier. Il est calme et sympa. — Đây là khu phố của tôi. Nó yên tĩnh và dễ chịu.",
+          "Elle est professeure. (profession, pas d'article!) — Cô ấy là giáo viên.",
+        ]
+      },
+      {
+        topic:"Mệnh lệnh thức — L'impératif",
+        rule:`IMPÉRATIF dùng để: RA LỆNH, ĐỀ NGHỊ, KHUYÊN BẢO, CHỈ ĐƯỜNG
+
+Chỉ có 3 ngôi: TU / NOUS / VOUS
+Xây dựng từ thì présent, BỎ đại từ:
+• Tu vas → Va! (đi đi!)
+• Nous allons → Allons! (nào đi!)
+• Vous venez → Venez! (hãy đến!)
+
+⚠️ QUAN TRỌNG: Verbes en -ER → bỏ -S ở ngôi TU!
+Parler: Tu parles → Parle! (không phải Parles!)
+Écouter: Tu écoutes → Écoute!
+Trừ: "Vas-y!" (trước y hoặc en, giữ -s để phát âm đẹp)
+
+ĐỘNG TỪ BẤT QUY TẮC:
+• Être:  Sois! Soyons! Soyez!
+• Avoir: Aie! Ayons! Ayez!
+• Savoir: Sache! Sachons! Sachez!
+• Vouloir: Veuille! Veuillons! Veuillez! (rất lịch sự)
+
+PHỦ ĐỊNH: Ne + verbe + pas
+"Ne tourne pas à droite! Tourne à gauche!"
+
+PHẢN THÂN: Pronom APRÈS le verbe (avec trait d'union):
+"Lève-toi!" (te→toi), "Levons-nous!", "Levez-vous!"`,
+        examples:[
+          "Tourne à droite puis continue tout droit! — Rẽ phải rồi đi thẳng!",
+          "Prenons le métro, c'est plus rapide. — Chúng ta đi tàu điện ngầm, nhanh hơn.",
+          "Parle moins vite, s'il te plaît! — Nói chậm hơn một chút nhé!",
+          "Ne traverse pas ici! — Đừng băng qua đường ở đây!",
+          "Soyez à l'heure, s'il vous plaît. — Xin hãy đúng giờ.",
+          "Lève-toi! Il est 8 heures! — Dậy đi! 8 giờ rồi!",
+        ]
+      },
+      {
+        topic:"Liên từ — Pour, Parce que, Mais, Avec, Sans",
+        rule:`Các liên từ và giới từ nối câu:
+
+POUR + INFINITIF → mục đích (để làm gì)
+"Je prends le bus pour aller au travail." (để đi làm)
+⚠️ Không dùng "pour que" + subjonctif ở trình độ A1
+
+PARCE QUE + PHRASE COMPLÈTE → lý do (vì...)
+"Je prends le bus parce que c'est moins cher."
+⚠️ Parce qu' trước nguyên âm: "parce qu'il fait froid"
+Khác với CAR (vì) — trang trọng hơn, viết văn
+
+MAIS → đối lập (nhưng)
+"J'aime Paris mais c'est cher."
+"Il est sympa mais un peu timide."
+
+AVEC + NOM → có/cùng với
+"Je bois un café avec du lait." "Je viens avec mes amis."
+Sans avoir de verbe: "un café avec du sucre"
+
+SANS + NOM/INFINITIF → không có/không làm
+"Un café sans sucre." "Je pars sans manger."`,
+        examples:[
+          "Je prends le métro pour aller à l'université. — Tôi đi tàu điện để đến trường.",
+          "Je reste à la maison parce qu'il pleut. — Tôi ở nhà vì trời mưa.",
+          "J'aime ce quartier mais il est bruyant. — Tôi thích khu này nhưng nó ồn ào.",
+          "Je prends un café avec du lait et sans sucre. — Tôi uống cà phê có sữa và không đường.",
+          "Elle part sans dire au revoir. — Cô ấy ra đi không nói lời tạm biệt.",
+        ]
+      },
     ]
   },
   {
     id:"g5", num:"5", title:"C'est tendance!", points:[
-      { topic:"Accord des adjectifs — masculin/féminin/pluriel", rule:"Thêm -e cho nữ (noir→noire). Thêm -s cho số nhiều (noir→noirs, noire→noires). Tính từ kết thúc -e không đổi (simple→simple). Màu sắc: kết thúc bằng nguyên âm không thêm -e (orange, beige).", examples:["Un pull noir. Une robe noire. Des pulls noirs.","Un objet simple. Une règle simple.","Une jupe orange. Des chaussures orange."] },
-      { topic:"Thì tương lai gần — futur proche", rule:"Aller au présent + infinitif. Exprime une action future proche. Négatif: ne + aller + pas + infinitif.", examples:["Je vais acheter une robe.","Il va faire froid demain.","Nous n'allons pas sortir ce soir."] },
-      { topic:"Place des adjectifs — avant ou après le nom", rule:"En général: adjectif APRÈS le nom (un sac rouge). Adjectifs courts AVANT: petit, grand, beau, bon, joli, jeune, vieux, nouveau. Couleurs: toujours APRÈS.", examples:["Un grand sac. Un petit chapeau.","Une belle robe. Un bon restaurant.","Un pantalon bleu. Des chaussures rouges."] },
-      { topic:"Tính từ chỉ định — ce/cet/cette/ces", rule:"Ce + nom masculin. Cet + nom masculin bắt đầu bằng nguyên âm/h. Cette + nom féminin. Ces + số nhiều.", examples:["Ce pull est beau.","Cet imperméable est pratique.","Cette robe est élégante.","Ces chaussures sont confortables."] },
+      {
+        topic:"Accord des adjectifs — Masculin, Féminin, Pluriel",
+        rule:`Tính từ trong tiếng Pháp phải ĐỒNG Ý với danh từ nó bổ nghĩa (giống và số)!
+
+THÀNH LẬP GIỐNG CÁI:
+1. Thêm -E: grand→grande, petit→petite, noir→noire, vert→verte
+   ⚠️ Nếu đã có -E, không đổi: rouge, jaune, jeune, russe, belge
+2. Đôi phụ âm cuối + E: bon→bonne, gros→grosse, bas→basse
+3. -EUX → -EUSE: heureux→heureuse, sérieux→sérieuse, courageux→courageuse
+4. -F → -VE: actif→active, neuf→neuve, sportif→sportive
+5. -ER → -ÈRE: cher→chère, léger→légère, premier→première
+6. Bất quy tắc: beau→belle, nouveau→nouvelle, vieux→vieille, blanc→blanche, doux→douce, long→longue
+
+THÀNH LẬP SỐ NHIỀU:
+• Thêm -S: grand→grands, grande→grandes
+• Đã có -S/-X: gros→gros, heureux→heureux
+• -EAU → -EAUX: beau→beaux, nouveau→nouveaux
+
+⚠️ Màu sắc từ tên vật → KHÔNG ĐỔI: orange, marron, kaki, crème
+"Des chaussures orange." (không phải oranges)`,
+        examples:[
+          "Un pull noir, une robe noire, des pulls noirs, des robes noires.",
+          "Il est actif. Elle est active. Ils sont actifs. Elles sont actives.",
+          "C'est un beau sac! C'est une belle robe! Ce sont de beaux vêtements!",
+          "Un gilet gris, une veste grise, des chaussures grises.",
+          "Des chaussures marron. (couleur = invariable!)",
+          "Elle porte une jupe longue et un pull court.",
+        ]
+      },
+      {
+        topic:"Thì tương lai gần — Le Futur Proche",
+        rule:`FUTUR PROCHE = nói về hành động SẮP XẢY RA
+
+Cấu trúc: ALLER (présent) + INFINITIF
+
+Chia ALLER ở présent:
+• Je vais     • Nous allons
+• Tu vas      • Vous allez
+• Il/Elle va  • Ils/Elles vont
+
+Dùng futur proche khi:
+✅ Hành động sắp xảy ra trong tương lai gần: "Je vais partir dans 5 minutes."
+✅ Dự định đã lên kế hoạch: "Ce soir, nous allons au cinéma."
+✅ Dự đoán chắc chắn: "Il va pleuvoir."
+✅ Khẩu ngữ: thường dùng hơn futur simple trong giao tiếp hàng ngày
+
+PHỦ ĐỊNH: Ne + ALLER + pas + INFINITIF
+"Je ne vais pas sortir ce soir." (Tôi sẽ không ra ngoài tối nay)
+
+ĐẠI TỪ: se place avant l'infinitif:
+"Il va se lever tard." (không phải "Il va lever se tard")
+
+💡 Mẹo phân biệt:
+Futur proche: action très bientôt, intime conviction
+Futur simple: plus lointain, formel, promesse`,
+        examples:[
+          "Je vais acheter une nouvelle veste. — Tôi sắp mua một chiếc áo vest mới.",
+          "Il va faire froid ce week-end. — Cuối tuần này sẽ lạnh.",
+          "Nous allons organiser une fête. — Chúng tôi sắp tổ chức một bữa tiệc.",
+          "Tu vas partir quand? — Bạn sắp đi khi nào?",
+          "Elle ne va pas venir ce soir. — Cô ấy sẽ không đến tối nay.",
+          "Ils vont se marier en juin. — Họ sắp kết hôn vào tháng 6.",
+        ]
+      },
+      {
+        topic:"Vị trí của tính từ — La place des adjectifs",
+        rule:`Trong tiếng Pháp, tính từ có thể đứng TRƯỚC hoặc SAU danh từ!
+
+QUY TẮC CHUNG → SAU DANH TỪ:
+Đặc biệt: màu sắc, hình dạng, quốc tịch, tôn giáo, kỹ thuật
+"un livre rouge, une table ronde, un film français, un cours intéressant"
+
+TÍNH TỪ NGẮN THƯỜNG GẶP → TRƯỚC DANH TỪ:
+Nhớ qua từ khóa "BAGS" hoặc "BANGS":
+• Beauté: beau/belle, joli(e)
+• Âge: vieux/vieille, jeune, nouveau/nouvelle
+• Grandeur: grand(e), petit(e), gros(se), long(ue), court(e), haut(e)
+• Qualité subjective: bon(ne), mauvais(e), meilleur(e)
+
+⚠️ Khi tính từ đứng TRƯỚC danh từ số nhiều → DES đổi thành DE/D':
+"des fleurs rouges" NHƯNG "de belles fleurs" (pas des belles fleurs)
+
+⚠️ Một số tính từ đổi nghĩa tùy vị trí:
+"un homme grand" = người đàn ông cao
+"un grand homme" = một vĩ nhân
+"une robe chère" = chiếc váy đắt
+"ma chère amie" = người bạn thân yêu`,
+        examples:[
+          "C'est un grand sac noir. — Đây là một chiếc túi đen to.",
+          "J'ai une jolie robe bleue. — Tôi có một chiếc váy xanh xinh.",
+          "C'est un bon restaurant français. — Đây là một nhà hàng Pháp ngon.",
+          "Elle porte de belles chaussures. (pas des belles!) — Cô ấy mang đôi giày đẹp.",
+          "Il a acheté une nouvelle voiture rouge. — Anh ấy đã mua một chiếc xe đỏ mới.",
+        ]
+      },
+      {
+        topic:"Tính từ chỉ định — Ce, Cet, Cette, Ces",
+        rule:`Tính từ chỉ định = "này / đó / kia" — dùng để chỉ vào vật cụ thể
+
+• CE   + danh từ nam bắt đầu bằng phụ âm: ce pull, ce sac, ce garçon
+• CET  + danh từ nam bắt đầu bằng nguyên âm hoặc h câm: cet imperméable, cet homme, cet objet
+• CETTE + danh từ nữ (mọi trường hợp): cette robe, cette idée, cette image
+• CES  + danh từ số nhiều (mọi giống): ces chaussures, ces pulls, ces objets
+
+Phát âm: ce/cet/cette/ces đều đọc là [sə] / [sɛt] / [sɛ]
+
+Thêm -CI (gần) hoặc -LÀ (xa) sau danh từ để phân biệt:
+"ce pull-CI" (cái áo len này, gần) vs "ce pull-LÀ" (cái áo len kia, xa)
+
+💡 Cet vs Ce: chỉ khác nhau trước nguyên âm để dễ phát âm hơn
+"Ce ami" → khó đọc → "Cet ami" [sɛtami]`,
+        examples:[
+          "Ce pull est très chaud. — Cái áo len này rất ấm.",
+          "Cet imperméable est pratique. — Chiếc áo mưa đó thực tế.",
+          "Cette robe est magnifique! — Chiếc váy này thật đẹp!",
+          "Ces chaussures sont confortables. — Những đôi giày này thoải mái.",
+          "Tu préfères ce modèle-ci ou ce modèle-là? — Bạn thích mẫu này hay mẫu kia?",
+          "Cet objet, c'est quoi exactement? — Cái vật này là cái gì vậy?",
+        ]
+      },
     ]
   },
   {
-    id:"g6", num:"6", title:"Qu'est-ce qu'on fait?", points:[
-      { topic:"Động từ phản thân — verbes pronominaux", rule:"Se+verbe: je me lève, tu te lèves, il se lève, nous nous levons, vous vous levez, ils se lèvent. Me/te/se → m'/t'/s' devant voyelle.", examples:["Je me réveille à 7h.","Il s'habille vite.","Nous nous couchons tard."] },
-      { topic:"Trạng từ chỉ tần suất (2) — parfois, rarement, tous les jours", rule:"Thang tần suất: jamais < rarement < parfois < souvent < toujours. Expressions de temps: le lundi, tous les lundis (đầu hoặc cuối câu).", examples:["Je vais parfois au cinéma.","Elle sort rarement le week-end.","Tous les jours je fais du sport."] },
-      { topic:"Passé récent — venir de + infinitif", rule:"Venir au présent + de/d' + infinitif. Exprime une action qui vient de se terminer. Je viens de, tu viens de, il vient de, nous venons de, vous venez de, ils viennent de.", examples:["Je viens de manger.","Il vient d'appeler.","Nous venons de finir le cours."] },
-      { topic:"Động từ -ir nhóm 3 — partir, sortir, dormir", rule:"Je pars/sors/dors. Tu pars/sors/dors. Il part/sort/dort. Nous partons/sortons/dormons. Vous partez/sortez/dormez. Ils partent/sortent/dorment.", examples:["Je pars à 8h.","Tu sors ce soir?","Il dort beaucoup le week-end."] },
+    id:"g6", num:"6", title:"Qu'est-ce qu'on fait aujourd'hui?", points:[
+      {
+        topic:"Động từ phản thân — Les verbes pronominaux",
+        rule:`Động từ phản thân = hành động TỰ LÀM CHO MÌNH (se + verbe)
+
+Bảng chia SE LEVER (thức dậy):
+• Je me lève      (me trước nguyên âm → m')
+• Tu te lèves     (te → t' trước nguyên âm)
+• Il/Elle se lève  (se → s' trước nguyên âm)
+• Nous nous levons
+• Vous vous levez
+• Ils/Elles se lèvent
+
+Các loại động từ phản thân:
+1. Thực sự phản thân (tự làm cho mình): se laver, se coiffer, se maquiller, se raser
+2. Nghĩa đặc biệt khác động từ gốc: s'appeler (tên là) ≠ appeler (gọi)
+   se trouver (nằm ở) ≠ trouver (tìm thấy)
+3. Luôn luôn phản thân (không có dạng không phản thân):
+   se souvenir (nhớ), se taire (im lặng), se méfier (cảnh giác)
+
+PHỦ ĐỊNH: Ne + me/te/se + verbe + pas
+"Je ne me lève pas tôt." (Tôi không dậy sớm)
+
+⚠️ Ở thì PASSÉ COMPOSÉ: Être (không avoir!) + participe passé
+"Je me suis levé(e) à 7h."`,
+        examples:[
+          "Je me réveille à 7h et je me lève à 7h15. — Tôi thức lúc 7h và dậy lúc 7h15.",
+          "Il se douche et se rase le matin. — Anh ấy tắm và cạo râu buổi sáng.",
+          "Nous nous couchons tard le week-end. — Chúng tôi đi ngủ muộn vào cuối tuần.",
+          "Elle s'habille vite. — Cô ấy mặc đồ nhanh.",
+          "Comment tu t'appelles? — Bạn tên là gì?",
+          "Je ne me maquille pas tous les jours. — Tôi không trang điểm mỗi ngày.",
+        ]
+      },
+      {
+        topic:"Trạng từ tần suất (2) — Parfois, Rarement, Tous les…",
+        rule:`Thang tần suất từ thấp đến cao:
+jamais (0%) < rarement < parfois/quelquefois < souvent < toujours (100%)
+
+VỊ TRÍ TRONG CÂU:
+• Sau động từ (thì hiện tại, passé composé phần avoir): Je vais SOUVENT au cinéma.
+• Trước participe passé: J'ai SOUVENT regardé ce film.
+
+BIỂU THỨC THỜI GIAN (đứng đầu hoặc cuối câu):
+• le lundi = mỗi thứ Hai: Le lundi, je fais du yoga.
+• tous les lundis = every Monday: Je fais du yoga tous les lundis.
+• tous les jours = chaque jour: Il court tous les jours.
+• tous les matins/soirs = chaque matin/soir
+• le week-end = chaque week-end
+• une fois par semaine/mois = một lần mỗi tuần/tháng
+• de temps en temps = thỉnh thoảng
+
+⚠️ JAMAIS avec ne → jamais sans ne = argot/informal
+"Je ne vais jamais là-bas." (standard)
+"Je vais jamais là-bas." (familier)`,
+        examples:[
+          "Je vais parfois au théâtre, mais jamais à l'opéra. — Tôi thỉnh thoảng đi xem kịch nhưng không bao giờ đi opera.",
+          "Le lundi, je fais du sport. Tous les lundis! — Thứ Hai tôi tập thể thao. Mỗi thứ Hai!",
+          "Elle travaille toujours tard le soir. — Cô ấy luôn làm việc muộn buổi tối.",
+          "Tu sors souvent le week-end? — Bạn hay ra ngoài vào cuối tuần không?",
+          "Je fais du yoga deux fois par semaine. — Tôi tập yoga hai lần một tuần.",
+          "Il ne va rarement au cinéma. → Sai! Nói: Il va rarement au cinéma.",
+        ]
+      },
+      {
+        topic:"Passé récent — Venir de + infinitif",
+        rule:`VENIR DE + INFINITIF = "vừa mới làm gì đó" (hành động vừa kết thúc)
+
+Chia VENIR au présent:
+• Je viens de     • Nous venons de
+• Tu viens de     • Vous venez de
+• Il/Elle vient de • Ils/Elles viennent de
+
+Dùng khi:
+✅ Hành động xảy ra NGAY TRƯỚC lúc nói: "Je viens de manger." (Tôi vừa mới ăn xong)
+✅ Giải thích tại sao không thể làm gì: "Je ne peux pas manger, je viens de finir."
+
+⚠️ VENIR DE + lieu = "vừa đến từ" → nghĩa khác!
+"Il vient de Paris." = Anh ấy đến từ Paris. (xuất xứ)
+"Il vient DE RENTRER." = Anh ấy vừa mới về. (passé récent)
+
+PHỦ ĐỊNH: Je ne viens pas de + infinitif
+"Il ne vient pas de partir." = Anh ấy không vừa đi.
+
+💡 Đây là cách diễn đạt tự nhiên trong tiếng Pháp khẩu ngữ, thường dùng hơn passé composé khi nói về "vừa mới"`,
+        examples:[
+          "Je viens de finir mon cours de français! — Tôi vừa mới kết thúc bài học tiếng Pháp!",
+          "Il vient d'appeler. Tu l'as raté! — Anh ấy vừa gọi. Bạn bỏ lỡ rồi!",
+          "Nous venons d'arriver à Paris. — Chúng tôi vừa mới đến Paris.",
+          "Désolé, elle vient de partir. — Xin lỗi, cô ấy vừa ra đi.",
+          "Tu as faim? Non, je viens de manger. — Bạn đói không? Không, tôi vừa ăn xong.",
+        ]
+      },
+      {
+        topic:"Động từ -IR nhóm 3 — Partir, Sortir, Dormir",
+        rule:`Nhóm 3 BẤT QUY TẮC: Cách chia KHÁC với nhóm 2!
+Đặc điểm: số ít mất phụ âm cuối cùng của phần gốc
+
+PARTIR (khởi hành / rời đi):
+• Je pars    Tu pars    Il part
+• Nous partons  Vous partez  Ils partent
+
+SORTIR (ra ngoài):
+• Je sors    Tu sors    Il sort
+• Nous sortons  Vous sortez  Ils sortent
+
+DORMIR (ngủ):
+• Je dors    Tu dors    Il dort
+• Nous dormons  Vous dormez  Ils dorment
+
+Tương tự: servir (phục vụ), mentir (nói dối), sentir (cảm nhận/ngửi)
+
+⚠️ So sánh với nhóm 2:
+Finir (nhóm 2): je finis, nous finissons (có -ISS-)
+Partir (nhóm 3): je pars, nous partons (không có -ISS-)
+
+PARTIR vs QUITTER vs LAISSER:
+• Partir (de) = rời đi: "Je pars de Paris."
+• Quitter + COD = rời bỏ ai/đâu: "Je quitte Paris. Je quitte Marie."
+• Laisser = để lại: "Je laisse mon sac ici."`,
+        examples:[
+          "Je pars à 8h du matin. — Tôi khởi hành lúc 8 giờ sáng.",
+          "Tu sors ce soir? — Bạn ra ngoài tối nay không?",
+          "Il dort beaucoup le week-end. — Anh ấy ngủ nhiều vào cuối tuần.",
+          "Nous partons en vacances demain! — Chúng tôi đi nghỉ hè ngày mai!",
+          "Vous dormez combien d'heures par nuit? — Bạn ngủ bao nhiêu tiếng mỗi đêm?",
+          "Ils sortent souvent avec des amis. — Họ thường ra ngoài với bạn bè.",
+        ]
+      },
     ]
   },
   {
     id:"g7", num:"7", title:"Chez moi!", points:[
-      { topic:"Thì quá khứ passé composé (1) — avec avoir", rule:"Avoir au présent + participe passé. Verbes en -er: parlé. Irréguliers: faire→fait, voir→vu, pouvoir→pu, prendre→pris. Négatif: n'avoir pas + pp.", examples:["J'ai trouvé un appartement.","Il a fait les courses.","Nous n'avons pas regardé la télé."] },
-      { topic:"Giới từ chỉ nơi chốn (2) — à gauche, à droite, sur, sous, devant, derrière, entre, en face de", rule:"Vị trí đồ vật: sur=trên, sous=dưới, devant=trước, derrière=sau, entre=giữa, en face de=đối diện, à gauche (de)=bên trái, à côté de=bên cạnh.", examples:["La table est devant la fenêtre.","Le canapé est entre les deux fauteuils.","Le livre est sur le bureau."] },
-      { topic:"Obligation et interdiction (1) — infinitif, impératif", rule:"Il faut + infinitif (obligation impersonnelle). Ne pas + infinitif (interdiction formelle, panneaux). Impératif pour règles de vie.", examples:["Il faut respecter le silence.","Ne pas fumer dans l'immeuble.","Fermez la porte!"] },
-      { topic:"Pronoms COD (1) — le, la, l', les", rule:"Remplacent un COD (chose ou personne). Placés AVANT le verbe. Le/la/l' (sg), les (pl). À l'impératif affirmatif: après le verbe (mange-le!).", examples:["Tu as les clés? Oui, je les ai.","Il cherche le plombier. Il le contacte.","Tu prends la voiture? Oui, je la prends."] },
+      {
+        topic:"Passé composé (1) — Avec l'auxiliaire AVOIR",
+        rule:`PASSÉ COMPOSÉ = thì quá khứ kể chuyện, hành động đã hoàn thành
+
+Cấu trúc: AVOIR (présent) + PARTICIPE PASSÉ
+
+THÀNH LẬP PARTICIPE PASSÉ:
+• Verbes en -ER → É: parler→parlé, manger→mangé, trouver→trouvé
+• Verbes en -IR (groupe 2) → I: finir→fini, choisir→choisi
+• Irréguliers phải học thuộc:
+  avoir→eu, être→été, faire→fait, voir→vu, pouvoir→pu,
+  vouloir→voulu, devoir→dû, savoir→su, boire→bu,
+  prendre→pris, mettre→mis, dire→dit, écrire→écrit
+
+PHỦ ĐỊNH: NE + AVOIR + PAS + PARTICIPE PASSÉ
+"Je n'ai pas mangé." "Il n'a pas vu ce film."
+
+⚠️ Avec AVOIR: le participe passé ne s'accorde PAS avec le sujet!
+"Elle a mangé." (pas mangée — l'accord se fait seulement avec le COD avant le verbe)
+
+INDICATEURS DE TEMPS:
+hier (hôm qua), avant-hier, la semaine dernière, le mois dernier,
+il y a + temps: "Il y a deux jours" = hai ngày trước`,
+        examples:[
+          "J'ai trouvé un bel appartement hier! — Tôi đã tìm được một căn hộ đẹp hôm qua!",
+          "Tu as fait les courses? — Bạn đã đi mua sắm chưa?",
+          "Il n'a pas vu ce film. — Anh ấy chưa xem bộ phim này.",
+          "Nous avons mangé une délicieuse pizza. — Chúng tôi đã ăn một chiếc pizza ngon.",
+          "Ils ont eu un problème. — Họ đã gặp vấn đề.",
+          "Elle a pris le bus ce matin. — Cô ấy đã bắt xe buýt sáng nay.",
+        ]
+      },
+      {
+        topic:"Giới từ chỉ vị trí (2) — Sur, Sous, Devant, Derrière, Entre, En face de…",
+        rule:`VỊ TRÍ ĐỒ VẬT trong không gian:
+
+• SUR = trên (tiếp xúc bề mặt): sur la table, sur le lit, sur le mur
+• SOUS = dưới: sous la table, sous le lit
+• DEVANT = trước (mặt đối mặt): devant la maison, devant toi
+• DERRIÈRE = sau (phía sau): derrière la porte, derrière toi
+• ENTRE = giữa (hai vật): entre le canapé et la fenêtre
+• EN FACE DE = đối diện: en face de la gare, en face de moi
+• À CÔTÉ DE = bên cạnh: à côté de la banque
+• À DROITE DE = bên phải: à droite du canapé
+• À GAUCHE DE = bên trái: à gauche de la porte
+• AU-DESSUS DE = phía trên (không tiếp xúc): au-dessus du lit
+• EN DESSOUS DE = phía dưới (không tiếp xúc)
+• AU FOND DE = ở cuối/trong: au fond du couloir
+
+⚠️ Chú ý: DE + LE = DU, DE + LES = DES
+"à côté du canapé" (pas de le canapé)
+"en face des fenêtres" (pas de les fenêtres)`,
+        examples:[
+          "Le chat est sous le lit. — Con mèo ở dưới giường.",
+          "Les clés sont sur la table, devant la lampe. — Chìa khóa trên bàn, trước đèn.",
+          "Le canapé est entre les deux fauteuils. — Ghế sofa ở giữa hai chiếc ghế bành.",
+          "La salle de bains est en face de la chambre. — Phòng tắm đối diện phòng ngủ.",
+          "Il y a un miroir à côté de la fenêtre. — Có một cái gương bên cạnh cửa sổ.",
+          "Le garage est au fond de la cour. — Gara ở cuối sân.",
+        ]
+      },
+      {
+        topic:"Obligation et interdiction (1) — Il faut, Ne pas + infinitif",
+        rule:`OBLIGATION ET INTERDICTION — ba cách diễn đạt:
+
+1. IL FAUT + INFINITIF (obligation impersonnelle, générale)
+"Il faut respecter le règlement." = Cần phải tôn trọng nội quy.
+"Il faut faire du sport." = Cần phải tập thể thao.
+Phủ định: "Il ne faut pas + inf." = Không được...
+"Il ne faut pas faire de bruit." = Không được làm ồn.
+
+2. INFINITIF seul (panneaux, instructions écrites)
+"Ne pas fumer." "Ne pas stationner." "Composer son billet."
+→ Style télégraphique pour affiches, règlements, recettes
+
+3. IMPÉRATIF (ordre direct à une personne)
+"Fermez la porte!" "Ne faites pas de bruit!"
+
+Mức độ:
+• Il faut... (obligation générale, impersonnelle)
+• Devoir... (obligation personnelle — voir Unité 8)
+• Pouvoir... (permission)
+• Ne pas devoir... (interdiction personnelle)
+• Il est interdit de... (interdiction formelle)`,
+        examples:[
+          "Il faut sortir les poubelles le lundi. — Cần đổ rác vào thứ Hai.",
+          "Il ne faut pas faire de bruit après 22h. — Không được làm ồn sau 22 giờ.",
+          "Ne pas laisser les vélos dans le couloir. — Không để xe đạp trong hành lang.",
+          "Il faut respecter les voisins. — Cần tôn trọng hàng xóm.",
+          "Fermer la porte à clé. — Hãy khóa cửa. (panneau, infinitif)",
+        ]
+      },
+      {
+        topic:"Pronoms COD (1) — Le, La, L', Les",
+        rule:`COD = Complément d'Objet Direct = bổ ngữ trực tiếp
+Pronoms COD thay thế danh từ để tránh lặp lại!
+
+• LE = thay thế nam sg: le film → je LE regarde
+• LA = thay thế nữ sg: la série → je LA regarde
+• L' = trước nguyên âm (nam hoặc nữ): l'appartement → je L'ai trouvé
+• LES = số nhiều: les clés → je LES ai
+
+VỊ TRÍ: TRƯỚC động từ (sauf impératif affirmatif)
+"Je regarde le film." → "Je LE regarde." ✅
+"Je LE regarde." → pronom AVANT le verbe ✅
+
+PHỦ ĐỊNH: ne + pronom + verbe + pas
+"Je ne LE regarde pas."
+
+IMPÉRATIF AFFIRMATIF: pronom APRÈS, avec trait d'union
+"Regarde-LE!" "Appelle-LA!" "Mange-LES!"
+⚠️ Le/la → l' avant h aspiré? Non! → "Regarde-le!" toujours
+
+PASSÉ COMPOSÉ: pronom avant l'auxiliaire
+"Je l'ai vu." "Tu les as appelés?"`,
+        examples:[
+          "Tu as les clés? Oui, je LES ai. — Bạn có chìa khóa không? Có, tôi có.",
+          "Ce film? Je L'ai vu hier. — Bộ phim đó? Tôi đã xem hôm qua.",
+          "Elle cherche un plombier. Elle LE contacte. — Cô ấy tìm thợ sửa ống nước. Cô ấy liên hệ anh ta.",
+          "Mange ta soupe! Mange-LA! — Ăn súp đi! Ăn đi!",
+          "Ce livre? Je ne LE comprends pas. — Quyển sách đó? Tôi không hiểu.",
+          "Vous avez vu Marie? — Oui, je L'ai vue ce matin. — Bạn có gặp Marie không? — Có, tôi đã gặp sáng nay.",
+        ]
+      },
     ]
   },
   {
     id:"g8", num:"8", title:"En forme!", points:[
-      { topic:"Thì quá khứ passé composé (2) — participes irréguliers", rule:"Participes irréguliers thường gặp: être→été, avoir→eu, faire→fait, voir→vu, pouvoir→pu, vouloir→voulu, prendre→pris, dormir→dormi, boire→bu, apprendre→appris.", examples:["J'ai eu de la fièvre.","Il a fait du sport hier.","Nous avons pris rendez-vous."] },
-      { topic:"Pronom y — remplace un complément de lieu", rule:"Y remplace un complément de lieu (à, en, dans, sur + lieu). Placé AVANT le verbe. Ne pas confondre avec lui/leur (personnes).", examples:["Tu vas à la pharmacie? Oui, j'y vais.","Il travaille au bureau. Il y travaille.","Nous n'y allons pas souvent."] },
-      { topic:"Obligation et interdiction (2) — devoir + infinitif", rule:"Devoir + infinitif: obligation personnelle. Je dois, tu dois, il doit, nous devons, vous devez, ils doivent. Négatif: ne pas devoir (ne doit pas=interdiction).", examples:["Tu dois prendre ce médicament.","Vous devez faire du sport.","Il ne doit pas manger de sucre."] },
-      { topic:"Conseil — pouvoir + infinitif, impératif", rule:"Pour donner un conseil: Tu peux/Vous pouvez + infinitif. Ou impératif direct. Ou On peut + infinitif.", examples:["Tu peux prendre de la vitamine C.","Vous pouvez consulter un médecin.","Mange des légumes!"] },
+      {
+        topic:"Passé composé (2) — Participes passés irréguliers",
+        rule:`Participes passés irréguliers PHẢI HỌC THUỘC! Đây là danh sách hay gặp nhất:
+
+EN -U:
+avoir→eu [y], boire→bu, courir→couru, croire→cru,
+devoir→dû, falloir→fallu, lire→lu, pleuvoir→plu,
+pouvoir→pu, recevoir→reçu, savoir→su, vivre→vécu,
+vouloir→voulu, voir→vu, venir→venu
+
+EN -IT/-IS:
+dire→dit, écrire→écrit, faire→fait, mettre→mis,
+prendre→pris, apprendre→appris, comprendre→compris,
+permettre→permis, promettre→promis
+
+EN -ERT:
+couvrir→couvert, offrir→offert, ouvrir→ouvert, souffrir→souffert
+
+EN -É (réguliers mais fréquents):
+aller→allé (avec être!), naître→né, téléphoner→téléphone
+
+COMPLÈTEMENT IRRÉGULIERS:
+être→été, naître→né, mourir→mort
+
+💡 Truco de memorización: groupez par terminaison!
+-u: bu, lu, pu, su, vu, eu, eu!
+-it: dit, fait, écrit
+-is: mis, pris, appris`,
+        examples:[
+          "J'ai eu de la fièvre hier. — Hôm qua tôi bị sốt.",
+          "Il a fait du sport ce matin. — Anh ấy đã tập thể thao sáng nay.",
+          "Elle a pris rendez-vous chez le médecin. — Cô ấy đã hẹn gặp bác sĩ.",
+          "Nous avons vu un bon film. — Chúng tôi đã xem một bộ phim hay.",
+          "Tu as pu dormir? — Bạn đã ngủ được không?",
+          "Ils n'ont pas voulu venir. — Họ đã không muốn đến.",
+        ]
+      },
+      {
+        topic:"Pronom Y — Remplace un complément de lieu",
+        rule:`LE PRONOM Y = "đó / ở đó / đến đó"
+Thay thế complément de lieu (à, en, dans, sur, chez... + lieu)
+
+VỊ TRÍ: AVANT le verbe (comme les autres pronoms)
+"Tu vas à la pharmacie?" → "Tu y vas?" (Y = à la pharmacie)
+"Il est au bureau." → "Il y est." (Y = au bureau)
+"Nous allons en France." → "Nous y allons." (Y = en France)
+
+FORMES:
+• Présent: J'y vais, Tu y vas, Il y va, Nous y allons...
+• Futur proche: Je vais y aller. (y avant l'infinitif)
+• Passé composé: J'y suis allé(e). (y avant l'auxiliaire)
+• Impératif affirmatif: Vas-y! Allons-y! Allez-y!
+• Impératif négatif: N'y va pas! N'y allons pas!
+
+⚠️ Y ne remplace PAS les personnes (on utilise lui/leur):
+"Je vais chez le médecin." → "J'y vais." ✅ (lieu)
+"Je pense à ce problème." → "J'y pense." ✅ (chose)
+"Je pense à ma mère." → "Je pense à elle." ❌ "J'y pense." (personne!)`,
+        examples:[
+          "Tu vas à la pharmacie? Oui, j'y vais maintenant. — Bạn đến nhà thuốc không? Có, tôi đi ngay.",
+          "Il travaille au cabinet médical. Il y travaille depuis 5 ans. — Anh ấy làm ở phòng khám 5 năm rồi.",
+          "On y va? — Chúng ta đi nhé? (đến đó)",
+          "J'y suis allé(e) hier. — Tôi đã đến đó hôm qua.",
+          "Allez-y! — Cứ tiến hành đi! / Cứ nói đi!",
+          "N'y va pas, c'est dangereux. — Đừng đến đó, nguy hiểm.",
+        ]
+      },
+      {
+        topic:"Obligation personnelle — Devoir + infinitif",
+        rule:`DEVOIR + INFINITIF = "phải làm gì" (obligation personnelle)
+
+Chia DEVOIR au présent:
+• Je dois      • Nous devons
+• Tu dois      • Vous devez
+• Il/Elle doit  • Ils/Elles doivent
+
+Khác với IL FAUT (obligation générale, impersonnelle):
+"Il faut manger des légumes." = Nói chung, người ta nên ăn rau.
+"Tu DOIS manger des légumes." = Bạn (cụ thể) phải ăn rau.
+
+PHỦ ĐỊNH → INTERDICTION (cấm):
+"Tu ne dois PAS fumer." = Bạn không được hút thuốc.
+"Il ne doit PAS conduire." = Anh ấy không được lái xe.
+
+Các nghĩa khác của DEVOIR:
+• Obligation: "Je dois partir." (tôi phải đi)
+• Probabilité: "Il doit être là." (chắc anh ấy ở đó)
+• Obligation morale: "Tu dois l'aider." (bạn nên giúp cô ấy)
+
+DEVOIR au PASSÉ COMPOSÉ: "J'ai dû..." = tôi đã phải...
+"J'ai dû prendre des médicaments." (Tôi đã phải uống thuốc)`,
+        examples:[
+          "Tu dois prendre ce médicament 3 fois par jour. — Bạn phải uống thuốc này 3 lần mỗi ngày.",
+          "Vous devez vous reposer. — Bạn cần nghỉ ngơi.",
+          "Il ne doit pas faire de sport cette semaine. — Anh ấy không được tập thể thao tuần này.",
+          "Elle doit aller chez le médecin demain. — Cô ấy phải đến gặp bác sĩ ngày mai.",
+          "Nous devons manger sainement. — Chúng ta phải ăn uống lành mạnh.",
+          "J'ai dû annuler mon cours. — Tôi đã phải hủy bài học.",
+        ]
+      },
     ]
   },
   {
     id:"g9", num:"9", title:"Bonnes vacances!", points:[
-      { topic:"Comparatifs — plus/aussi/moins + adjectif + que", rule:"Plus + adj + que (supérieur). Aussi + adj + que (égal). Moins + adj + que (inférieur). Attention: bon→meilleur (que). Pas de plus bon.", examples:["Le train est plus rapide que le bus.","Cet hôtel est aussi confortable que l'autre.","Le camping est moins cher que l'hôtel."] },
-      { topic:"Giới từ chỉ xuất xứ — de, du, d', des", rule:"De + ville ou pays féminin/voyelle. Du = de+le + pays masculin. Des = de+les + pays pluriel.", examples:["Je viens de Paris.","Il arrive du Japon.","Elle vient d'Italie.","Nous revenons des États-Unis."] },
-      { topic:"Passé composé avec être — aller, venir, partir, arriver…", rule:"Certains verbes utilisent ÊTRE (pas avoir) au passé composé. Accord du participe avec le sujet. Liste: aller/venir, partir/arriver, entrer/sortir, monter/descendre, naître/mourir, rester, tomber.", examples:["Je suis allé(e) à la plage.","Elle est arrivée hier.","Ils sont partis tôt ce matin."] },
-      { topic:"Imparfait — c'était, il y avait, il faisait (description au passé)", rule:"L'imparfait décrit l'état, les circonstances dans le passé. Radical du présent (nous) + terminaisons -ais/-ais/-ait/-ions/-iez/-aient. Très utiles: c'était (beau/calme), il y avait (du monde), il faisait (chaud/froid).", examples:["C'était magnifique!","Il y avait beaucoup de touristes.","Il faisait très chaud en août."] },
+      {
+        topic:"Comparatifs — Plus, Aussi, Moins + adjectif + que",
+        rule:`SO SÁNH trong tiếng Pháp — 3 mức độ:
+
+SUPÉRIEUR (hơn): PLUS + adjectif + QUE
+"Le train est plus rapide que le bus."
+
+ÉGALITÉ (bằng nhau): AUSSI + adjectif + QUE
+"Cet hôtel est aussi confortable que l'autre."
+
+INFÉRIORITÉ (kém hơn): MOINS + adjectif + QUE
+"Le camping est moins cher que l'hôtel."
+
+⚠️ IRRÉGULIERS:
+• BON → MEILLEUR (que): pas "plus bon"!
+"Ce restaurant est meilleur que l'autre."
+• MAUVAIS → PIRE (que) ou plus mauvais (informel)
+• BIEN → MIEUX (adverbe, pas adjectif)
+
+SO SÁNH VỚI NOM:
+Plus de / Autant de / Moins de + nom + que
+"Il y a plus de touristes en été qu'en hiver."
+
+SO SÁNH VỚI VERBE:
+Plus / Autant / Moins + que (pas d'adjectif)
+"Je travaille plus que toi."
+"Elle mange autant que son frère."
+
+⚠️ QUE + pronom tonique: que moi, que toi, que lui, que nous...`,
+        examples:[
+          "Le TGV est plus rapide que la voiture. — Tàu cao tốc nhanh hơn ô tô.",
+          "Cette plage est aussi belle que celle de Nice. — Bãi biển này đẹp như bãi ở Nice.",
+          "Le camping est moins cher que l'hôtel, mais moins confortable. — Trại cắm trại rẻ hơn khách sạn nhưng kém tiện nghi hơn.",
+          "Ce restaurant est meilleur que l'autre. — Nhà hàng này ngon hơn cái kia. (pas 'plus bon'!)",
+          "Il y a plus de touristes en juillet qu'en mai. — Có nhiều khách du lịch hơn vào tháng 7 so với tháng 5.",
+        ]
+      },
+      {
+        topic:"Passé composé avec ÊTRE — Verbes de mouvement et d'état",
+        rule:`Một số động từ dùng ÊTRE thay vì AVOIR ở passé composé!
+
+DANH SÁCH PHẢI NHỚ (nhớ qua từ "DR & MRS VANT P" hoặc "la maison d'être"):
+aller↔venir, partir↔arriver, entrer↔sortir,
+monter↔descendre, naître↔mourir, rester, tomber,
+passer, retourner, rentrer, devenir, revenir
+
+⚠️ Với ÊTRE: PARTICIPE PASSÉ S'ACCORDE avec le SUJET!
+• Masculin sg: Il est allé.
+• Féminin sg: Elle est allée. (ajout de -E)
+• Masculin pl: Ils sont allés. (ajout de -S)
+• Féminin pl: Elles sont allées. (ajout de -ES)
+
+⚠️ Verbes pronominaux → TOUJOURS avec ÊTRE:
+"Je me suis levé(e)." "Il s'est habillé."
+
+⚠️ ATTENTION: monter/descendre/sortir/rentrer/passer avec COD → AVOIR!
+"Elle est montée." (sans COD, être)
+"Elle a monté les bagages." (avec COD, avoir)`,
+        examples:[
+          "Je suis allé(e) à la plage hier. — Tôi đã đến bãi biển hôm qua.",
+          "Elle est arrivée à 8h du matin. — Cô ấy đã đến lúc 8 giờ sáng.",
+          "Ils sont partis tôt ce matin. — Họ đã khởi hành sớm sáng nay.",
+          "Nous sommes restés une semaine. — Chúng tôi đã ở lại một tuần.",
+          "Elle est née à Lyon. — Cô ấy sinh ở Lyon.",
+          "Il est tombé en vacances et il est allé à l'hôpital. — Anh ấy bị ngã trong kỳ nghỉ và đã đến bệnh viện.",
+        ]
+      },
+      {
+        topic:"L'imparfait — C'était, Il y avait, Il faisait (description au passé)",
+        rule:`L'IMPARFAIT dùng để MÔ TẢ ở quá khứ (trạng thái, hoàn cảnh, thói quen)
+
+THÀNH LẬP: Radical de NOUS au présent + terminaisons
+Terminaisons: -ais / -ais / -ait / -ions / -iez / -aient
+ÊTRE (seule exception): j'étais, tu étais, il était...
+
+Ba cụm từ cực kỳ hay dùng trong Édito A1:
+• C'était + adjectif: "C'était magnifique! / C'était calme."
+• Il y avait + nom: "Il y avait beaucoup de monde."
+• Il faisait + temps: "Il faisait chaud/froid/beau/mauvais."
+
+PHÂN BIỆT PASSÉ COMPOSÉ vs IMPARFAIT:
+• Passé composé: hành động XẢY RA, CỤ THỂ
+  "Je suis allé(e) à la plage." (tôi đã đi)
+• Imparfait: HOÀN CẢNH, MÔ TẢ, THÓI QUEN
+  "Il faisait beau, il y avait des touristes partout..."
+
+Thường dùng CÙNG NHAU:
+"Quand je suis arrivé(e) (PC), il faisait (IMP) très chaud."
+(Khi tôi đến nơi, trời đang rất nóng.)`,
+        examples:[
+          "C'était magnifique! La mer était bleue et le sable blanc. — Thật tuyệt! Biển xanh và cát trắng.",
+          "Il y avait beaucoup de touristes à la plage. — Có rất nhiều khách du lịch ở bãi biển.",
+          "Il faisait très chaud, environ 35 degrés. — Trời rất nóng, khoảng 35 độ.",
+          "Quand nous sommes arrivés, il pleuvait. — Khi chúng tôi đến nơi, trời đang mưa.",
+          "L'hôtel était confortable et le personnel était sympa. — Khách sạn thoải mái và nhân viên thân thiện.",
+        ]
+      },
     ]
   },
   {
     id:"g10", num:"10", title:"Au travail!", points:[
-      { topic:"Pronoms COD (2) — me, te, nous, vous", rule:"Remplacent des personnes (1re et 2e personnes). Placés AVANT le verbe. Me/te devant voyelle → m'/t'.", examples:["Tu m'aides?","Il nous contacte par mail.","Je te comprends.","Ils vous écoutent."] },
-      { topic:"La durée et la continuation — pendant, depuis, il y a", rule:"Pendant + durée (action terminée ou limitée). Depuis + durée/point de départ (action qui continue). Il y a + durée (passé révolu).", examples:["J'ai travaillé pendant deux ans.","Il habite ici depuis 5 ans.","Elle a trouvé ce poste il y a un mois."] },
-      { topic:"Pronoms relatifs — qui et que", rule:"Qui = sujet (suivi d'un verbe). Que/qu' = COD (suivi d'un sujet+verbe). Remplacent un nom pour relier deux phrases. Que+voyelle = qu'.", examples:["J'ai un travail qui est intéressant.","C'est un métier que j'adore.","Voilà la collègue qu'il cherche."] },
-      { topic:"L'intensité — un peu, assez, très, beaucoup, trop", rule:"Gradation: un peu < assez < très/beaucoup < trop. Très+adjectif/adverbe. Beaucoup+verbe. Un peu/assez/trop + adjectif ou verbe. Trop: sens négatif (excès).", examples:["Je suis très fatigué.","Il travaille beaucoup.","C'est un peu difficile.","C'est trop loin pour moi."] },
+      {
+        topic:"Pronoms COD (2) — Me, Te, Nous, Vous",
+        rule:`COD de 1re et 2e personnes — thay thế NGƯỜI trong câu:
+
+• ME (m') = tôi (object): "Tu me comprends?"
+• TE (t') = bạn (object): "Je te comprends."
+• NOUS = chúng tôi (object): "Il nous aide."
+• VOUS = các bạn / bạn (lịch sự) (object): "Je vous écoute."
+
+VỊ TRÍ: AVANT le verbe (comme le/la/les)
+"Il me téléphone souvent." (me avant le verbe)
+"Je te comprends." (te avant le verbe)
+
+DEVANT VOYELLE:
+me → m': "Il m'appelle."
+te → t': "Je t'écoute."
+
+PHỦ ĐỊNH:
+"Il ne me comprend pas." "Je ne te vois pas."
+
+PASSÉ COMPOSÉ:
+"Il m'a appelé." "Tu nous as compris?"
+⚠️ Accord avec COD féminin: "Il m'a appelée." (si je = femme)
+
+TEMPS COMPOSÉS + accord:
+"Il vous a écoutés." (vous = hommes ou mixte)
+"Il vous a écoutées." (vous = femmes seulement)`,
+        examples:[
+          "Tu me comprends? — Bạn hiểu tôi không?",
+          "Il nous contacte par mail. — Anh ấy liên hệ chúng tôi qua email.",
+          "Je t'écoute, continue! — Tôi đang nghe bạn, tiếp tục đi!",
+          "Elle m'a appelé(e) ce matin. — Cô ấy đã gọi cho tôi sáng nay.",
+          "Ils vous ont invités à la réunion? — Họ đã mời bạn đến cuộc họp chưa?",
+          "Il ne me répond pas. — Anh ấy không trả lời tôi.",
+        ]
+      },
+      {
+        topic:"Pronoms relatifs — Qui et Que",
+        rule:`PRONOMS RELATIFS nối hai câu, tránh lặp từ.
+
+QUI = sujet (chủ ngữ) — suivi d'un VERBE
+"J'ai un travail. Ce travail est intéressant."
+→ "J'ai un travail QUI est intéressant."
+(qui remplace "ce travail" = sujet de "est")
+
+QUE/QU' = COD (bổ ngữ trực tiếp) — suivi d'un SUJET + VERBE
+"J'ai des collègues. J'aime beaucoup ces collègues."
+→ "J'ai des collègues QUE j'aime beaucoup."
+(que remplace "ces collègues" = COD de "j'aime")
+
+⚠️ QUE → QU' devant voyelle ou h muet:
+"C'est un métier QU'il adore." "La collègue QU'elle cherche."
+
+⚠️ OÙ = pronom relatif de lieu/temps:
+"C'est le bureau OÙ je travaille." (lieu)
+"C'est le jour OÙ je l'ai rencontré." (temps)
+
+DONT = relatif de "de":
+"C'est le projet DONT je parle." (parler DE qqch)
+"C'est l'ami DONT je t'ai parlé." (parler DE qqn)`,
+        examples:[
+          "J'ai trouvé un emploi qui me plaît beaucoup. — Tôi đã tìm được công việc mà tôi rất thích.",
+          "C'est un métier que j'adore. — Đây là nghề mà tôi rất yêu thích.",
+          "La collègue qu'il cherche est en réunion. — Đồng nghiệp mà anh ấy tìm đang họp.",
+          "C'est une entreprise qui offre de bonnes conditions. — Đây là công ty đưa ra điều kiện tốt.",
+          "Le bureau où je travaille est très moderne. — Văn phòng nơi tôi làm việc rất hiện đại.",
+          "Voilà le dossier dont tu as besoin. — Đây là hồ sơ mà bạn cần.",
+        ]
+      },
+      {
+        topic:"L'intensité — Un peu, Assez, Très, Beaucoup, Trop",
+        rule:`Các trạng từ chỉ MỨC ĐỘ — thang tăng dần:
+
+un peu (một chút) < assez (khá) < très (rất) < beaucoup (nhiều) < trop (quá)
+
+RÈGLES D'EMPLOI:
+
+TRÈS + adjectif/adverbe:
+"Je suis très fatigué." "Elle parle très vite."
+⚠️ Không nói "très beaucoup"!
+
+BEAUCOUP + verbe (sans de):
+"Je travaille beaucoup." "Il mange beaucoup."
+Beaucoup de + nom: "Il a beaucoup DE travail."
+
+UN PEU + adjectif/verbe:
+"C'est un peu difficile." "Je mange un peu."
+Un peu de + nom: "Un peu DE patience!"
+
+ASSEZ + adjectif/verbe:
+"Je suis assez fatigué." "Elle travaille assez."
+Assez de + nom: "J'ai assez DE temps."
+
+TROP → sens NÉGATIF (excès, problème):
+"C'est trop cher!" "Je travaille trop."
+Trop de + nom: "Il y a trop DE bruit."
+⚠️ "Trop" n'est pas un compliment (sauf argot jeune: "c'est trop bien!")`,
+        examples:[
+          "Je suis très fatigué(e) parce que je travaille beaucoup. — Tôi rất mệt vì làm việc nhiều.",
+          "Ce poste est assez intéressant mais un peu stressant. — Vị trí này khá thú vị nhưng hơi căng thẳng.",
+          "Il parle trop vite, je ne comprends pas! — Anh ấy nói quá nhanh, tôi không hiểu!",
+          "Elle a beaucoup d'expérience dans ce domaine. — Cô ấy có nhiều kinh nghiệm trong lĩnh vực này.",
+          "Tu manges un peu trop de sucre. — Bạn ăn hơi nhiều đường đó.",
+          "Il a très bien réussi son entretien. — Anh ấy đã vượt qua buổi phỏng vấn rất tốt.",
+        ]
+      },
     ]
   },
 ];
+
 
 function GrammarPresets({ onLoad }) {
   const [open, setOpen] = useState(false);
