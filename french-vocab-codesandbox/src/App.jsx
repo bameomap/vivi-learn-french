@@ -2793,6 +2793,7 @@ function DefiQuiz({ defi, onFinish }) {
   const [answers, setAnswers] = useState({});
   const [revealed, setRevealed] = useState({});
   const [inputVals, setInputVals] = useState({});
+  const [grading, setGrading] = useState({});
 
   const questions = defi.questions || [];
   const allAnswered = questions.length > 0 && questions.every((_,i) => revealed[i]);
@@ -2800,16 +2801,34 @@ function DefiQuiz({ defi, onFinish }) {
   useEffect(() => {
     if (!allAnswered) return;
     const ok = questions.filter((_,i) => {
+      // For graded translate questions, use grading result
+      if (grading[i] !== undefined) return grading[i];
       const ans = answers[i] || inputVals[i] || "";
       return ans.trim().toLowerCase() === (questions[i].answer||"").toLowerCase();
     }).length;
-    const t = setTimeout(() => onFinish(ok, questions.length), 800);
+    const t = setTimeout(() => onFinish(ok, questions.length), 1000);
     return () => clearTimeout(t);
   }, [allAnswered]);
 
+  const submitInput = async (i, q) => {
+    const val = inputVals[i] || "";
+    if (!val.trim()) return;
+    // For translate questions, use simple AI-free check (flexible matching)
+    if (!q.options) {
+      const userLower = val.trim().toLowerCase().replace(/[''`.,!?]/g, "");
+      const ansLower = (q.answer||"").toLowerCase().replace(/[''`.,!?]/g, "");
+      // Check if key words match (at least 60% of answer words present)
+      const ansWords = ansLower.split(" ").filter(w=>w.length>2);
+      const matchCount = ansWords.filter(w => userLower.includes(w)).length;
+      const isOk = ansWords.length === 0 ? userLower === ansLower : matchCount / ansWords.length >= 0.6;
+      setGrading(g => ({...g, [i]: isOk}));
+    }
+    setRevealed(r => ({...r, [i]: true}));
+  };
+
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:"0.65rem", animation:"fadeUp 0.3s ease" }}>
-      <div style={{ background:"rgba(255,255,255,0.9)", border:`1px solid ${C.border}`, borderRadius:12, padding:"0.7rem 0.9rem", boxShadow:"0 2px 8px rgba(0,0,0,0.05)" }}>
+      <div style={{ background:C.white, border:`1px solid ${C.border}`, borderRadius:12, padding:"0.7rem 0.9rem", boxShadow:"0 2px 8px rgba(0,0,0,0.05)" }}>
         <div style={{ fontFamily:"Georgia,serif", fontSize:"0.95rem", color:"#8e44ad" }}>🎲 {defi.title}</div>
         <div style={{ fontSize:"0.68rem", color:C.gray, marginTop:"0.15rem" }}>{questions.length} câu hỏi</div>
       </div>
@@ -2817,46 +2836,61 @@ function DefiQuiz({ defi, onFinish }) {
       {questions.map((q, i) => {
         const isRevealed = revealed[i];
         const userAns = answers[i] || inputVals[i] || "";
-        const correct = userAns.trim().toLowerCase() === (q.answer||"").toLowerCase();
+        const correct = grading[i] !== undefined ? grading[i] :
+          userAns.trim().toLowerCase() === (q.answer||"").toLowerCase();
 
         return (
-          <div key={i} style={{ background:"rgba(255,255,255,0.8)", border:`1.5px solid ${isRevealed?(correct?C.green:C.red):C.border}`, borderRadius:12, padding:"0.85rem", boxShadow:"0 2px 8px rgba(0,0,0,0.04)" }}>
+          <div key={i} style={{ background:C.white, border:`1.5px solid ${isRevealed?(correct?C.green:C.red):C.border}`, borderRadius:12, padding:"0.85rem", boxShadow:"0 2px 8px rgba(0,0,0,0.04)" }}>
             <div style={{ fontSize:"0.63rem", color:C.gray, textTransform:"uppercase", letterSpacing:1, marginBottom:"0.35rem" }}>Câu {i+1}</div>
             <div style={{ fontFamily:"Georgia,serif", fontSize:"0.9rem", color:C.ink, marginBottom:"0.6rem", lineHeight:1.5 }}>{q.q}</div>
 
             {q.options ? (
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.28rem" }}>
                 {q.options.map((opt,j) => {
-                  let bg="rgba(255,255,255,0.6)", bc=C.border, col=C.ink;
+                  let bg=C.white, bc=C.border, col=C.ink;
                   if(isRevealed){
-                    if(opt.toLowerCase()===q.answer?.toLowerCase()){bg="rgba(46,125,94,0.1)";bc=C.green;col=C.green;}
-                    else if(opt===answers[i]){bg="rgba(192,57,43,0.1)";bc=C.red;col=C.red;}
-                  } else if(answers[i]===opt){bg="rgba(107,79,187,0.1)";bc=C.purple;col=C.purple;}
+                    if(opt.toLowerCase()===q.answer?.toLowerCase()){bg="rgba(16,185,129,0.1)";bc=C.green;col=C.green;}
+                    else if(opt===answers[i]){bg="rgba(239,68,68,0.1)";bc=C.red;col=C.red;}
+                  } else if(answers[i]===opt){bg:C.purpleL;bc=C.purple;col=C.purple;}
                   return (
                     <button key={j} disabled={isRevealed}
                       onClick={()=>{ setAnswers(a=>({...a,[i]:opt})); setRevealed(r=>({...r,[i]:true})); }}
-                      style={{padding:"0.38rem 0.5rem",border:`1.5px solid ${bc}`,borderRadius:8,background:bg,color:col,fontSize:"0.77rem",cursor:isRevealed?"default":"pointer",textAlign:"left",fontFamily:"inherit"}}>
+                      style={{padding:"0.45rem 0.6rem",border:`1.5px solid ${bc}`,borderRadius:10,background:bg,color:col,fontSize:"0.8rem",cursor:isRevealed?"default":"pointer",textAlign:"left",fontFamily:"inherit",transition:"all 0.15s"}}>
                       {opt}
                     </button>
                   );
                 })}
               </div>
             ) : (
-              <div style={{ display:"flex", gap:"0.38rem" }}>
-                <input value={inputVals[i]||""} disabled={isRevealed}
-                  onChange={e=>setInputVals(v=>({...v,[i]:e.target.value}))}
-                  onKeyDown={e=>{ if(e.key==="Enter"&&!isRevealed) setRevealed(r=>({...r,[i]:true})); }}
-                  placeholder="Nhập câu trả lời..."
-                  style={{flex:1,border:`1.5px solid ${isRevealed?(correct?C.green:C.red):C.border}`,borderRadius:8,padding:"0.38rem 0.6rem",fontSize:"0.85rem",fontFamily:"Georgia,serif",background:isRevealed?(correct?"rgba(46,125,94,0.1)":"rgba(192,57,43,0.1)"):"rgba(255,255,255,0.9)",color:isRevealed?(correct?C.green:C.red):C.ink,outline:"none"}}/>
-                {!isRevealed && <button onClick={()=>setRevealed(r=>({...r,[i]:true}))} style={{padding:"0.38rem 0.7rem",background:C.purple,color:C.white,border:"none",borderRadius:8,fontSize:"0.75rem",cursor:"pointer"}}>OK</button>}
+              <div style={{ display:"flex", flexDirection:"column", gap:"0.4rem" }}>
+                {!q.options && q.answer && (
+                  <div style={{ fontSize:"0.68rem", color:C.purple, marginBottom:"0.1rem" }}>
+                    💡 Dịch sang tiếng Pháp
+                  </div>
+                )}
+                <div style={{ display:"flex", gap:"0.38rem" }}>
+                  <input value={inputVals[i]||""} disabled={isRevealed}
+                    onChange={e=>setInputVals(v=>({...v,[i]:e.target.value}))}
+                    onKeyDown={e=>{ if(e.key==="Enter"&&!isRevealed) submitInput(i,q); }}
+                    placeholder="Nhập câu tiếng Pháp..."
+                    style={{flex:1,border:`1.5px solid ${isRevealed?(correct?C.green:C.red):C.border}`,borderRadius:10,padding:"0.5rem 0.7rem",fontSize:"0.88rem",fontFamily:"Georgia,serif",background:isRevealed?(correct?"rgba(16,185,129,0.08)":"rgba(239,68,68,0.08)"):C.white,color:isRevealed?(correct?C.green:C.red):C.ink,outline:"none"}}/>
+                  {!isRevealed && (
+                    <button onClick={()=>submitInput(i,q)}
+                      style={{padding:"0.5rem 0.8rem",background:C.purple,color:C.white,border:"none",borderRadius:10,fontSize:"0.8rem",cursor:"pointer",whiteSpace:"nowrap",fontWeight:500}}>
+                      Kiểm tra
+                    </button>
+                  )}
+                </div>
               </div>
             )}
 
             {isRevealed && (
-              <div style={{ marginTop:"0.4rem", fontSize:"0.73rem", lineHeight:1.5 }}>
-                {!correct && <div style={{ color:C.red, marginBottom:"0.1rem" }}>✗ Đáp án: <b>{q.answer}</b></div>}
-                {correct && <div style={{ color:C.green, marginBottom:"0.1rem" }}>✓ Chính xác!</div>}
-                {q.explanation && <div style={{ color:C.gray }}>💡 {q.explanation}</div>}
+              <div style={{ marginTop:"0.5rem", fontSize:"0.73rem", lineHeight:1.6, padding:"0.4rem 0.6rem", background:correct?"rgba(16,185,129,0.06)":"rgba(239,68,68,0.06)", borderRadius:8 }}>
+                {correct
+                  ? <div style={{ color:C.green, fontWeight:600 }}>✓ Chính xác!</div>
+                  : <div style={{ color:C.red }}>✗ Đáp án gợi ý: <span style={{ fontFamily:"Georgia,serif", fontWeight:600 }}>{q.answer}</span></div>
+                }
+                {q.explanation && <div style={{ color:C.gray, marginTop:"0.2rem" }}>💡 {q.explanation}</div>}
               </div>
             )}
           </div>
@@ -2864,6 +2898,8 @@ function DefiQuiz({ defi, onFinish }) {
       })}
     </div>
   );
+}
+
 }
 
 // ── Streak & Progress helpers ───────────────────────────────
