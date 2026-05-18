@@ -1685,6 +1685,178 @@ function GrammarOrder({ exercises }) {
   })}</div>;
 }
 
+// ── Édito Grammar Presets ──────────────────────────────────
+const EDITO_GRAMMAR = [
+  {
+    id:"g0", num:"0", title:"Bienvenue !", points:[
+      { topic:"Động từ être — je suis, tu es, il/elle est, nous sommes, vous êtes, ils sont", rule:"Être là tên không thể thiếu: Je suis étudiant. Tu es français?", examples:["Je suis vietnamien.","Elle est médecin.","Nous sommes amis."] },
+      { topic:"Động từ avoir — j'ai, tu as, il/elle a, nous avons, vous avez, ils ont", rule:"Avoir dùng để nói tuổi: J'ai 20 ans. Il a une sœur.", examples:["J'ai 25 ans.","Tu as un stylo?","Ils ont deux enfants."] },
+      { topic:"Đại từ nhân xưng — je, tu, il, elle, nous, vous, ils, elles", rule:"Je/tu: 1 người. Il/elle: anh ấy/cô ấy. Nous: chúng tôi. Vous: các bạn / lịch sự. Ils/elles: họ.", examples:["Je parle français.","Vous êtes professeur?","Ils aiment la musique."] },
+      { topic:"Les nombres 0–31 và jours/mois", rule:"Số từ 1–31 + ngày trong tuần (lundi→dimanche) + tháng trong năm (janvier→décembre). Ngày: le 3 mars.", examples:["Aujourd'hui c'est le 15 mai.","Je suis né le 7 juillet.","C'est lundi."] },
+    ]
+  },
+  {
+    id:"g1", num:"1", title:"Je suis…", points:[
+      { topic:"Tính từ quốc tịch — accord masculin/féminin", rule:"Thêm -e cho giống cái: français→française. Thêm -ne cho -ien/-éen: italien→italienne. Tính từ kết thúc bằng -e không đổi: belge, russe.", examples:["Il est japonais. Elle est japonaise.","Il est brésilien. Elle est brésilienne.","Il est belge. Elle est belge."] },
+      { topic:"Mạo từ xác định — le, la, l', les", rule:"Le + danh từ nam số ít. La + danh từ nữ số ít. L' + danh từ bắt đầu bằng nguyên âm/h câm. Les + danh từ số nhiều. Dùng để nói chung chung.", examples:["J'aime le cinéma.","Elle adore la musique.","Nous aimons les langues."] },
+      { topic:"Giới từ trước tên thành phố và quốc gia (1)", rule:"à + thành phố. au + nước nam (le). en + nước nữ hoặc bắt đầu bằng nguyên âm. aux + nước số nhiều (les).", examples:["J'habite à Paris.","Il est né au Canada.","Elle vit en France.","Ils habitent aux États-Unis."] },
+      { topic:"Tính từ nghi vấn — quel/quelle/quels/quelles", rule:"Quel s'accorde avec le nom. Quel (m.sg) / quelle (f.sg) / quels (m.pl) / quelles (f.pl). Dùng để hỏi thông tin.", examples:["Quel est ton prénom?","Quelle est ta nationalité?","Quels sont tes loisirs?"] },
+      { topic:"Les nombres 32–100", rule:"32=trente-deux, 60=soixante, 70=soixante-dix, 71=soixante et onze, 80=quatre-vingts, 90=quatre-vingt-dix, 100=cent.", examples:["J'ai soixante-dix ans.","Ça coûte quatre-vingts euros.","Elle a quatre-vingt-dix ans."] },
+    ]
+  },
+  {
+    id:"g2", num:"2", title:"Près de moi", points:[
+      { topic:"Mạo từ xác định và bất định — le/la/les vs un/une/des", rule:"Un/une/des: chưa xác định, lần đầu đề cập. Le/la/l'/les: đã xác định, cụ thể. Chú ý: le/la + nguyên âm → l'.", examples:["J'ai un appartement. L'appartement est grand.","C'est une guitare. La guitare est belle.","Il y a des parcs. Les parcs sont jolis."] },
+      { topic:"Động từ đuôi -er ở thì hiện tại", rule:"Bỏ -er, thêm: -e/-es/-e/-ons/-ez/-ent. Chú ý: j' trước nguyên âm (j'aime, j'habite). Phủ định: ne + verbe + pas.", examples:["J'aime le sport. Tu aimes la musique?","Nous habitons à Lyon.","Il n'aime pas le ski."] },
+      { topic:"Tính từ sở hữu — mon/ma/mes, ton/ta/tes, son/sa/ses…", rule:"Mon/ton/son + nam sg. Ma/ta/sa + nữ sg. Mes/tes/ses + số nhiều. Notre/votre/leur (số ít), nos/vos/leurs (số nhiều). Chú ý: mon/ton/son + nguyên âm dù nữ (mon amie).", examples:["C'est mon frère et ma sœur.","Votre famille est grande?","Ses parents habitent à Hanoi."] },
+      { topic:"Giống đực/cái của danh từ nghề nghiệp", rule:"-eur → -euse (coiffeur→coiffeuse). -teur → -trice (acteur→actrice). -er → -ère (boulanger→boulangère). -e → -e (fleuriste, artiste).", examples:["Il est acteur. Elle est actrice.","Mon père est boulanger. Ma mère est boulangère.","Elle est journaliste."] },
+    ]
+  },
+  {
+    id:"g3", num:"3", title:"Qu'est-ce qu'on mange?", points:[
+      { topic:"Số ít và số nhiều của danh từ", rule:"Thêm -s vào số nhiều (un pain→des pains). Số nhiều không phát âm -s. Chú ý: un œuf [oef]→des œufs [ø], un monsieur→des messieurs.", examples:["J'achète un croissant. Il achète trois croissants.","Une bouteille → des bouteilles.","Un œuf → des œufs."] },
+      { topic:"Giới từ chỉ nơi chốn — à la, au, à l', aux, chez", rule:"à+la/au/à l'/aux + lieu (endroit). chez + personne. Exemples: à la boulangerie, au marché, à l'épicerie, aux caisses, chez le boucher.", examples:["Je vais à la boulangerie.","Il est au marché.","On achète chez le fromager."] },
+      { topic:"Mạo từ phân lượng — du, de la, de l', des", rule:"Dùng khi không đếm được (số lượng không xác định). du = de+le (masculine). de la (féminine). de l' (nguyên âm). Un peu de, beaucoup de, pas de + nom (không dùng du/de la sau từ phủ định).", examples:["Je mange du pain et de la confiture.","Il boit de l'eau.","Je n'ai pas de sucre.","Un peu de sel, beaucoup de poivre."] },
+      { topic:"Động từ đuôi -ir nhóm 2 — choisir, finir", rule:"Je choisis / tu choisis / il choisit / nous choisissons / vous choisissez / ils choisissent. Tương tự: finir, réussir, grossir.", examples:["Je choisis le menu à 15€.","Tu finis ton dessert?","Nous choisissons un bon restaurant."] },
+    ]
+  },
+  {
+    id:"g4", num:"4", title:"C'est où?", points:[
+      { topic:"C'est / Il est — phân biệt", rule:"C'est + un/le + nom (để nhận dạng). Il/Elle est + adjectif (để miêu tả). Ce sont + des/les + nom (số nhiều).", examples:["C'est un musée. Il est magnifique.","C'est la place du Capitole.","Ce sont des artistes. Ils sont talentueux."] },
+      { topic:"Trạng từ chỉ tần suất — jamais, souvent, toujours", rule:"Đặt sau động từ ở thì hiện tại. Jamais chỉ dùng với phủ định: ne...jamais. Souvent=thường. Toujours=luôn luôn.", examples:["Je vais souvent au musée.","Il ne va jamais au théâtre.","Elle est toujours en retard."] },
+      { topic:"Mệnh lệnh thức — impératif", rule:"3 ngôi: tu, nous, vous. Xây dựng từ thì hiện tại. Verbes en -er: bỏ -s ở tu (parle! không phải parles!). Être: sois/soyons/soyez. Avoir: aie/ayons/ayez.", examples:["Tourne à droite!","Prenons le bus!","Allez tout droit!"] },
+      { topic:"Liên từ — pour, parce que, mais, avec, sans", rule:"Pour + infinitif (mục đích). Parce que + phrase (lý do). Mais (đối lập). Avec + nom (có). Sans + nom (không có).", examples:["Je prends le métro pour aller au travail.","Je n'y vais pas parce que c'est loin.","J'aime Paris mais c'est cher."] },
+      { topic:"Les nombres 100–1 milliard", rule:"100=cent, 200=deux cents (prend s si pas suivi), 1000=mille (pas de s), 1000000=un million, 1000000000=un milliard.", examples:["Il y a trois cent cinquante habitants.","La ville a deux millions d'habitants.","Ça coûte mille euros."] },
+    ]
+  },
+  {
+    id:"g5", num:"5", title:"C'est tendance!", points:[
+      { topic:"Accord des adjectifs — masculin/féminin/pluriel", rule:"Thêm -e cho nữ (noir→noire). Thêm -s cho số nhiều (noir→noirs, noire→noires). Tính từ kết thúc -e không đổi (simple→simple). Màu sắc: kết thúc bằng nguyên âm không thêm -e (orange, beige).", examples:["Un pull noir. Une robe noire. Des pulls noirs.","Un objet simple. Une règle simple.","Une jupe orange. Des chaussures orange."] },
+      { topic:"Thì tương lai gần — futur proche", rule:"Aller au présent + infinitif. Exprime une action future proche. Négatif: ne + aller + pas + infinitif.", examples:["Je vais acheter une robe.","Il va faire froid demain.","Nous n'allons pas sortir ce soir."] },
+      { topic:"Place des adjectifs — avant ou après le nom", rule:"En général: adjectif APRÈS le nom (un sac rouge). Adjectifs courts AVANT: petit, grand, beau, bon, joli, jeune, vieux, nouveau. Couleurs: toujours APRÈS.", examples:["Un grand sac. Un petit chapeau.","Une belle robe. Un bon restaurant.","Un pantalon bleu. Des chaussures rouges."] },
+      { topic:"Tính từ chỉ định — ce/cet/cette/ces", rule:"Ce + nom masculin. Cet + nom masculin bắt đầu bằng nguyên âm/h. Cette + nom féminin. Ces + số nhiều.", examples:["Ce pull est beau.","Cet imperméable est pratique.","Cette robe est élégante.","Ces chaussures sont confortables."] },
+    ]
+  },
+  {
+    id:"g6", num:"6", title:"Qu'est-ce qu'on fait?", points:[
+      { topic:"Động từ phản thân — verbes pronominaux", rule:"Se+verbe: je me lève, tu te lèves, il se lève, nous nous levons, vous vous levez, ils se lèvent. Me/te/se → m'/t'/s' devant voyelle.", examples:["Je me réveille à 7h.","Il s'habille vite.","Nous nous couchons tard."] },
+      { topic:"Trạng từ chỉ tần suất (2) — parfois, rarement, tous les jours", rule:"Thang tần suất: jamais < rarement < parfois < souvent < toujours. Expressions de temps: le lundi, tous les lundis (đầu hoặc cuối câu).", examples:["Je vais parfois au cinéma.","Elle sort rarement le week-end.","Tous les jours je fais du sport."] },
+      { topic:"Passé récent — venir de + infinitif", rule:"Venir au présent + de/d' + infinitif. Exprime une action qui vient de se terminer. Je viens de, tu viens de, il vient de, nous venons de, vous venez de, ils viennent de.", examples:["Je viens de manger.","Il vient d'appeler.","Nous venons de finir le cours."] },
+      { topic:"Động từ -ir nhóm 3 — partir, sortir, dormir", rule:"Je pars/sors/dors. Tu pars/sors/dors. Il part/sort/dort. Nous partons/sortons/dormons. Vous partez/sortez/dormez. Ils partent/sortent/dorment.", examples:["Je pars à 8h.","Tu sors ce soir?","Il dort beaucoup le week-end."] },
+    ]
+  },
+  {
+    id:"g7", num:"7", title:"Chez moi!", points:[
+      { topic:"Thì quá khứ passé composé (1) — avec avoir", rule:"Avoir au présent + participe passé. Verbes en -er: parlé. Irréguliers: faire→fait, voir→vu, pouvoir→pu, prendre→pris. Négatif: n'avoir pas + pp.", examples:["J'ai trouvé un appartement.","Il a fait les courses.","Nous n'avons pas regardé la télé."] },
+      { topic:"Giới từ chỉ nơi chốn (2) — à gauche, à droite, sur, sous, devant, derrière, entre, en face de", rule:"Vị trí đồ vật: sur=trên, sous=dưới, devant=trước, derrière=sau, entre=giữa, en face de=đối diện, à gauche (de)=bên trái, à côté de=bên cạnh.", examples:["La table est devant la fenêtre.","Le canapé est entre les deux fauteuils.","Le livre est sur le bureau."] },
+      { topic:"Obligation et interdiction (1) — infinitif, impératif", rule:"Il faut + infinitif (obligation impersonnelle). Ne pas + infinitif (interdiction formelle, panneaux). Impératif pour règles de vie.", examples:["Il faut respecter le silence.","Ne pas fumer dans l'immeuble.","Fermez la porte!"] },
+      { topic:"Pronoms COD (1) — le, la, l', les", rule:"Remplacent un COD (chose ou personne). Placés AVANT le verbe. Le/la/l' (sg), les (pl). À l'impératif affirmatif: après le verbe (mange-le!).", examples:["Tu as les clés? Oui, je les ai.","Il cherche le plombier. Il le contacte.","Tu prends la voiture? Oui, je la prends."] },
+    ]
+  },
+  {
+    id:"g8", num:"8", title:"En forme!", points:[
+      { topic:"Thì quá khứ passé composé (2) — participes irréguliers", rule:"Participes irréguliers thường gặp: être→été, avoir→eu, faire→fait, voir→vu, pouvoir→pu, vouloir→voulu, prendre→pris, dormir→dormi, boire→bu, apprendre→appris.", examples:["J'ai eu de la fièvre.","Il a fait du sport hier.","Nous avons pris rendez-vous."] },
+      { topic:"Pronom y — remplace un complément de lieu", rule:"Y remplace un complément de lieu (à, en, dans, sur + lieu). Placé AVANT le verbe. Ne pas confondre avec lui/leur (personnes).", examples:["Tu vas à la pharmacie? Oui, j'y vais.","Il travaille au bureau. Il y travaille.","Nous n'y allons pas souvent."] },
+      { topic:"Obligation et interdiction (2) — devoir + infinitif", rule:"Devoir + infinitif: obligation personnelle. Je dois, tu dois, il doit, nous devons, vous devez, ils doivent. Négatif: ne pas devoir (ne doit pas=interdiction).", examples:["Tu dois prendre ce médicament.","Vous devez faire du sport.","Il ne doit pas manger de sucre."] },
+      { topic:"Conseil — pouvoir + infinitif, impératif", rule:"Pour donner un conseil: Tu peux/Vous pouvez + infinitif. Ou impératif direct. Ou On peut + infinitif.", examples:["Tu peux prendre de la vitamine C.","Vous pouvez consulter un médecin.","Mange des légumes!"] },
+    ]
+  },
+  {
+    id:"g9", num:"9", title:"Bonnes vacances!", points:[
+      { topic:"Comparatifs — plus/aussi/moins + adjectif + que", rule:"Plus + adj + que (supérieur). Aussi + adj + que (égal). Moins + adj + que (inférieur). Attention: bon→meilleur (que). Pas de plus bon.", examples:["Le train est plus rapide que le bus.","Cet hôtel est aussi confortable que l'autre.","Le camping est moins cher que l'hôtel."] },
+      { topic:"Giới từ chỉ xuất xứ — de, du, d', des", rule:"De + ville ou pays féminin/voyelle. Du = de+le + pays masculin. Des = de+les + pays pluriel.", examples:["Je viens de Paris.","Il arrive du Japon.","Elle vient d'Italie.","Nous revenons des États-Unis."] },
+      { topic:"Passé composé avec être — aller, venir, partir, arriver…", rule:"Certains verbes utilisent ÊTRE (pas avoir) au passé composé. Accord du participe avec le sujet. Liste: aller/venir, partir/arriver, entrer/sortir, monter/descendre, naître/mourir, rester, tomber.", examples:["Je suis allé(e) à la plage.","Elle est arrivée hier.","Ils sont partis tôt ce matin."] },
+      { topic:"Imparfait — c'était, il y avait, il faisait (description au passé)", rule:"L'imparfait décrit l'état, les circonstances dans le passé. Radical du présent (nous) + terminaisons -ais/-ais/-ait/-ions/-iez/-aient. Très utiles: c'était (beau/calme), il y avait (du monde), il faisait (chaud/froid).", examples:["C'était magnifique!","Il y avait beaucoup de touristes.","Il faisait très chaud en août."] },
+    ]
+  },
+  {
+    id:"g10", num:"10", title:"Au travail!", points:[
+      { topic:"Pronoms COD (2) — me, te, nous, vous", rule:"Remplacent des personnes (1re et 2e personnes). Placés AVANT le verbe. Me/te devant voyelle → m'/t'.", examples:["Tu m'aides?","Il nous contacte par mail.","Je te comprends.","Ils vous écoutent."] },
+      { topic:"La durée et la continuation — pendant, depuis, il y a", rule:"Pendant + durée (action terminée ou limitée). Depuis + durée/point de départ (action qui continue). Il y a + durée (passé révolu).", examples:["J'ai travaillé pendant deux ans.","Il habite ici depuis 5 ans.","Elle a trouvé ce poste il y a un mois."] },
+      { topic:"Pronoms relatifs — qui et que", rule:"Qui = sujet (suivi d'un verbe). Que/qu' = COD (suivi d'un sujet+verbe). Remplacent un nom pour relier deux phrases. Que+voyelle = qu'.", examples:["J'ai un travail qui est intéressant.","C'est un métier que j'adore.","Voilà la collègue qu'il cherche."] },
+      { topic:"L'intensité — un peu, assez, très, beaucoup, trop", rule:"Gradation: un peu < assez < très/beaucoup < trop. Très+adjectif/adverbe. Beaucoup+verbe. Un peu/assez/trop + adjectif ou verbe. Trop: sens négatif (excès).", examples:["Je suis très fatigué.","Il travaille beaucoup.","C'est un peu difficile.","C'est trop loin pour moi."] },
+    ]
+  },
+];
+
+function GrammarPresets({ onLoad }) {
+  const [open, setOpen] = useState(false);
+  const [selectedUnit, setSelectedUnit] = useState(null);
+
+  return (
+    <div style={{ background:C.white, border:`1.5px solid ${C.purple}33`, borderRadius:12, overflow:"hidden", boxShadow:"0 1px 4px rgba(0,0,0,0.05)" }}>
+      <button onClick={()=>{ setOpen(o=>!o); setSelectedUnit(null); }}
+        style={{ width:"100%", display:"flex", justifyContent:"space-between", alignItems:"center", padding:"0.65rem 0.9rem", background:"transparent", border:"none", cursor:"pointer", fontFamily:"inherit" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:"0.5rem" }}>
+          <span style={{ fontSize:"0.85rem" }}>📘</span>
+          <div style={{ textAlign:"left" }}>
+            <div style={{ fontSize:"0.78rem", fontWeight:600, color:C.purple }}>Ngữ pháp Édito A1 — theo unité</div>
+            <div style={{ fontSize:"0.65rem", color:C.gray }}>11 unités · giải thích + ví dụ + bài tập</div>
+          </div>
+        </div>
+        <span style={{ fontSize:"0.8rem", color:C.gray }}>{open?"▲":"▼"}</span>
+      </button>
+
+      {open && !selectedUnit && (
+        <div style={{ borderTop:`1px solid ${C.border}`, padding:"0.6rem" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.4rem" }}>
+            {EDITO_GRAMMAR.map(u => (
+              <button key={u.id} onClick={()=>setSelectedUnit(u)}
+                style={{ background:C.cream, border:`1px solid ${C.border}`, borderRadius:8, padding:"0.55rem 0.6rem", textAlign:"left", cursor:"pointer", fontFamily:"inherit", transition:"all 0.15s" }}
+                onMouseEnter={e=>e.currentTarget.style.background=C.purpleL}
+                onMouseLeave={e=>e.currentTarget.style.background=C.cream}>
+                <div style={{ display:"flex", gap:"0.35rem", alignItems:"center" }}>
+                  <span style={{ background:C.purple, color:C.white, fontSize:"0.58rem", fontWeight:700, borderRadius:20, padding:"0.1rem 0.38rem", whiteSpace:"nowrap" }}>U{u.num}</span>
+                  <div>
+                    <div style={{ fontSize:"0.75rem", fontWeight:600, color:C.ink, lineHeight:1.2 }}>{u.title}</div>
+                    <div style={{ fontSize:"0.62rem", color:C.gray }}>{u.points.length} điểm ngữ pháp</div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {open && selectedUnit && (
+        <div style={{ borderTop:`1px solid ${C.border}` }}>
+          <button onClick={()=>setSelectedUnit(null)}
+            style={{ display:"flex", alignItems:"center", gap:"0.4rem", padding:"0.5rem 0.9rem", background:"transparent", border:"none", cursor:"pointer", fontSize:"0.72rem", color:C.gray, fontFamily:"inherit" }}>
+            ← Tất cả unités
+          </button>
+          <div style={{ padding:"0 0.6rem 0.6rem", display:"flex", flexDirection:"column", gap:"0.5rem" }}>
+            {selectedUnit.points.map((p, i) => (
+              <div key={i} style={{ background:C.white, border:`1px solid ${C.border}`, borderRadius:10, overflow:"hidden", boxShadow:"0 1px 3px rgba(0,0,0,0.04)" }}>
+                {/* Header */}
+                <div style={{ background:C.purpleL, padding:"0.55rem 0.75rem", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                  <div style={{ fontSize:"0.78rem", fontWeight:600, color:C.purple, lineHeight:1.3 }}>{p.topic}</div>
+                  <button onClick={()=>onLoad(p.topic)}
+                    style={{ background:C.purple, color:C.white, border:"none", borderRadius:20, padding:"0.2rem 0.6rem", fontSize:"0.62rem", cursor:"pointer", whiteSpace:"nowrap", marginLeft:"0.5rem", flexShrink:0 }}>
+                    Luyện tập →
+                  </button>
+                </div>
+                {/* Rule */}
+                <div style={{ padding:"0.55rem 0.75rem" }}>
+                  <div style={{ fontSize:"0.73rem", color:C.ink, lineHeight:1.6, marginBottom:"0.4rem" }}>📌 {p.rule}</div>
+                  <div style={{ display:"flex", flexDirection:"column", gap:"0.2rem" }}>
+                    {p.examples.map((ex, j) => (
+                      <div key={j} style={{ display:"flex", alignItems:"center", gap:"0.4rem" }}>
+                        <span style={{ fontSize:"0.65rem", color:C.purple, flexShrink:0 }}>▸</span>
+                        <span style={{ fontFamily:"Georgia,serif", fontSize:"0.78rem", color:C.ink, fontStyle:"italic" }}>{ex}</span>
+                        <SpeakBtn text={ex} size="0.7rem" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GrammarPanel() {
   const [topic, setTopic] = useState("");
   const [level, setLevel] = useState("A1");
@@ -1733,6 +1905,9 @@ function GrammarPanel() {
 
   return (
     <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"0.75rem"}}>
+      {/* Édito Presets */}
+      <GrammarPresets onLoad={topic => { setTopic(topic); setLevel("A1"); }} />
+
       {/* Input form */}
       <div style={{background:C.cream,borderRadius:12,padding:"0.9rem",display:"flex",flexDirection:"column",gap:"0.65rem"}}>
         <div style={{fontSize:"0.72rem",fontWeight:600,color:C.purple}}>🧩 Bài tập ngữ pháp</div>
