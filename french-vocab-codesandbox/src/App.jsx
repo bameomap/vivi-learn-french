@@ -2685,19 +2685,23 @@ function DefiPanel() {
     const type = DEFI_TYPES[Math.floor(Math.random() * DEFI_TYPES.length)];
     try {
       const r = await callAI(`French teacher for A1 Vietnamese learners. Create a daily challenge: ${type}.
+CRITICAL: Every question MUST have both "q" and "answer" fields.
 Return ONLY JSON:
 {
   "title": "challenge title in French",
-  "type": "mc|fill|translate",
   "questions": [
     {
-      "q": "question text",
+      "q": "question or Vietnamese sentence to translate",
       "options": ["A","B","C","D"],
-      "answer": "correct answer",
-      "explanation": "short explanation in Vietnamese"
+      "answer": "correct answer or French translation (ALWAYS REQUIRED)",
+      "explanation": "short tip in Vietnamese"
     }
   ]
-}`);
+}
+Rules:
+- Multiple choice: include "options" array with 4 items, "answer" = one of the options
+- Fill blank: no "options", "q" has ___ for blank, "answer" = missing word
+- Translate: no "options", "q" = Vietnamese sentence, "answer" = French translation`);
       setDefi(r);
     } catch(e) { setErr(e.message); }
     setLoading(false);
@@ -2844,14 +2848,14 @@ function DefiQuiz({ defi, onFinish }) {
             <div style={{ fontSize:"0.63rem", color:C.gray, textTransform:"uppercase", letterSpacing:1, marginBottom:"0.35rem" }}>Câu {i+1}</div>
             <div style={{ fontFamily:"Georgia,serif", fontSize:"0.9rem", color:C.ink, marginBottom:"0.6rem", lineHeight:1.5 }}>{q.q}</div>
 
-            {q.options ? (
+            {q.options && q.options.length > 0 ? (
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.28rem" }}>
                 {q.options.map((opt,j) => {
                   let bg=C.white, bc=C.border, col=C.ink;
                   if(isRevealed){
-                    if(opt.toLowerCase()===q.answer?.toLowerCase()){bg="rgba(16,185,129,0.1)";bc=C.green;col=C.green;}
+                    if(opt.toLowerCase()===(q.answer||"").toLowerCase()){bg="rgba(16,185,129,0.1)";bc=C.green;col=C.green;}
                     else if(opt===answers[i]){bg="rgba(239,68,68,0.1)";bc=C.red;col=C.red;}
-                  } else if(answers[i]===opt){bg:C.purpleL;bc=C.purple;col=C.purple;}
+                  } else if(answers[i]===opt){bg=C.purpleL;bc=C.purple;col=C.purple;}
                   return (
                     <button key={j} disabled={isRevealed}
                       onClick={()=>{ setAnswers(a=>({...a,[i]:opt})); setRevealed(r=>({...r,[i]:true})); }}
@@ -2863,21 +2867,19 @@ function DefiQuiz({ defi, onFinish }) {
               </div>
             ) : (
               <div style={{ display:"flex", flexDirection:"column", gap:"0.4rem" }}>
-                {!q.options && q.answer && (
-                  <div style={{ fontSize:"0.68rem", color:C.purple, marginBottom:"0.1rem" }}>
-                    💡 Dịch sang tiếng Pháp
-                  </div>
-                )}
+                <div style={{ fontSize:"0.68rem", color:C.purple, marginBottom:"0.1rem" }}>
+                  ✏️ Nhập câu tiếng Pháp
+                </div>
                 <div style={{ display:"flex", gap:"0.38rem" }}>
                   <input value={inputVals[i]||""} disabled={isRevealed}
                     onChange={e=>setInputVals(v=>({...v,[i]:e.target.value}))}
                     onKeyDown={e=>{ if(e.key==="Enter"&&!isRevealed) submitInput(i,q); }}
-                    placeholder="Nhập câu tiếng Pháp..."
+                    placeholder="Je suis…"
                     style={{flex:1,border:`1.5px solid ${isRevealed?(correct?C.green:C.red):C.border}`,borderRadius:10,padding:"0.5rem 0.7rem",fontSize:"0.88rem",fontFamily:"Georgia,serif",background:isRevealed?(correct?"rgba(16,185,129,0.08)":"rgba(239,68,68,0.08)"):C.white,color:isRevealed?(correct?C.green:C.red):C.ink,outline:"none"}}/>
                   {!isRevealed && (
                     <button onClick={()=>submitInput(i,q)}
                       style={{padding:"0.5rem 0.8rem",background:C.purple,color:C.white,border:"none",borderRadius:10,fontSize:"0.8rem",cursor:"pointer",whiteSpace:"nowrap",fontWeight:500}}>
-                      Kiểm tra
+                      OK
                     </button>
                   )}
                 </div>
