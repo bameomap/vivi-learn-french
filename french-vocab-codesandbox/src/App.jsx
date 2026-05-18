@@ -2900,8 +2900,6 @@ function DefiQuiz({ defi, onFinish }) {
   );
 }
 
-}
-
 // ── Streak & Progress helpers ───────────────────────────────
 const STREAK_KEY = "streak_data";
 const PROGRESS_KEY = "module_progress";
