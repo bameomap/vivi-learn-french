@@ -1,10 +1,14 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
 const C = {
-  ink:"#1a1a2e", paper:"#faf8f4", cream:"#f0ece2",
-  purple:"#6b4fbb", purpleL:"#ede8f8",
-  gold:"#c9a84c", green:"#3d8b6f", red:"#c0392b",
-  gray:"#8a8a9a", border:"#ddd8cc", white:"#ffffff"
+  ink:"#1a1a2e", paper:"#ffffff", cream:"#f7f8fa",
+  purple:"#6b4fbb", purpleL:"#f0ecfb",
+  gold:"#c9a84c", green:"#2e7d5e", red:"#c0392b",
+  gray:"#9a9aaa", border:"#e8e8f0", white:"#ffffff",
+  // Glassmorphism layers
+  g1:"rgba(255,255,255,0.95)",
+  g2:"rgba(255,255,255,0.7)",
+  g3:"rgba(248,248,252,0.85)",
 };
 
 const DEFAULTS = `la boulangerie — tiệm bánh mì
@@ -2653,6 +2657,216 @@ function EditoPresets({ onLoad }) {
   );
 }
 
+// ── Défi du Jour Panel ─────────────────────────────────────
+const DEFI_KEY = "defi_history";
+
+function DefiPanel() {
+  const [defi, setDefi] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+  const [done, setDone] = useState(false);
+  const [score, setScore] = useState({ ok:0, total:0 });
+  const [history, setHistory] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(DEFI_KEY) || "[]"); } catch { return []; }
+  });
+
+  const DEFI_TYPES = [
+    "5 câu trắc nghiệm từ vựng Édito A1 ngẫu nhiên (chọn 1 trong 4 đáp án)",
+    "5 câu điền từ vào chỗ trống về ngữ pháp A1 (mạo từ, giới từ, chia động từ être/avoir/aller)",
+    "3 câu dịch câu ngắn từ tiếng Việt sang tiếng Pháp (A1 level)",
+    "5 câu hỏi về văn hóa Pháp và Francophonie (trắc nghiệm)",
+    "5 câu về từ vựng gia đình, nhà cửa, thức ăn (trắc nghiệm hoặc điền từ)",
+  ];
+
+  const today = new Date().toLocaleDateString("vi-VN");
+  const todayDefi = history.find(h => h.date === today);
+
+  const generate = async () => {
+    setLoading(true); setErr(""); setDefi(null); setDone(false); setScore({ok:0,total:0});
+    const type = DEFI_TYPES[Math.floor(Math.random() * DEFI_TYPES.length)];
+    try {
+      const r = await callAI(`French teacher for A1 Vietnamese learners. Create a daily challenge: ${type}.
+Return ONLY JSON:
+{
+  "title": "challenge title in French",
+  "type": "mc|fill|translate",
+  "questions": [
+    {
+      "q": "question text",
+      "options": ["A","B","C","D"],
+      "answer": "correct answer",
+      "explanation": "short explanation in Vietnamese"
+    }
+  ]
+}`);
+      setDefi(r);
+    } catch(e) { setErr(e.message); }
+    setLoading(false);
+  };
+
+  const finish = (ok, total) => {
+    setDone(true);
+    setScore({ok, total});
+    markStudiedToday();
+    const entry = { date: today, title: defi?.title, score: ok, total, pct: Math.round(ok/total*100) };
+    const newH = [entry, ...history].slice(0, 30);
+    setHistory(newH);
+    localStorage.setItem(DEFI_KEY, JSON.stringify(newH));
+  };
+
+  const scoreColor = p => p >= 80 ? C.green : p >= 60 ? C.gold : C.red;
+  const medal = p => p >= 80 ? "🥇" : p >= 60 ? "🥈" : "🥉";
+
+  return (
+    <div style={{ padding:"1rem", display:"flex", flexDirection:"column", gap:"0.85rem" }}>
+      <div style={{ fontSize:"0.72rem", fontWeight:600, color:"#8e44ad" }}>🎲 Défi du Jour</div>
+      <div style={{ fontSize:"0.73rem", color:C.gray, lineHeight:1.6 }}>Mỗi ngày một thử thách ngẫu nhiên — từ vựng, ngữ pháp, văn hóa. Làm xong tích streak!</div>
+
+      {/* Today status */}
+      {todayDefi && !defi && (
+        <div style={{ background:"rgba(255,255,255,0.8)", border:`1.5px solid ${scoreColor(todayDefi.pct)}44`, borderRadius:12, padding:"0.9rem 1rem", display:"flex", alignItems:"center", gap:"0.8rem", boxShadow:"0 2px 8px rgba(0,0,0,0.05)" }}>
+          <div style={{ fontSize:"2rem" }}>{medal(todayDefi.pct)}</div>
+          <div>
+            <div style={{ fontSize:"0.75rem", fontWeight:600, color:C.ink }}>Hôm nay đã làm!</div>
+            <div style={{ fontSize:"0.7rem", color:C.gray, marginTop:"0.1rem" }}>{todayDefi.title} · {todayDefi.ok}/{todayDefi.total} đúng ({todayDefi.pct}%)</div>
+          </div>
+          <button onClick={generate} style={{ marginLeft:"auto", padding:"0.3rem 0.65rem", background:"transparent", border:`1px solid ${C.border}`, borderRadius:20, fontSize:"0.68rem", color:C.gray, cursor:"pointer" }}>Thêm 1 thử thách</button>
+        </div>
+      )}
+
+      {/* Generate button */}
+      {!defi && !loading && (
+        <button onClick={generate}
+          style={{ padding:"1rem", background:"linear-gradient(135deg, #8e44ad, #6b4fbb)", color:C.white, border:"none", borderRadius:14, fontFamily:"Georgia,serif", fontSize:"1rem", cursor:"pointer", boxShadow:"0 4px 16px rgba(142,68,173,0.3)" }}>
+          🎲 {todayDefi ? "Thử thách mới" : "Bắt đầu thử thách hôm nay"}
+        </button>
+      )}
+
+      {loading && <div style={{ display:"flex", flexDirection:"column", alignItems:"center", padding:"2rem", gap:"0.8rem" }}>
+        <Spinner />
+        <div style={{ fontSize:"0.8rem", color:C.gray }}>AI đang tạo thử thách...</div>
+      </div>}
+
+      {err && <div style={{ color:C.red, fontSize:"0.75rem", padding:"0.5rem", background:"#fde8e6", borderRadius:8 }}>⚠ {err}</div>}
+
+      {/* Quiz */}
+      {defi && !done && <DefiQuiz defi={defi} onFinish={finish} />}
+
+      {/* Result */}
+      {done && (
+        <div style={{ background:"rgba(255,255,255,0.9)", border:`1.5px solid ${scoreColor(Math.round(score.ok/score.total*100))}44`, borderRadius:14, padding:"1.2rem", textAlign:"center", animation:"fadeUp 0.3s ease", boxShadow:"0 4px 16px rgba(0,0,0,0.06)" }}>
+          <div style={{ fontSize:"2.5rem", marginBottom:"0.5rem" }}>{medal(Math.round(score.ok/score.total*100))}</div>
+          <div style={{ fontFamily:"Georgia,serif", fontSize:"1.3rem", color: scoreColor(Math.round(score.ok/score.total*100)), marginBottom:"0.3rem" }}>
+            {score.ok}/{score.total} đúng
+          </div>
+          <div style={{ fontSize:"0.78rem", color:C.gray, marginBottom:"1rem" }}>
+            {score.ok === score.total ? "Hoàn hảo! Bạn thật xuất sắc 🌟" : score.ok >= score.total*0.8 ? "Rất tốt! Tiếp tục phát huy!" : score.ok >= score.total*0.6 ? "Khá tốt! Ôn lại nhé!" : "Cần ôn thêm — bạn làm được!"}
+          </div>
+          <button onClick={generate} style={{ padding:"0.6rem 1.2rem", background:"linear-gradient(135deg, #8e44ad, #6b4fbb)", color:C.white, border:"none", borderRadius:20, fontFamily:"Georgia,serif", fontSize:"0.85rem", cursor:"pointer" }}>
+            🎲 Thử thách mới
+          </button>
+        </div>
+      )}
+
+      {/* History */}
+      {history.length > 0 && !defi && (
+        <div>
+          <div style={{ fontSize:"0.65rem", textTransform:"uppercase", letterSpacing:1, color:C.gray, marginBottom:"0.5rem", fontWeight:600 }}>📅 Lịch sử thử thách</div>
+          {history.slice(0,7).map((h,i) => (
+            <div key={i} style={{ background:"rgba(255,255,255,0.75)", border:`1px solid ${C.border}`, borderRadius:8, padding:"0.5rem 0.75rem", marginBottom:"0.3rem", display:"flex", justifyContent:"space-between", alignItems:"center", boxShadow:"0 1px 4px rgba(0,0,0,0.04)" }}>
+              <div>
+                <div style={{ fontSize:"0.78rem", color:C.ink }}>{h.title || "Thử thách"}</div>
+                <div style={{ fontSize:"0.65rem", color:C.gray, marginTop:"0.08rem" }}>{h.date}</div>
+              </div>
+              <div style={{ display:"flex", alignItems:"center", gap:"0.3rem" }}>
+                <span style={{ fontSize:"0.9rem" }}>{medal(h.pct)}</span>
+                <span style={{ fontSize:"0.72rem", fontWeight:600, color: scoreColor(h.pct) }}>{h.pct}%</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DefiQuiz({ defi, onFinish }) {
+  const [answers, setAnswers] = useState({});
+  const [revealed, setRevealed] = useState({});
+  const [inputVals, setInputVals] = useState({});
+
+  const questions = defi.questions || [];
+  const allDone = questions.every((_,i) => revealed[i]);
+
+  useEffect(() => {
+    if (allDone && questions.length > 0) {
+      const ok = questions.filter((_,i) => {
+        const ans = answers[i] || inputVals[i] || "";
+        return ans.trim().toLowerCase() === (questions[i].answer||"").toLowerCase();
+      }).length;
+      onFinish(ok, questions.length);
+    }
+  }, [revealed]);
+
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:"0.65rem", animation:"fadeUp 0.3s ease" }}>
+      <div style={{ background:"rgba(255,255,255,0.9)", border:`1px solid ${C.border}`, borderRadius:12, padding:"0.7rem 0.9rem", boxShadow:"0 2px 8px rgba(0,0,0,0.05)" }}>
+        <div style={{ fontFamily:"Georgia,serif", fontSize:"0.95rem", color:"#8e44ad" }}>🎲 {defi.title}</div>
+        <div style={{ fontSize:"0.68rem", color:C.gray, marginTop:"0.15rem" }}>{questions.length} câu hỏi</div>
+      </div>
+
+      {questions.map((q, i) => {
+        const isRevealed = revealed[i];
+        const userAns = answers[i] || inputVals[i] || "";
+        const correct = userAns.trim().toLowerCase() === (q.answer||"").toLowerCase();
+
+        return (
+          <div key={i} style={{ background:"rgba(255,255,255,0.8)", border:`1.5px solid ${isRevealed?(correct?C.green:C.red):C.border}`, borderRadius:12, padding:"0.85rem", boxShadow:"0 2px 8px rgba(0,0,0,0.04)" }}>
+            <div style={{ fontSize:"0.63rem", color:C.gray, textTransform:"uppercase", letterSpacing:1, marginBottom:"0.35rem" }}>Câu {i+1}</div>
+            <div style={{ fontFamily:"Georgia,serif", fontSize:"0.9rem", color:C.ink, marginBottom:"0.6rem", lineHeight:1.5 }}>{q.q}</div>
+
+            {q.options ? (
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.28rem" }}>
+                {q.options.map((opt,j) => {
+                  let bg="rgba(255,255,255,0.6)", bc=C.border, col=C.ink;
+                  if(isRevealed){
+                    if(opt.toLowerCase()===q.answer?.toLowerCase()){bg="rgba(46,125,94,0.1)";bc=C.green;col=C.green;}
+                    else if(opt===answers[i]){bg="rgba(192,57,43,0.1)";bc=C.red;col=C.red;}
+                  } else if(answers[i]===opt){bg="rgba(107,79,187,0.1)";bc=C.purple;col=C.purple;}
+                  return (
+                    <button key={j} disabled={isRevealed}
+                      onClick={()=>{ setAnswers(a=>({...a,[i]:opt})); setRevealed(r=>({...r,[i]:true})); }}
+                      style={{padding:"0.38rem 0.5rem",border:`1.5px solid ${bc}`,borderRadius:8,background:bg,color:col,fontSize:"0.77rem",cursor:isRevealed?"default":"pointer",textAlign:"left",fontFamily:"inherit"}}>
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div style={{ display:"flex", gap:"0.38rem" }}>
+                <input value={inputVals[i]||""} disabled={isRevealed}
+                  onChange={e=>setInputVals(v=>({...v,[i]:e.target.value}))}
+                  onKeyDown={e=>{ if(e.key==="Enter"&&!isRevealed) setRevealed(r=>({...r,[i]:true})); }}
+                  placeholder="Nhập câu trả lời..."
+                  style={{flex:1,border:`1.5px solid ${isRevealed?(correct?C.green:C.red):C.border}`,borderRadius:8,padding:"0.38rem 0.6rem",fontSize:"0.85rem",fontFamily:"Georgia,serif",background:isRevealed?(correct?"rgba(46,125,94,0.1)":"rgba(192,57,43,0.1)"):"rgba(255,255,255,0.9)",color:isRevealed?(correct?C.green:C.red):C.ink,outline:"none"}}/>
+                {!isRevealed && <button onClick={()=>setRevealed(r=>({...r,[i]:true}))} style={{padding:"0.38rem 0.7rem",background:C.ink,color:C.white,border:"none",borderRadius:8,fontSize:"0.75rem",cursor:"pointer"}}>OK</button>}
+              </div>
+            )}
+
+            {isRevealed && (
+              <div style={{ marginTop:"0.4rem", fontSize:"0.73rem", lineHeight:1.5 }}>
+                {!correct && <div style={{ color:C.red, marginBottom:"0.1rem" }}>✗ Đáp án: <b>{q.answer}</b></div>}
+                {correct && <div style={{ color:C.green, marginBottom:"0.1rem" }}>✓ Chính xác!</div>}
+                {q.explanation && <div style={{ color:C.gray }}>💡 {q.explanation}</div>}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ── Streak & Progress helpers ───────────────────────────────
 const STREAK_KEY = "streak_data";
 const PROGRESS_KEY = "module_progress";
@@ -2704,14 +2918,14 @@ function ApiKeyScreen({ onSave }) {
     setApiKey(val.trim()); onSave(val.trim());
   };
   return (
-    <div style={{ minHeight:"100vh", background:C.ink, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 1.5rem" }}>
-      <div style={{ fontFamily:"Georgia,serif", fontSize:"2.2rem", color:C.paper, marginBottom:"0.4rem" }}>Français</div>
+    <div style={{ minHeight:"100vh", background:"linear-gradient(135deg, #f0f2ff 0%, #ffffff 50%, #f8f0ff 100%)", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 1.5rem" }}>
+      <div style={{ fontFamily:"Georgia,serif", fontSize:"2.2rem", color:C.ink, marginBottom:"0.4rem" }}>Français</div>
       <div style={{ width:36, height:2, background:C.gold, marginBottom:"1.6rem" }} />
-      <div style={{ background:"#ffffff0d", border:`1px solid ${C.gold}33`, borderRadius:16, padding:"1.8rem 1.5rem", width:"100%", maxWidth:400 }}>
-        <div style={{ fontFamily:"Georgia,serif", color:C.gold, fontSize:"1rem", marginBottom:"0.4rem" }}>🔑 Nhập Anthropic API Key</div>
-        <div style={{ fontSize:"0.75rem", color:"#a0a0b8", lineHeight:1.6, marginBottom:"1.2rem" }}>
+      <div style={{ background:"rgba(255,255,255,0.9)", border:`1px solid ${C.border}`, borderRadius:16, padding:"1.8rem 1.5rem", width:"100%", maxWidth:400, boxShadow:"0 4px 24px rgba(0,0,0,0.08)" }}>
+        <div style={{ fontFamily:"Georgia,serif", color:C.ink, fontSize:"1rem", marginBottom:"0.4rem" }}>🔑 Nhập Anthropic API Key</div>
+        <div style={{ fontSize:"0.75rem", color:C.gray, lineHeight:1.6, marginBottom:"1.2rem" }}>
           Lấy API key tại{" "}
-          <a href="https://console.anthropic.com/keys" target="_blank" rel="noreferrer" style={{ color:C.gold }}>console.anthropic.com</a>
+          <a href="https://console.anthropic.com/keys" target="_blank" rel="noreferrer" style={{ color:C.purple }}>console.anthropic.com</a>
           <br/>Key được lưu trong trình duyệt của bạn, không gửi đi đâu khác.
         </div>
         <div style={{ position:"relative", marginBottom:"0.8rem" }}>
@@ -2874,7 +3088,7 @@ function AppInner({ apiKey, onChangeKey }) {
 
   const navBtn = (label, target, show=true) => show && (
     <button onClick={()=>setView(target)}
-      style={{ padding:"0.22rem 0.58rem", background:view===target?C.gold:"transparent", border:`1px solid ${C.gold}`, color:view===target?C.ink:C.gold, borderRadius:20, fontSize:"0.63rem", cursor:"pointer", fontWeight:view===target?600:400, whiteSpace:"nowrap" }}>
+      style={{ padding:"0.22rem 0.58rem", background:view===target?C.purple:"transparent", border:`1px solid ${C.purple}`, color:view===target?C.white:C.purple, borderRadius:20, fontSize:"0.63rem", cursor:"pointer", fontWeight:view===target?600:400, whiteSpace:"nowrap" }}>
       {label}
     </button>
   );
@@ -2883,27 +3097,28 @@ function AppInner({ apiKey, onChangeKey }) {
   const MODULES = [
     { id:"vocab",       label:"Le Vocabulaire",     short:"Từ vựng",      icon:"📚", num:"01", color:C.gold,      view:"input",        tags:["Trắc nghiệm","Flashcard","Dictée"] },
     { id:"grammar",     label:"La Grammaire",       short:"Ngữ pháp",     icon:"🧩", num:"02", color:C.purple,    view:"grammar",      tags:["A1","A2","B1","B2"] },
+    { id:"conjugaison", label:"La Conjugaison",     short:"Chia động từ", icon:"📖", num:"03", color:"#16a085",   view:"conjugaison",  tags:["être","avoir","aller","faire"] },
     { id:"conversation",label:"La Conversation",    short:"Hội thoại",    icon:"💬", num:"04", color:"#2980b9",   view:"conversation", tags:["Chào hỏi","Mua sắm","Quán cà phê"] },
     { id:"writing",     label:"L'Écriture",         short:"Viết câu",     icon:"✍️", num:"05", color:"#e67e22",   view:"writing",      tags:["Chấm điểm","Sửa lỗi"] },
     { id:"weakspots",   label:"Les Points Faibles", short:"Điểm yếu",     icon:"🎯", num:"06", color:C.red,       view:"weakspots",    tags:["Mạo từ","Giới từ","Chia động từ"] },
-    { id:"conjugaison", label:"La Conjugaison",     short:"Chia động từ", icon:"📖", num:"07", color:"#16a085",   view:"conjugaison",  tags:["être","avoir","aller","faire"] },
-    { id:"analyse",     label:"L'Analyse",          short:"Phân tích",    icon:"🔍", num:"03", color:C.green,     view:"analyse",      tags:["Từ vựng","Ngữ pháp","Bản dịch"] },
+    { id:"analyse",     label:"L'Analyse",          short:"Phân tích",    icon:"🔍", num:"07", color:C.green,     view:"analyse",      tags:["Từ vựng","Ngữ pháp","Bản dịch"] },
+    { id:"defi",        label:"Le Défi du Jour",    short:"Thử thách",    icon:"🎲", num:"08", color:"#8e44ad",   view:"defi",         tags:["Mỗi ngày","Mini-quiz","Bất ngờ"] },
   ];
 
   // Bottom tab items
   const TABS = [
     { id:"home",        icon:"🏠", label:"Trang chủ" },
     { id:"vocab",       icon:"📚", label:"Từ vựng" },
-    { id:"grammar",     icon:"🧩", label:"Ngữ pháp" },
+    { id:"defi",        icon:"🎲", label:"Thử thách" },
     { id:"conjugaison", icon:"📖", label:"Chia động từ" },
     { id:"more",        icon:"⋯",  label:"Thêm" },
   ];
   const [showMore, setShowMore] = useState(false);
 
-  const SECTION_TITLE = { vocab:"Le Vocabulaire", grammar:"La Grammaire", conversation:"La Conversation", writing:"L'Écriture", weakspots:"Les Points Faibles", conjugaison:"La Conjugaison", analyse:"L'Analyse" };
+  const SECTION_TITLE = { vocab:"Le Vocabulaire", grammar:"La Grammaire", conversation:"La Conversation", writing:"L'Écriture", weakspots:"Les Points Faibles", conjugaison:"La Conjugaison", analyse:"L'Analyse", defi:"Le Défi du Jour" };
 
   return (
-    <div style={{ fontFamily:"system-ui,sans-serif", background:C.paper, minHeight:"100vh", color:C.ink, paddingBottom: section!=="home" ? 60 : 0 }}>
+    <div style={{ fontFamily:"system-ui,sans-serif", background:"linear-gradient(135deg, #f0f2ff 0%, #ffffff 50%, #f8f0ff 100%)", minHeight:"100vh", color:C.ink, paddingBottom: section!=="home" ? 60 : 0 }}>
       <style>{`
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -2926,10 +3141,11 @@ function AppInner({ apiKey, onChangeKey }) {
             <div style={{ width:36, height:4, background:C.border, borderRadius:2, margin:"0 auto 1rem" }} />
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.6rem" }}>
               {[
-                { id:"conversation", icon:"💬", label:"Hội thoại", color:"#2980b9" },
-                { id:"writing",      icon:"✍️", label:"Viết câu",  color:"#e67e22" },
-                { id:"weakspots",    icon:"🎯", label:"Điểm yếu",  color:C.red },
-                { id:"analyse",      icon:"🔍", label:"Phân tích", color:C.green },
+                { id:"conversation", icon:"💬", label:"Hội thoại",  color:"#2980b9" },
+                { id:"writing",      icon:"✍️", label:"Viết câu",   color:"#e67e22" },
+                { id:"weakspots",    icon:"🎯", label:"Điểm yếu",   color:C.red },
+                { id:"analyse",      icon:"🔍", label:"Phân tích",  color:C.green },
+                { id:"grammar",      icon:"🧩", label:"Ngữ pháp",   color:C.purple },
               ].map(m => {
                 const p = progress[m.id];
                 return (
@@ -2982,14 +3198,14 @@ function AppInner({ apiKey, onChangeKey }) {
         <div style={{ minHeight:"100vh", background:C.ink, display:"flex", flexDirection:"column" }}>
           {/* Hero */}
           <div style={{ padding:"2.5rem 1.25rem 1.2rem", textAlign:"center" }}>
-            <div style={{ fontSize:"0.7rem", color:C.gold, letterSpacing:"0.2em", textTransform:"uppercase", marginBottom:"0.6rem" }}>Bienvenue</div>
-            <div style={{ fontFamily:"Georgia,serif", fontSize:"2.4rem", color:C.paper, lineHeight:1.1 }}>Français</div>
+            <div style={{ fontSize:"0.7rem", color:C.purple, letterSpacing:"0.2em", textTransform:"uppercase", marginBottom:"0.6rem", opacity:0.7 }}>Bienvenue</div>
+            <div style={{ fontFamily:"Georgia,serif", fontSize:"2.4rem", color:C.ink, lineHeight:1.1 }}>Français</div>
             <div style={{ width:32, height:2, background:C.gold, margin:"0.7rem auto" }} />
 
             {/* Streak banner */}
-            <div style={{ display:"inline-flex", alignItems:"center", gap:"0.5rem", background:"#ffffff0d", border:`1px solid ${C.gold}33`, borderRadius:20, padding:"0.35rem 0.9rem", marginTop:"0.3rem" }}>
+            <div style={{ display:"inline-flex", alignItems:"center", gap:"0.5rem", background:C.g1, border:`1px solid ${C.border}`, borderRadius:20, padding:"0.35rem 0.9rem", marginTop:"0.3rem", boxShadow:"0 2px 8px rgba(0,0,0,0.06)" }}>
               <span style={{ fontSize:"1rem" }}>{streakData.streak > 0 ? "🔥" : "📅"}</span>
-              <span style={{ fontSize:"0.78rem", color: streakData.streak > 0 ? C.gold : "#a0a0b8" }}>
+              <span style={{ fontSize:"0.78rem", color: streakData.streak > 0 ? C.gold : C.gray }}>
                 {streakData.streak > 0 ? `${streakData.streak} ngày liên tiếp` : "Chưa học hôm nay"}
               </span>
               {streakData.studiedToday && <span style={{ fontSize:"0.65rem", background:C.green, color:C.white, borderRadius:20, padding:"0.1rem 0.4rem" }}>✓ Hôm nay</span>}
@@ -3003,14 +3219,14 @@ function AppInner({ apiKey, onChangeKey }) {
               const used = p?.count > 0;
               return (
                 <button key={m.id} onClick={()=>goSection(m.id, m.view)}
-                  style={{ background:"transparent", border:`1.5px solid ${m.color}55`, borderRadius:14, padding:"1rem 0.85rem", textAlign:"left", cursor:"pointer", fontFamily:"inherit", transition:"all 0.18s", position:"relative" }}
-                  onMouseEnter={e=>e.currentTarget.style.background=m.color+"18"}
-                  onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                  style={{ background:"rgba(255,255,255,0.75)", border:`1px solid rgba(255,255,255,0.9)`, borderRadius:16, padding:"1rem 0.85rem", textAlign:"left", cursor:"pointer", fontFamily:"inherit", transition:"all 0.18s", position:"relative", boxShadow:"0 2px 12px rgba(0,0,0,0.06)", backdropFilter:"blur(8px)" }}
+                  onMouseEnter={e=>{ e.currentTarget.style.background="rgba(255,255,255,0.95)"; e.currentTarget.style.boxShadow=`0 4px 20px ${m.color}22`; e.currentTarget.style.transform="translateY(-1px)"; }}
+                  onMouseLeave={e=>{ e.currentTarget.style.background="rgba(255,255,255,0.75)"; e.currentTarget.style.boxShadow="0 2px 12px rgba(0,0,0,0.06)"; e.currentTarget.style.transform="translateY(0)"; }}>
                   {/* Used badge */}
                   {used && <div style={{ position:"absolute", top:8, right:8, width:8, height:8, borderRadius:"50%", background:m.color, opacity:0.8 }} />}
                   <div style={{ fontSize:"1.5rem", marginBottom:"0.4rem" }}>{m.icon}</div>
                   <div style={{ fontSize:"0.6rem", color:m.color, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:"0.2rem", opacity:0.8 }}>Module {m.num}</div>
-                  <div style={{ fontFamily:"Georgia,serif", fontSize:"0.95rem", color:C.paper, lineHeight:1.2, marginBottom:"0.35rem" }}>{m.label}</div>
+                  <div style={{ fontFamily:"Georgia,serif", fontSize:"0.95rem", color:C.ink, lineHeight:1.2, marginBottom:"0.35rem" }}>{m.label}</div>
                   <div style={{ fontSize:"0.68rem", color:"#a0a0b8" }}>{m.tags.slice(0,2).join(" · ")}</div>
                   {used && <div style={{ fontSize:"0.62rem", color:m.color, marginTop:"0.3rem", opacity:0.7 }}>{p.count} lần dùng</div>}
                 </button>
@@ -3024,8 +3240,8 @@ function AppInner({ apiKey, onChangeKey }) {
       {section!=="home" && (
         <>
           {/* Header */}
-          <div style={{ background:C.ink, color:C.paper, padding:"0.75rem 1rem", display:"flex", alignItems:"center", gap:"0.5rem", borderBottom:`2px solid ${C.gold}`, position:"sticky", top:0, zIndex:100 }}>
-            <button onClick={()=>setSection("home")} style={{ background:"transparent", border:"none", color:C.gold, cursor:"pointer", fontSize:"1rem", padding:"0.1rem 0.3rem", lineHeight:1 }}>←</button>
+          <div style={{ background:"rgba(255,255,255,0.92)", backdropFilter:"blur(12px)", color:C.ink, padding:"0.75rem 1rem", display:"flex", alignItems:"center", gap:"0.5rem", borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, zIndex:100, boxShadow:"0 1px 8px rgba(0,0,0,0.06)" }}>
+            <button onClick={()=>setSection("home")} style={{ background:"transparent", border:"none", color:C.purple, cursor:"pointer", fontSize:"1rem", padding:"0.1rem 0.3rem", lineHeight:1 }}>←</button>
             <span style={{ fontFamily:"Georgia,serif", fontSize:"1rem", marginRight:"auto" }}>
               {SECTION_TITLE[section] || section}
             </span>
@@ -3044,6 +3260,7 @@ function AppInner({ apiKey, onChangeKey }) {
             {section==="writing" && navBtn("✍️ Viết câu","writing")}
             {section==="weakspots" && navBtn("🎯 Điểm yếu","weakspots")}
             {section==="analyse" && navBtn("🔍 Phân tích","analyse")}
+            {section==="defi" && navBtn("🎲 Thử thách","defi")}
           </div>
 
           {/* Content */}
@@ -3261,7 +3478,7 @@ function AppInner({ apiKey, onChangeKey }) {
           </div>
 
           {/* ── BOTTOM TAB BAR ── */}
-          <div style={{ position:"fixed", bottom:0, left:0, right:0, background:C.white, borderTop:`1px solid ${C.border}`, display:"flex", zIndex:150, boxShadow:"0 -2px 12px rgba(0,0,0,0.08)" }}>
+          <div style={{ position:"fixed", bottom:0, left:0, right:0, background:"rgba(255,255,255,0.92)", backdropFilter:"blur(12px)", borderTop:`1px solid ${C.border}`, display:"flex", zIndex:150, boxShadow:"0 -1px 16px rgba(0,0,0,0.08)" }}>
             {TABS.map(tab => {
               const isActive = tab.id==="home" ? section==="home" : tab.id==="more" ? showMore : section===tab.id;
               return (
@@ -3275,7 +3492,7 @@ function AppInner({ apiKey, onChangeKey }) {
                   style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"0.5rem 0.25rem 0.6rem", background:"transparent", border:"none", cursor:"pointer", gap:"0.15rem" }}>
                   <span style={{ fontSize:"1.2rem", lineHeight:1 }}>{tab.icon}</span>
                   <span style={{ fontSize:"0.58rem", color: isActive ? C.purple : C.gray, fontWeight: isActive ? 700 : 400, letterSpacing:0.2 }}>{tab.label}</span>
-                  {isActive && <div style={{ width:18, height:2, background:C.purple, borderRadius:1 }} />}
+                  {isActive && <div style={{ width:18, height:2, background:C.purple, borderRadius:1, marginTop:1 }} />}
                 </button>
               );
             })}
