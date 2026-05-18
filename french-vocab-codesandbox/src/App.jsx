@@ -94,6 +94,173 @@ async function saveSets(sets) {
   try { localStorage.setItem(SETS_KEY, JSON.stringify(sets)); } catch {}
 }
 
+// ── Text-to-Speech ─────────────────────────────────────────
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "fr-FR"; u.rate = 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const fr = voices.find(v => v.lang.startsWith("fr"));
+  if (fr) u.voice = fr;
+  window.speechSynthesis.speak(u);
+}
+
+function SpeakBtn({ text, size = "0.8rem" }) {
+  const [playing, setPlaying] = useState(false);
+  const go = (e) => {
+    e.stopPropagation();
+    setPlaying(true);
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "fr-FR"; u.rate = 0.85;
+    const voices = window.speechSynthesis.getVoices();
+    const fr = voices.find(v => v.lang.startsWith("fr"));
+    if (fr) u.voice = fr;
+    u.onend = () => setPlaying(false);
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  };
+  return (
+    <button onClick={go} title="Nghe phát âm"
+      style={{ background:"none", border:"none", cursor:"pointer", fontSize:size, padding:"0 0.2rem", opacity: playing ? 1 : 0.6, transition:"opacity 0.2s" }}>
+      {playing ? "🔊" : "🔈"}
+    </button>
+  );
+}
+
+// ── Conversation Panel ──────────────────────────────────────
+const EDITO_SCENARIOS = [
+  { id:"greet",    label:"Saluer", icon:"👋", desc:"Chào hỏi & giới thiệu bản thân", prompt:"You are a friendly French person at a café. The learner is A1 level. Start with a simple greeting. Keep sentences very short and simple. After each learner reply, give a short correction note in Vietnamese if needed (prefix with 💡), then continue the conversation naturally." },
+  { id:"shop",     label:"Faire les courses", icon:"🛒", desc:"Mua sắm tại chợ / siêu thị", prompt:"You are a French market vendor. The learner is A1 level. Start by greeting and asking what they need. Keep sentences very short. After each learner reply, give a short correction note in Vietnamese if needed (prefix with 💡), then respond as the vendor." },
+  { id:"cafe",     label:"Au café", icon:"☕", desc:"Gọi đồ tại quán cà phê", prompt:"You are a French waiter at a café. The learner is A1 level. Start by welcoming them. Keep sentences short. After each learner reply, give a short correction note in Vietnamese if needed (prefix with 💡), then respond as the waiter." },
+  { id:"school",   label:"À l'école", icon:"🏫", desc:"Nói chuyện tại trường học", prompt:"You are a French classmate. The learner is A1 level. Start by introducing yourself and asking their name. Keep it simple. After each learner reply, give a short correction note in Vietnamese if needed (prefix with 💡), then continue chatting." },
+  { id:"direction",label:"Demander le chemin", icon:"🗺️", desc:"Hỏi đường trong thành phố", prompt:"You are a French passerby in the street. The learner is A1 level. Wait for them to ask for directions. Give simple directions. After each reply, give a short correction note in Vietnamese if needed (prefix with 💡)." },
+  { id:"family",   label:"La famille", icon:"👨‍👩‍👧", desc:"Nói về gia đình", prompt:"You are a friendly French neighbor. The learner is A1 level. Start by asking about their family. Keep questions short. After each learner reply, give a short correction note in Vietnamese if needed (prefix with 💡), then continue." },
+];
+
+async function callAIText(messages, systemPrompt) {
+  const key = getApiKey();
+  if (!key) throw new Error("Chưa nhập API key!");
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+    body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 300, system: systemPrompt, messages })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content.map(c => c.text || "").join("").trim();
+}
+
+function ConversationPanel() {
+  const [scenario, setScenario] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+  const bottomRef = useRef(null);
+
+  const startScenario = async (sc) => {
+    setScenario(sc); setMessages([]); setInput(""); setErr(""); setLoading(true);
+    try {
+      const reply = await callAIText([], sc.prompt + " Begin now.");
+      setMessages([{ role:"assistant", text: reply }]);
+    } catch(e) { setErr(e.message); }
+    setLoading(false);
+  };
+
+  const send = async () => {
+    if (!input.trim() || loading) return;
+    const userMsg = { role:"user", text: input.trim() };
+    const newMsgs = [...messages, userMsg];
+    setMessages(newMsgs); setInput(""); setLoading(true);
+    try {
+      const apiMsgs = newMsgs.map(m => ({ role: m.role, content: m.text }));
+      const reply = await callAIText(apiMsgs, scenario.prompt);
+      setMessages(m => [...m, { role:"assistant", text: reply }]);
+    } catch(e) { setErr(e.message); }
+    setLoading(false);
+  };
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior:"smooth" }); }, [messages]);
+
+  if (!scenario) return (
+    <div style={{ padding:"1rem" }}>
+      <div style={{ fontSize:"0.72rem", fontWeight:600, color:"#2980b9", marginBottom:"0.2rem" }}>💬 Hội thoại thực hành</div>
+      <div style={{ fontSize:"0.73rem", color:C.gray, marginBottom:"1rem", lineHeight:1.6 }}>Chọn tình huống để bắt đầu luyện nói. AI sẽ đóng vai và sửa lỗi nhẹ nhàng bằng tiếng Việt.</div>
+      <div style={{ display:"flex", flexDirection:"column", gap:"0.6rem" }}>
+        {EDITO_SCENARIOS.map(sc => (
+          <button key={sc.id} onClick={() => startScenario(sc)}
+            style={{ background:C.white, border:`1.5px solid #2980b944`, borderRadius:12, padding:"0.9rem 1rem", textAlign:"left", cursor:"pointer", fontFamily:"inherit", transition:"all 0.15s" }}
+            onMouseEnter={e=>e.currentTarget.style.background="#e8f4fd"}
+            onMouseLeave={e=>e.currentTarget.style.background=C.white}>
+            <div style={{ display:"flex", alignItems:"center", gap:"0.6rem" }}>
+              <span style={{ fontSize:"1.4rem" }}>{sc.icon}</span>
+              <div>
+                <div style={{ fontFamily:"Georgia,serif", fontSize:"0.95rem", color:C.ink, marginBottom:"0.15rem" }}>{sc.label}</div>
+                <div style={{ fontSize:"0.72rem", color:C.gray }}>{sc.desc}</div>
+              </div>
+              <span style={{ marginLeft:"auto", color:"#2980b9", fontSize:"0.8rem" }}>→</span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ display:"flex", flexDirection:"column", height:"calc(100vh - 56px)" }}>
+      {/* Chat header */}
+      <div style={{ background:"#2980b9", color:C.white, padding:"0.7rem 1rem", display:"flex", alignItems:"center", gap:"0.6rem" }}>
+        <button onClick={()=>setScenario(null)} style={{ background:"none", border:"none", color:C.white, cursor:"pointer", fontSize:"0.85rem" }}>←</button>
+        <span style={{ fontSize:"1.1rem" }}>{scenario.icon}</span>
+        <div>
+          <div style={{ fontFamily:"Georgia,serif", fontSize:"0.92rem" }}>{scenario.label}</div>
+          <div style={{ fontSize:"0.65rem", opacity:0.8 }}>{scenario.desc}</div>
+        </div>
+      </div>
+
+      {/* Messages */}
+      <div style={{ flex:1, overflowY:"auto", padding:"1rem", display:"flex", flexDirection:"column", gap:"0.65rem", background:C.cream }}>
+        {messages.map((m, i) => {
+          const isUser = m.role === "user";
+          // Split correction from main text
+          const parts = m.text.split(/(💡[^\n]+)/g);
+          return (
+            <div key={i} style={{ display:"flex", flexDirection:"column", alignItems: isUser ? "flex-end" : "flex-start" }}>
+              {parts.map((p, j) => p.startsWith("💡") ? (
+                <div key={j} style={{ fontSize:"0.72rem", color:C.gold, background:"#fff8e6", border:`1px solid ${C.gold}44`, borderRadius:8, padding:"0.3rem 0.65rem", marginTop:"0.25rem", maxWidth:"88%" }}>{p}</div>
+              ) : p.trim() ? (
+                <div key={j} style={{ background: isUser ? "#2980b9" : C.white, color: isUser ? C.white : C.ink, borderRadius: isUser ? "16px 16px 4px 16px" : "16px 16px 16px 4px", padding:"0.6rem 0.9rem", maxWidth:"85%", fontSize:"0.88rem", lineHeight:1.6, boxShadow:"0 1px 3px rgba(0,0,0,0.08)" }}>
+                    {p.trim()}
+                    {!isUser && <SpeakBtn text={p.trim()} size="0.75rem" />}
+                  </div>
+              ) : null)}
+            </div>
+          );
+        })}
+        {loading && (
+          <div style={{ display:"flex", alignItems:"center", gap:"0.4rem", color:C.gray, fontSize:"0.78rem" }}>
+            <div style={{ width:14, height:14, border:`2px solid ${C.border}`, borderTopColor:"#2980b9", borderRadius:"50%", animation:"spin 0.8s linear infinite" }}/> Đang trả lời...
+          </div>
+        )}
+        {err && <div style={{ color:C.red, fontSize:"0.75rem" }}>⚠ {err}</div>}
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Input */}
+      <div style={{ padding:"0.75rem 1rem", background:C.white, borderTop:`1px solid ${C.border}`, display:"flex", gap:"0.5rem" }}>
+        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&send()}
+          placeholder="Nhập câu trả lời bằng tiếng Pháp..."
+          style={{ flex:1, border:`1.5px solid ${C.border}`, borderRadius:20, padding:"0.5rem 0.85rem", fontSize:"0.85rem", fontFamily:"inherit", outline:"none", color:C.ink }} />
+        <button onClick={send} disabled={loading||!input.trim()}
+          style={{ padding:"0.5rem 1rem", background: input.trim() ? "#2980b9" : C.border, color:C.white, border:"none", borderRadius:20, fontSize:"0.82rem", cursor: input.trim() ? "pointer" : "default", fontFamily:"Georgia,serif" }}>
+          Gửi
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ── Small UI ───────────────────────────────────────────────
 function SecLabel({ icon, text }) {
   return <div style={{ fontFamily:"Georgia,serif", fontSize:"0.9rem", color:C.purple, marginBottom:"0.5rem", paddingBottom:"0.28rem", borderBottom:`1px solid ${C.border}` }}>{icon} {text}</div>;
@@ -308,7 +475,7 @@ function FlashcardSection({ words, onRecord }) {
       <div style={{ background:C.white, border:`1.5px solid ${phase==="result"?(result?C.green:C.red):C.border}`, borderRadius:12, padding:"1.5rem 1rem", textAlign:"center" }}>
         <div style={{ fontSize:"0.65rem", color:C.gray, textTransform:"uppercase", letterSpacing:1, marginBottom:"0.7rem" }}>{idx+1} / {words.length}</div>
         {phase==="show" && <>
-          <div style={{ fontFamily:"Georgia,serif", fontSize:"1.5rem", color:C.purple, marginBottom:"0.3rem" }}>{w.fr}</div>
+          <div style={{ fontFamily:"Georgia,serif", fontSize:"1.5rem", color:C.purple, marginBottom:"0.3rem" }}>{w.fr} <SpeakBtn text={w.fr} size="1rem"/></div>
           {w.vi && <div style={{ fontSize:"0.82rem", color:C.gray }}>{w.vi}</div>}
           <div style={{ marginTop:"1rem", display:"flex", alignItems:"center", justifyContent:"center", gap:"0.5rem" }}>
             <div style={{ width:36, height:36, borderRadius:"50%", border:`3px solid ${C.purple}`, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"Georgia,serif", fontSize:"1.1rem", color:C.purple, fontWeight:600 }}>{timeLeft}</div>
@@ -1449,6 +1616,26 @@ function AppInner({ apiKey, onChangeKey }) {
               </div>
             </button>
 
+            {/* Conversation */}
+            <button onClick={()=>{ setSection("conversation"); setView("conversation"); }}
+              style={{ background:"transparent", border:`1.5px solid #2980b966`, borderRadius:16, padding:"1.5rem", textAlign:"left", cursor:"pointer", fontFamily:"inherit", transition:"all 0.2s" }}
+              onMouseEnter={e=>e.currentTarget.style.background="#2980b911"}
+              onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+                <div>
+                  <div style={{ fontSize:"0.65rem", color:"#7ab8e8", letterSpacing:"0.15em", textTransform:"uppercase", marginBottom:"0.4rem" }}>Module 04</div>
+                  <div style={{ fontFamily:"Georgia,serif", fontSize:"1.6rem", color:C.paper, marginBottom:"0.4rem" }}>La Conversation</div>
+                  <div style={{ fontSize:"0.78rem", color:"#a0a0b8", lineHeight:1.6 }}>Roleplay theo chủ đề Edito A1<br/>AI sửa lỗi · Phát âm tích hợp</div>
+                </div>
+                <div style={{ fontSize:"2rem", opacity:0.6 }}>💬</div>
+              </div>
+              <div style={{ marginTop:"1rem", display:"flex", gap:"0.4rem", flexWrap:"wrap" }}>
+                {["Chào hỏi","Mua sắm","Quán cà phê","Hỏi đường","Gia đình"].map((t,i)=>(
+                  <span key={i} style={{ padding:"0.18rem 0.55rem", border:`1px solid #2980b944`, borderRadius:20, fontSize:"0.65rem", color:"#7ab8e8" }}>{t}</span>
+                ))}
+              </div>
+            </button>
+
             {/* Analyse */}
             <button onClick={()=>{ setSection("analyse"); setView("analyse"); }}
               style={{ background:"transparent", border:`1.5px solid ${C.green}66`, borderRadius:16, padding:"1.5rem", textAlign:"left", cursor:"pointer", fontFamily:"inherit", transition:"all 0.2s" }}
@@ -1478,7 +1665,7 @@ function AppInner({ apiKey, onChangeKey }) {
       <div style={{ background:C.ink, color:C.paper, padding:"0.8rem 1rem", display:"flex", alignItems:"center", gap:"0.45rem", borderBottom:`3px solid ${C.gold}`, flexWrap:"wrap" }}>
         <button onClick={()=>setSection("home")} style={{ background:"transparent", border:"none", color:C.gold, cursor:"pointer", fontSize:"0.75rem", padding:"0.1rem 0.3rem", marginRight:"0.2rem" }}>←</button>
         <span style={{ fontFamily:"Georgia,serif", fontSize:"1.1rem", marginRight:"auto" }}>
-          {section==="vocab" ? "Le Vocabulaire" : section==="grammar" ? "La Grammaire" : "L'Analyse"}
+          {section==="vocab" ? "Le Vocabulaire" : section==="grammar" ? "La Grammaire" : section==="conversation" ? "La Conversation" : "L'Analyse"}
         </span>
 
         {section==="vocab" && <>
@@ -1492,6 +1679,10 @@ function AppInner({ apiKey, onChangeKey }) {
 
         {section==="grammar" && <>
           {navBtn("🧩 Bài tập","grammar")}
+        </>}
+
+        {section==="conversation" && <>
+          {navBtn("💬 Hội thoại","conversation")}
         </>}
 
         {section==="analyse" && <>
@@ -1686,7 +1877,7 @@ function AppInner({ apiKey, onChangeKey }) {
             <div key={i} style={{ display:"grid", gridTemplateColumns:"1.2fr 1fr 0.8fr 1.6fr", gap:"0.3rem", background:i%2===0?C.white:C.cream, borderRadius:8, padding:"0.55rem 0.6rem", marginBottom:"0.25rem", alignItems:"start" }}>
               {/* Masculine */}
               <div>
-                <div style={{ fontFamily:"Georgia,serif", fontSize:"0.88rem", color:C.ink, fontWeight:600 }}>{w.fr}</div>
+                <div style={{ fontFamily:"Georgia,serif", fontSize:"0.88rem", color:C.ink, fontWeight:600, display:"flex", alignItems:"center", gap:"0.2rem" }}>{w.fr} <SpeakBtn text={w.fr} /></div>
                 {w.gender && <div style={{ fontSize:"0.65rem", color:C.purple, fontStyle:"italic", marginTop:"0.05rem" }}>{w.gender}</div>}
               </div>
               {/* Feminine */}
@@ -1743,6 +1934,9 @@ function AppInner({ apiKey, onChangeKey }) {
           }
         </div>
       )}
+      {/* ── CONVERSATION ── */}
+      {view==="conversation" && <ConversationPanel />}
+
       </>)}
     </div>
   );
