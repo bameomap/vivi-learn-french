@@ -562,7 +562,7 @@ function ExerciseFill({ ex, idx }) {
         <input value={val} disabled={done} onChange={e=>setVal(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!done&&setDone(true)}
           placeholder="Điền vào..."
           style={{ border:`1.5px solid ${done?(ok?C.green:C.red):C.border}`,borderRadius:6,padding:"0.3rem 0.55rem",fontSize:"0.83rem",width:160,fontFamily:"inherit",background:done?(ok?"#e8f7f1":"#fde8e6"):C.white,color:done?(ok?C.green:C.red):C.ink,outline:"none"}}/>
-        {!done && <button onClick={()=>setDone(true)} style={{padding:"0.3rem 0.65rem",background:C.ink,color:C.white,border:"none",borderRadius:6,fontSize:"0.73rem",cursor:"pointer"}}>Kiểm tra</button>}
+        {!done && <button onClick={()=>setDone(true)} style={{padding:"0.3rem 0.65rem",background:C.purple,color:C.white,border:"none",borderRadius:6,fontSize:"0.73rem",cursor:"pointer"}}>Kiểm tra</button>}
         {done && <span style={{fontSize:"0.73rem",color:ok?C.green:C.red,fontWeight:500}}>{ok?"✓ Đúng!":`✗ Đáp án: ${ex.answer}`}</span>}
       </div>
       {done && ex.explanation && <div style={{ marginTop:"0.3rem", fontSize:"0.73rem", color:C.gray }}>💡 {ex.explanation}</div>}
@@ -662,7 +662,7 @@ Return ONLY JSON:
           <div style={{ display:"flex", flexWrap:"wrap", gap:"0.28rem" }}>
             {QUICK_VERBS.map(v => (
               <button key={v} onClick={()=>{ setVerb(v); lookup(v); }}
-                style={{ padding:"0.18rem 0.55rem", border:`1px solid ${C.border}`, borderRadius:20, background: verb===v?C.ink:C.white, color: verb===v?C.white:C.ink, fontSize:"0.72rem", cursor:"pointer", fontFamily:"Georgia,serif" }}>
+                style={{ padding:"0.18rem 0.55rem", border:`1px solid ${C.border}`, borderRadius:20, background: verb===v?C.purple:C.white, color: verb===v?C.white:C.gray, fontSize:"0.72rem", cursor:"pointer", fontFamily:"Georgia,serif" }}>
                 {v}
               </button>
             ))}
@@ -691,7 +691,7 @@ Return ONLY JSON:
       {result && !quizMode && (
         <div style={{ display:"flex", flexDirection:"column", gap:"0.65rem", animation:"fadeUp 0.3s ease" }}>
           {/* Verb header */}
-          <div style={{ background:C.ink, borderRadius:12, padding:"0.9rem 1rem", display:"flex", alignItems:"center", gap:"0.8rem" }}>
+          <div style={{ background:C.purple, borderRadius:12, padding:"0.9rem 1rem", display:"flex", alignItems:"center", gap:"0.8rem" }}>
             <div>
               <div style={{ fontFamily:"Georgia,serif", fontSize:"1.6rem", color:C.paper }}>{result.verb} <SpeakBtn text={result.verb} size="1rem" /></div>
               <div style={{ fontSize:"0.78rem", color:"#a0a0b8", marginTop:"0.15rem" }}>{result.meaning}</div>
@@ -768,7 +768,7 @@ function ConjugQuizItem({ q, idx }) {
         <input value={val} disabled={done} onChange={e=>setVal(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!done&&setDone(true)}
           placeholder={`${q.pronoun} ___`}
           style={{ border:`1.5px solid ${done?(ok?C.green:C.red):C.border}`, borderRadius:6, padding:"0.3rem 0.6rem", fontSize:"0.88rem", fontFamily:"Georgia,serif", width:160, background:done?(ok?"#e8f7f1":"#fde8e6"):C.white, color:done?(ok?C.green:C.red):C.ink, outline:"none" }} />
-        {!done && <button onClick={()=>setDone(true)} style={{ padding:"0.3rem 0.65rem", background:C.ink, color:C.white, border:"none", borderRadius:6, fontSize:"0.73rem", cursor:"pointer" }}>Kiểm tra</button>}
+        {!done && <button onClick={()=>setDone(true)} style={{ padding:"0.3rem 0.65rem", background:C.purple, color:C.white, border:"none", borderRadius:6, fontSize:"0.73rem", cursor:"pointer" }}>Kiểm tra</button>}
         {done && <span style={{ fontSize:"0.73rem", color:ok?C.green:C.red, fontWeight:500 }}>{ok ? "✓ Đúng!" : `✗ Đáp án: ${q.answer}`}</span>}
         {done && !ok && <SpeakBtn text={q.answer} />}
       </div>
@@ -859,7 +859,7 @@ function FillSection({ questions, sl, onRecord, onWrong }) {
                 onKeyDown={e => e.key==="Enter" && doCheck(i,q,v)}
                 placeholder="Nhập từ..."
                 style={{ border:`1.5px solid ${done?(ok?C.green:C.red):C.border}`, borderRadius:6, padding:"0.3rem 0.55rem", fontSize:"0.83rem", width:160, fontFamily:"inherit", background:done?(ok?"#e8f7f1":"#fde8e6"):C.white, color:done?(ok?C.green:C.red):C.ink, outline:"none" }} />
-              {!done && <button onClick={() => doCheck(i,q,v)} style={{ padding:"0.3rem 0.65rem", background:C.ink, color:C.white, border:"none", borderRadius:6, fontSize:"0.73rem", cursor:"pointer", fontFamily:"inherit" }}>Kiểm tra</button>}
+              {!done && <button onClick={() => doCheck(i,q,v)} style={{ padding:"0.3rem 0.65rem", background:C.purple, color:C.white, border:"none", borderRadius:6, fontSize:"0.73rem", cursor:"pointer", fontFamily:"inherit" }}>Kiểm tra</button>}
               {done && <span style={{ fontSize:"0.73rem", color:ok?C.green:C.red, fontWeight:500 }}>{ok?"✓ Đúng!":`✗ Đáp án: ${q.answer}`}</span>}
             </div>
           </QCard>
@@ -889,7 +889,7 @@ function MatchSection({ pairs, sl }) {
         <span style={{ fontSize:"0.68rem", color:C.gray }}>Chọn từ Pháp → chọn nghĩa</span>
         <span style={{ fontFamily:"Georgia,serif", color:C.purple, fontSize:"0.85rem" }}>{done}/{pairs.length}</span>
       </div>
-      {done===pairs.length && <div style={{ background:C.ink, color:C.paper, borderRadius:10, padding:"0.55rem 0.9rem", marginBottom:"0.5rem", textAlign:"center", fontSize:"0.82rem" }}>🎉 Hoàn thành! Nối đúng tất cả {pairs.length} cặp</div>}
+      {done===pairs.length && <div style={{ background:C.green, color:C.white, borderRadius:10, padding:"0.55rem 0.9rem", marginBottom:"0.5rem", textAlign:"center", fontSize:"0.82rem" }}>🎉 Hoàn thành! Nối đúng tất cả {pairs.length} cặp</div>}
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.45rem" }}>
         <div>
           <div style={{ fontSize:"0.6rem", textTransform:"uppercase", letterSpacing:1, color:C.gray, marginBottom:"0.27rem" }}>Tiếng Pháp</div>
@@ -937,7 +937,7 @@ function DicteeSection({ words, onRecord }) {
         {!checked && (
           <div style={{ marginTop:"0.8rem", display:"flex", gap:"0.5rem", justifyContent:"center" }}>
             <button onClick={()=>setRevealed(r=>!r)} style={{ padding:"0.3rem 0.8rem", border:`1px solid ${C.border}`, borderRadius:6, background:C.white, color:C.gray, fontSize:"0.72rem", cursor:"pointer" }}>{revealed?"Ẩn":"💡 Gợi ý"}</button>
-            <button onClick={check} style={{ padding:"0.3rem 0.8rem", border:"none", borderRadius:6, background:C.ink, color:C.white, fontSize:"0.72rem", cursor:"pointer" }}>Kiểm tra</button>
+            <button onClick={check} style={{ padding:"0.3rem 0.8rem", border:"none", borderRadius:6, background:C.purple, color:C.white, fontSize:"0.72rem", cursor:"pointer" }}>Kiểm tra</button>
           </div>
         )}
         {revealed && !checked && <div style={{ marginTop:"0.5rem", fontSize:"0.88rem", color:C.gold, fontFamily:"Georgia,serif", letterSpacing:"0.1em" }}>{hint}</div>}
@@ -1002,7 +1002,7 @@ function FlashcardSection({ words, onRecord }) {
           <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&check()} autoFocus
             placeholder="Nhập từ tiếng Pháp..."
             style={{ width:"100%", maxWidth:260, border:`1.5px solid ${C.border}`, borderRadius:8, padding:"0.5rem 0.8rem", fontSize:"1rem", fontFamily:"Georgia,serif", textAlign:"center", outline:"none", boxSizing:"border-box" }} />
-          <div style={{ marginTop:"0.8rem" }}><button onClick={check} style={{ padding:"0.35rem 1rem", border:"none", borderRadius:6, background:C.ink, color:C.white, fontSize:"0.78rem", cursor:"pointer" }}>Kiểm tra</button></div>
+          <div style={{ marginTop:"0.8rem" }}><button onClick={check} style={{ padding:"0.35rem 1rem", border:"none", borderRadius:6, background:C.purple, color:C.white, fontSize:"0.78rem", cursor:"pointer" }}>Kiểm tra</button></div>
         </>}
         {phase==="result" && <>
           <div style={{ fontFamily:"Georgia,serif", fontSize:"1.3rem", color:result?C.green:C.red, marginBottom:"0.3rem" }}>{input||"—"}</div>
@@ -1052,7 +1052,7 @@ function AnagrammeSection({ words, onRecord }) {
           {tiles.map((ch,i)=><div key={i} onClick={()=>clickTile(i)} style={{ width:34,height:34,border:`1.5px solid ${C.border}`,borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"Georgia,serif",fontSize:"1rem",color:C.ink,background:C.white,cursor:checked?"default":"pointer",opacity:checked?0.4:1 }}>{ch}</div>)}
         </div>
         <div style={{ display:"flex", gap:"0.5rem", justifyContent:"center" }}>
-          {!checked && tiles.length===0 && <button onClick={check} style={{ padding:"0.38rem 1.2rem", border:"none", borderRadius:6, background:C.ink, color:C.white, fontSize:"0.78rem", cursor:"pointer" }}>Kiểm tra</button>}
+          {!checked && tiles.length===0 && <button onClick={check} style={{ padding:"0.38rem 1.2rem", border:"none", borderRadius:6, background:C.purple, color:C.white, fontSize:"0.78rem", cursor:"pointer" }}>Kiểm tra</button>}
           {!checked && <button onClick={()=>reset(w.fr)} style={{ padding:"0.38rem 0.8rem", border:`1px solid ${C.border}`, borderRadius:6, background:C.white, color:C.gray, fontSize:"0.72rem", cursor:"pointer" }}>↺ Reset</button>}
         </div>
         {checked && <div style={{ marginTop:"0.6rem" }}>
@@ -1628,7 +1628,7 @@ function GrammarFill({ exercises }) {
             onKeyDown={e=>e.key==="Enter"&&!done&&setChk(x=>({...x,[i]:true}))}
             placeholder="Nhập từ / dạng đúng..."
             style={{border:`1.5px solid ${done?(ok?C.green:C.red):C.border}`,borderRadius:6,padding:"0.3rem 0.55rem",fontSize:"0.83rem",width:180,fontFamily:"inherit",background:done?(ok?"#e8f7f1":"#fde8e6"):C.white,color:done?(ok?C.green:C.red):C.ink,outline:"none"}}/>
-          {!done&&<button onClick={()=>setChk(x=>({...x,[i]:true}))} style={{padding:"0.3rem 0.65rem",background:C.ink,color:C.white,border:"none",borderRadius:6,fontSize:"0.73rem",cursor:"pointer",fontFamily:"inherit"}}>Kiểm tra</button>}
+          {!done&&<button onClick={()=>setChk(x=>({...x,[i]:true}))} style={{padding:"0.3rem 0.65rem",background:C.purple,color:C.white,border:"none",borderRadius:6,fontSize:"0.73rem",cursor:"pointer",fontFamily:"inherit"}}>Kiểm tra</button>}
           {done&&<span style={{fontSize:"0.73rem",color:ok?C.green:C.red,fontWeight:500}}>{ok?"✓ Đúng!":`✗ Đáp án: ${q.answer}`}</span>}
         </div>
         {done&&q.explanation&&<div style={{marginTop:"0.4rem",fontSize:"0.72rem",color:C.gray}}>💡 {q.explanation}</div>}
@@ -1672,7 +1672,7 @@ function GrammarOrder({ exercises }) {
             style={{padding:"0.25rem 0.55rem",border:`1.5px solid ${C.border}`,borderRadius:6,background:C.white,color:C.ink,fontSize:"0.82rem",cursor:s.checked?"default":"pointer",opacity:s.checked?0.4:1,fontFamily:"Georgia,serif"}}>{item.w}</button>)}
         </div>
         <div style={{ display:"flex", gap:"0.4rem" }}>
-          {!s.checked&&s.chosen.length>0&&<button onClick={()=>check(i)} style={{padding:"0.3rem 0.8rem",border:"none",borderRadius:6,background:C.ink,color:C.white,fontSize:"0.75rem",cursor:"pointer"}}>Kiểm tra</button>}
+          {!s.checked&&s.chosen.length>0&&<button onClick={()=>check(i)} style={{padding:"0.3rem 0.8rem",border:"none",borderRadius:6,background:C.purple,color:C.white,fontSize:"0.75rem",cursor:"pointer"}}>Kiểm tra</button>}
           {!s.checked&&<button onClick={()=>reset(i)} style={{padding:"0.3rem 0.7rem",border:`1px solid ${C.border}`,borderRadius:6,background:C.white,color:C.gray,fontSize:"0.72rem",cursor:"pointer"}}>↺</button>}
         </div>
         {s.checked&&<div style={{marginTop:"0.45rem"}}>
@@ -2795,17 +2795,17 @@ function DefiQuiz({ defi, onFinish }) {
   const [inputVals, setInputVals] = useState({});
 
   const questions = defi.questions || [];
-  const allDone = questions.every((_,i) => revealed[i]);
+  const allAnswered = questions.length > 0 && questions.every((_,i) => revealed[i]);
 
   useEffect(() => {
-    if (allDone && questions.length > 0) {
-      const ok = questions.filter((_,i) => {
-        const ans = answers[i] || inputVals[i] || "";
-        return ans.trim().toLowerCase() === (questions[i].answer||"").toLowerCase();
-      }).length;
-      onFinish(ok, questions.length);
-    }
-  }, [revealed]);
+    if (!allAnswered) return;
+    const ok = questions.filter((_,i) => {
+      const ans = answers[i] || inputVals[i] || "";
+      return ans.trim().toLowerCase() === (questions[i].answer||"").toLowerCase();
+    }).length;
+    const t = setTimeout(() => onFinish(ok, questions.length), 800);
+    return () => clearTimeout(t);
+  }, [allAnswered]);
 
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:"0.65rem", animation:"fadeUp 0.3s ease" }}>
@@ -2848,7 +2848,7 @@ function DefiQuiz({ defi, onFinish }) {
                   onKeyDown={e=>{ if(e.key==="Enter"&&!isRevealed) setRevealed(r=>({...r,[i]:true})); }}
                   placeholder="Nhập câu trả lời..."
                   style={{flex:1,border:`1.5px solid ${isRevealed?(correct?C.green:C.red):C.border}`,borderRadius:8,padding:"0.38rem 0.6rem",fontSize:"0.85rem",fontFamily:"Georgia,serif",background:isRevealed?(correct?"rgba(46,125,94,0.1)":"rgba(192,57,43,0.1)"):"rgba(255,255,255,0.9)",color:isRevealed?(correct?C.green:C.red):C.ink,outline:"none"}}/>
-                {!isRevealed && <button onClick={()=>setRevealed(r=>({...r,[i]:true}))} style={{padding:"0.38rem 0.7rem",background:C.ink,color:C.white,border:"none",borderRadius:8,fontSize:"0.75rem",cursor:"pointer"}}>OK</button>}
+                {!isRevealed && <button onClick={()=>setRevealed(r=>({...r,[i]:true}))} style={{padding:"0.38rem 0.7rem",background:C.purple,color:C.white,border:"none",borderRadius:8,fontSize:"0.75rem",cursor:"pointer"}}>OK</button>}
               </div>
             )}
 
@@ -3194,12 +3194,12 @@ function AppInner({ apiKey, onChangeKey }) {
 
       {/* ── HOMEPAGE ── */}
       {section==="home" && (
-        <div style={{ minHeight:"100vh", background:C.ink, display:"flex", flexDirection:"column" }}>
+        <div style={{ minHeight:"100vh", background:C.paper, display:"flex", flexDirection:"column" }}>
           {/* Hero */}
-          <div style={{ padding:"2.5rem 1.25rem 1.2rem", textAlign:"center" }}>
+          <div style={{ padding:"3rem 1.25rem 1.5rem", textAlign:"center" }}>
             <div style={{ fontSize:"0.68rem", color:C.purple, letterSpacing:"0.18em", textTransform:"uppercase", marginBottom:"0.5rem", fontWeight:600 }}>BIENVENUE</div>
             <div style={{ fontFamily:"Georgia,serif", fontSize:"2.2rem", color:C.ink, lineHeight:1.1, fontWeight:700 }}>Français</div>
-            <div style={{ width:32, height:2, background:C.gold, margin:"0.7rem auto" }} />
+            <div style={{ width:40, height:3, background:C.purple, borderRadius:2, margin:"0.7rem auto" }} />
 
             {/* Streak banner */}
             <div style={{ display:"inline-flex", alignItems:"center", gap:"0.5rem", background:C.white, border:`1.5px solid ${C.border}`, borderRadius:24, padding:"0.4rem 1rem", marginTop:"0.5rem", boxShadow:"0 2px 12px rgba(0,0,0,0.08)" }}>
