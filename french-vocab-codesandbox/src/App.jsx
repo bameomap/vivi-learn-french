@@ -3470,6 +3470,7 @@ function AppInner({ apiKey, onChangeKey }) {
               </div>
             )}
             {/* ── OTHER PANELS ── */}
+            {view==="defi" && <DefiPanel />}
             {view==="conjugaison" && <ConjugaisonPanel />}
             {view==="writing" && <WritingPanel />}
             {view==="weakspots" && <WeakSpotsPanel />}
