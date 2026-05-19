@@ -22,6 +22,15 @@ les espèces — tiền mặt
 le reçu — biên lai`;
 
 // ── Helpers ────────────────────────────────────────────────
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function parseWords(text) {
   return text.split("\n").map(l => l.trim()).filter(Boolean).map(line => {
     const parts = line.split("—").map(p => p.trim());
@@ -58,7 +67,12 @@ async function callAI(prompt, apiKey) {
 async function callAIBatched(type, words, n) {
   if (type === "matching" || n <= 15) return callAI(buildPrompt(type, words, n));
   const h1 = Math.ceil(n / 2), h2 = n - h1;
-  const [r1, r2] = await Promise.all([callAI(buildPrompt(type, words, h1)), callAI(buildPrompt(type, words, h2))]);
+  // Shuffle and split words into two halves so each batch covers different vocabulary
+  const shuffled = shuffleArray(words);
+  const mid = Math.ceil(shuffled.length / 2);
+  const words1 = shuffled.length >= 4 ? shuffled.slice(0, mid) : shuffled;
+  const words2 = shuffled.length >= 4 ? shuffled.slice(mid) : shuffled;
+  const [r1, r2] = await Promise.all([callAI(buildPrompt(type, words1, h1)), callAI(buildPrompt(type, words2, h2))]);
   if (type === "multiple_choice") return { type, questions: [...(r1.questions||[]), ...(r2.questions||[])] };
   if (type === "fill_blank") return { type, questions: [...(r1.questions||[]), ...(r2.questions||[])] };
   if (type === "mixed") {
@@ -75,7 +89,10 @@ async function callAIBatched(type, words, n) {
 
 function buildPrompt(type, words, n = 8) {
   n = Math.min(n, 30);
-  const list = words.map(w => w.vi ? `${w.fr} — ${w.vi}` : w.fr).join("\n");
+  // Shuffle first, then sample only as many words as needed (avoids AI always picking from the top of the list)
+  const shuffled = shuffleArray(words);
+  const sampled = n <= shuffled.length ? shuffled.slice(0, Math.min(n + Math.ceil(n * 0.3), shuffled.length)) : shuffled;
+  const list = sampled.map(w => w.vi ? `${w.fr} — ${w.vi}` : w.fr).join("\n");
   const reuse = n > words.length ? " Reuse words in different styles to reach the count." : "";
   if (type === "multiple_choice")
     return `French teacher. Create exactly ${n} multiple choice questions mixing FR→VI and VI→FR.${reuse}\nVocabulary:\n${list}\nReturn ONLY JSON: {"type":"multiple_choice","questions":[{"question":"...","options":["A","B","C","D"],"answer":"exact option text","explanation":"Vietnamese note about correct answer","wrongExplanations":{"wrong option text":"what it means in Vietnamese"}}]}`;
@@ -1579,10 +1596,13 @@ const GTYPES = [
 
 function buildGrammarPrompt(topic, level, gtype, n) {
   const base = `French grammar teacher. Create ${n} exercises on the topic: "${topic}" for level ${level}.`;
-  if (gtype === "mc") return `${base}\nReturn ONLY JSON: {"type":"mc","topic":"${topic}","level":"${level}","explanation":"brief Vietnamese explanation of this grammar rule in 2-3 sentences","exercises":[{"question":"Full sentence with context","options":["option1","option2","option3","option4"],"answer":"correct option","explanation":"why this is correct in Vietnamese"}]}`;
-  if (gtype === "fill") return `${base}\nReturn ONLY JSON: {"type":"fill","topic":"${topic}","level":"${level}","explanation":"brief Vietnamese explanation of this grammar rule","exercises":[{"sentence":"French sentence with ___ for the blank","answer":"correct word/form","hint":"brief Vietnamese hint","explanation":"why this form is correct in Vietnamese"}]}`;
-  if (gtype === "order") return `${base} Create sentences where words are scrambled.\nIMPORTANT: The "words" array must NOT contain punctuation (no periods, commas, question marks). Punctuation goes only in "answer".\nReturn ONLY JSON: {"type":"order","topic":"${topic}","level":"${level}","explanation":"brief Vietnamese explanation of this grammar rule","exercises":[{"words":["word1","word2","word3","word4","word5"],"answer":"Correct sentence (may include punctuation)","translation":"Vietnamese translation","explanation":"note about word order in Vietnamese"}]}`;
-  if (gtype === "mixed") return `${base} Create a mix: ${Math.ceil(n/3)} multiple choice + ${Math.ceil(n/3)} fill-in-blank + ${Math.floor(n/3)} word order.\nFor word order exercises: "words" array must NOT contain punctuation.\nReturn ONLY JSON: {"type":"mixed","topic":"${topic}","level":"${level}","explanation":"brief Vietnamese explanation","sections":[{"sectionType":"mc","exercises":[{"question":"...","options":["a","b","c","d"],"answer":"correct","explanation":"Vietnamese why"}]},{"sectionType":"fill","exercises":[{"sentence":"sentence with ___","answer":"word","hint":"hint","explanation":"Vietnamese why"}]},{"sectionType":"order","exercises":[{"words":["w1","w2","w3"],"answer":"Correct sentence","translation":"Vietnamese","explanation":"note"}]}`;
+  // explanationRules: array of {type, content} where type = "rule"|"warning"|"note"
+  // This structured format allows the UI to render each rule on its own line with proper styling.
+  const explSchema = `"explanationRules":[{"type":"rule","content":"Quy tắc 1 — giải thích ngắn gọn tiếng Việt"},{"type":"rule","content":"Quy tắc 2 — ..."},{"type":"warning","content":"⚠️ Lưu ý quan trọng"},{"type":"note","content":"Ngoại lệ hoặc mẹo nhớ"}]`;
+  if (gtype === "mc") return `${base}\nReturn ONLY JSON: {"type":"mc","topic":"${topic}","level":"${level}",${explSchema},"exercises":[{"question":"Full sentence with context","options":["option1","option2","option3","option4"],"answer":"correct option","explanation":"why this is correct in Vietnamese"}]}`;
+  if (gtype === "fill") return `${base}\nReturn ONLY JSON: {"type":"fill","topic":"${topic}","level":"${level}",${explSchema},"exercises":[{"sentence":"French sentence with ___ for the blank","answer":"correct word/form","hint":"brief Vietnamese hint","explanation":"why this form is correct in Vietnamese"}]}`;
+  if (gtype === "order") return `${base} Create sentences where words are scrambled.\nIMPORTANT: The "words" array must NOT contain punctuation (no periods, commas, question marks). Punctuation goes only in "answer".\nReturn ONLY JSON: {"type":"order","topic":"${topic}","level":"${level}",${explSchema},"exercises":[{"words":["word1","word2","word3","word4","word5"],"answer":"Correct sentence (may include punctuation)","translation":"Vietnamese translation","explanation":"note about word order in Vietnamese"}]}`;
+  if (gtype === "mixed") return `${base} Create a mix: ${Math.ceil(n/3)} multiple choice + ${Math.ceil(n/3)} fill-in-blank + ${Math.floor(n/3)} word order.\nFor word order exercises: "words" array must NOT contain punctuation.\nReturn ONLY JSON: {"type":"mixed","topic":"${topic}","level":"${level}",${explSchema},"sections":[{"sectionType":"mc","exercises":[{"question":"...","options":["a","b","c","d"],"answer":"correct","explanation":"Vietnamese why"}]},{"sectionType":"fill","exercises":[{"sentence":"sentence with ___","answer":"word","hint":"hint","explanation":"Vietnamese why"}]},{"sectionType":"order","exercises":[{"words":["w1","w2","w3"],"answer":"Correct sentence","translation":"Vietnamese","explanation":"note"}]}`;
   return "";
 }
 
@@ -3047,9 +3067,9 @@ function GrammarPresets({ onLoad }) {
             style={{ display:"flex", alignItems:"center", gap:"0.4rem", padding:"0.5rem 0.9rem", background:"transparent", border:"none", cursor:"pointer", fontSize:"0.72rem", color:C.gray, fontFamily:"inherit" }}>
             ← Tất cả unités
           </button>
-          <div style={{ padding:"0 0.6rem 0.6rem", display:"flex", flexDirection:"column", gap:"0.5rem" }}>
+          <div style={{ padding:"0 0.75rem 0.75rem", display:"flex", flexDirection:"column", gap:"0.75rem" }}>
             {selectedUnit.points.map((p, i) => (
-              <div key={i} style={{ background:C.white, border:`1px solid ${C.border}`, borderRadius:10, overflow:"hidden", boxShadow:"0 1px 3px rgba(0,0,0,0.04)" }}>
+              <div key={i} style={{ background:C.white, border:`1.5px solid ${C.border}`, borderRadius:12, overflow:"hidden", boxShadow:"0 2px 8px rgba(91,79,207,0.07)" }}>
                 {/* Header */}
                 <div style={{ background:C.purpleL, padding:"0.55rem 0.75rem", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
                   <div style={{ fontSize:"0.78rem", fontWeight:600, color:C.purple, lineHeight:1.3 }}>{p.topic}</div>
@@ -3059,16 +3079,25 @@ function GrammarPresets({ onLoad }) {
                   </button>
                 </div>
                 {/* Rule */}
-                <div style={{ padding:"0.55rem 0.75rem" }}>
-                  <div style={{ fontSize:"0.73rem", color:C.ink, lineHeight:1.6, marginBottom:"0.4rem" }}>📌 {p.rule}</div>
-                  <div style={{ display:"flex", flexDirection:"column", gap:"0.2rem" }}>
-                    {p.examples.map((ex, j) => (
-                      <div key={j} style={{ display:"flex", alignItems:"center", gap:"0.4rem" }}>
-                        <span style={{ fontSize:"0.65rem", color:C.purple, flexShrink:0 }}>▸</span>
-                        <span style={{ fontFamily:"Georgia,serif", fontSize:"0.78rem", color:C.ink, fontStyle:"italic" }}>{ex}</span>
-                        <SpeakBtn text={ex} size="0.7rem" />
-                      </div>
-                    ))}
+                <div style={{ padding:"0.65rem 0.85rem" }}>
+                  <div style={{ fontSize:"0.73rem", color:C.ink, lineHeight:1.7, marginBottom:"0.65rem", background:C.cream, borderRadius:8, padding:"0.45rem 0.65rem", borderLeft:`3px solid ${C.purple}` }}>📌 {p.rule}</div>
+                  <div style={{ fontSize:"0.63rem", textTransform:"uppercase", letterSpacing:0.8, color:C.gray, marginBottom:"0.4rem", fontWeight:600 }}>Ví dụ</div>
+                  <div style={{ display:"flex", flexDirection:"column", gap:"0.55rem" }}>
+                    {p.examples.map((ex, j) => {
+                      const parts = ex.split(" — ");
+                      const fr = parts[0] || ex;
+                      const vi = parts[1] || "";
+                      return (
+                        <div key={j} style={{ background:C.white, border:`1px solid ${C.border}`, borderRadius:8, padding:"0.45rem 0.65rem" }}>
+                          <div style={{ display:"flex", alignItems:"center", gap:"0.4rem", marginBottom: vi ? "0.25rem" : 0 }}>
+                            <span style={{ fontSize:"0.65rem", color:C.purple, flexShrink:0 }}>▸</span>
+                            <span style={{ fontFamily:"Georgia,serif", fontSize:"0.8rem", color:C.ink, fontStyle:"italic", flex:1 }}>{fr}</span>
+                            <SpeakBtn text={fr} size="0.7rem" />
+                          </div>
+                          {vi && <div style={{ fontSize:"0.72rem", color:C.gray, marginLeft:"1.1rem", lineHeight:1.5 }}>→ {vi}</div>}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -3076,6 +3105,61 @@ function GrammarPresets({ onLoad }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function GrammarExplanation({ rules, text }) {
+  // Prefer structured rules array; fall back to splitting plain text
+  const items = rules && rules.length > 0 ? rules : (
+    text ? text.split(/(?<=\S)\s+(?=\d+\.\s)|\n+/).filter(l => l.trim()).map(l => {
+      if (/^⚠/.test(l.trim())) return { type: "warning", content: l.trim() };
+      if (/^(Ngoại lệ|Lưu ý)/i.test(l.trim())) return { type: "note", content: l.trim() };
+      return { type: "rule", content: l.trim() };
+    }) : []
+  );
+
+  if (!items.length) return null;
+
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:"0.4rem" }}>
+      {items.map((item, i) => {
+        if (item.type === "warning") return (
+          <div key={i} style={{ display:"flex", gap:"0.5rem", alignItems:"flex-start", background:"#fff8e6", border:"1px solid #f5c842", borderRadius:8, padding:"0.45rem 0.7rem" }}>
+            <span style={{ fontSize:"0.9rem", flexShrink:0 }}>⚠️</span>
+            <span style={{ fontSize:"0.78rem", color:"#7a5800", lineHeight:1.6 }}>{item.content.replace(/^⚠️?\s*/, "")}</span>
+          </div>
+        );
+        if (item.type === "note") return (
+          <div key={i} style={{ fontSize:"0.75rem", color:C.purple, lineHeight:1.6, padding:"0.35rem 0.65rem", background:C.purpleL, borderRadius:8, fontStyle:"italic" }}>
+            {item.content}
+          </div>
+        );
+        // type === "rule" — check if starts with number
+        const numMatch = item.content.match(/^(\d+)\.\s*(.*)/s);
+        if (numMatch) {
+          const num = numMatch[1];
+          const rest = numMatch[2];
+          const colonIdx = rest.indexOf(":");
+          const title = colonIdx > -1 ? rest.slice(0, colonIdx).trim() : rest;
+          const detail = colonIdx > -1 ? rest.slice(colonIdx + 1).trim() : "";
+          return (
+            <div key={i} style={{ background:C.white, border:`1.5px solid ${C.border}`, borderRadius:10, overflow:"hidden" }}>
+              <div style={{ background:C.purple, padding:"0.3rem 0.7rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
+                <span style={{ background:C.white, color:C.purple, fontWeight:700, fontSize:"0.65rem", borderRadius:"50%", width:"1.2rem", height:"1.2rem", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>{num}</span>
+                <span style={{ fontSize:"0.78rem", color:C.white, fontWeight:600, lineHeight:1.4 }}>{title}</span>
+              </div>
+              {detail && <div style={{ padding:"0.4rem 0.7rem", fontSize:"0.76rem", color:C.ink, lineHeight:1.7, fontFamily:"Georgia,serif", fontStyle:"italic" }}>{detail}</div>}
+            </div>
+          );
+        }
+        // Plain rule
+        return (
+          <div key={i} style={{ fontSize:"0.78rem", color:C.ink, lineHeight:1.7, padding:"0.1rem 0.1rem" }}>
+            {item.content}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -3089,13 +3173,25 @@ function GrammarPanel() {
   const [result, setResult] = useState(null);
   const [err, setErr] = useState("");
   const [wrongCount, setWrongCount] = useState(0);
+  const formRef = useRef(null);
 
-  const generate = async () => {
-    if (!topic.trim()) { setErr("Nhập chủ đề ngữ pháp!"); return; }
+  const generate = async (overrideTopic) => {
+    const t = (overrideTopic !== undefined ? overrideTopic : topic).trim();
+    if (!t) { setErr("Nhập chủ đề ngữ pháp!"); return; }
     setLoading(true); setErr(""); setResult(null); setWrongCount(0);
-    try { setResult(await callAI(buildGrammarPrompt(topic.trim(), level, gtype, numQ))); }
+    try { setResult(await callAI(buildGrammarPrompt(t, level, gtype, numQ))); }
     catch(e) { setErr(e.message); }
     setLoading(false);
+  };
+
+  const handlePresetLoad = (t) => {
+    setTopic(t);
+    setLevel("A1");
+    setResult(null);
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      generate(t);
+    }, 80);
   };
 
   const GRAMMAR_BY_LEVEL = {
@@ -3129,10 +3225,10 @@ function GrammarPanel() {
   return (
     <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"0.75rem"}}>
       {/* Édito Presets */}
-      <GrammarPresets onLoad={topic => { setTopic(topic); setLevel("A1"); }} />
+      <GrammarPresets onLoad={handlePresetLoad} />
 
       {/* Input form */}
-      <div style={{background:C.cream,borderRadius:12,padding:"0.9rem",display:"flex",flexDirection:"column",gap:"0.65rem"}}>
+      <div ref={formRef} style={{background:C.cream,borderRadius:12,padding:"0.9rem",display:"flex",flexDirection:"column",gap:"0.65rem"}}>
         <div style={{fontSize:"0.72rem",fontWeight:600,color:C.purple}}>🧩 Bài tập ngữ pháp</div>
 
         <div>
@@ -3197,10 +3293,10 @@ function GrammarPanel() {
       </div>
 
       {/* Grammar explanation banner */}
-      {result?.explanation && (
-        <div style={{background:C.purpleL,border:`1px solid #d4c5f5`,borderRadius:10,padding:"0.7rem 0.9rem"}}>
-          <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:1,color:C.purple,marginBottom:"0.3rem",fontWeight:600}}>📖 Lý thuyết — {result.topic} · {result.level}</div>
-          <div style={{fontSize:"0.8rem",color:C.ink,lineHeight:1.7}}>{result.explanation}</div>
+      {(result?.explanationRules?.length > 0 || result?.explanation) && (
+        <div style={{background:C.purpleL,border:`1px solid #d4c5f5`,borderRadius:12,padding:"0.75rem 0.9rem"}}>
+          <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:1,color:C.purple,marginBottom:"0.6rem",fontWeight:600}}>📖 Lý thuyết — {result.topic} · {result.level}</div>
+          <GrammarExplanation rules={result.explanationRules} text={result.explanation} />
         </div>
       )}
 
